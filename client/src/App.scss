@@ -1,8 +1,11 @@
 .firstContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width: 1200px;
   max-width: 2002px;
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1), 10px 0 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  font-family: Montserrat, sans-serif;
 }
 
 .headerContainer {
@@ -12,28 +15,24 @@
 
 .image {
   margin: 0 auto;
-  width: 80%;
-  max-width: 2002px;
+  width: 1200px;
   display: block;
-  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1), 10px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .search {
-  position: absolute;
-  top: 81%;
-  left: 32%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  width: 100%;
+  max-width: 228px;
 }
 
 .searchLabel {
-  margin-bottom: 16px;
-  font-family: Inter, sans-serif;
-  font-weight: 500;
+  margin: 10px 0 6px 0;
+  font-weight: 700;
   font-size: 18px;
   line-height: 22px;
-  color: rgb(255, 255, 255);
+  color: rgb(15, 73, 138);
+  cursor: default;
 }
 
 .searchInput {
@@ -41,13 +40,12 @@
   height: 40px;
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
-  border: 0.5px solid rgb(15, 73, 138);
+  border: 1px solid rgb(77, 77, 77);
   padding: 0 0 0 10px;
   box-sizing: border-box;
   text-align: left;
 
   ::placeholder {
-    font-family: Montserrat, sans-serif;
     font-weight: 500;
     font-size: 0.875rem;
     line-height: 17px;
@@ -57,24 +55,21 @@
 }
 
 .filterContainer {
-  width: 100%;
-  max-width: 420px;
-  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  min-width: 300px;
 }
 
 .filterHeading {
-  font-family: Montserrat, sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: rgb(15, 73, 138);
   text-align: left;
   line-height: 22px;
-  margin: 16px 0 30px 14px;
+  margin: 10px 0 30px 14px;
 }
 
 .filterTitle {
-  font-family: Montserrat, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   line-height: 17px;
   color: rgb(15, 73, 138);
@@ -82,12 +77,15 @@
 }
 
 .filterOption {
-  font-family: Montserrat, sans-serif;
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 17px;
   margin: 0 0 10px 14px;
+}
+
+.filterOption:last-child {
+  margin-bottom: 30px;
 }
 
 .filterOption input[type="checkbox"] {
@@ -96,7 +94,6 @@
 
 .mainContainer {
   flex-grow: 1;
-  box-shadow: 10px 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
 
@@ -106,9 +103,7 @@
   padding: 20px;
   margin-top: 20px;
   background-color: white;
-  width: 100%;
-  max-width: 1100px;
-  font-family: Montserrat, sans-serif;
+  width: 886px;
   display: flex;
   flex-direction: column;
 }
@@ -116,7 +111,7 @@
 .cardContent {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .cardRow {
@@ -128,7 +123,6 @@
 }
 
 .label {
-  font-family: Montserrat, sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 22px;
@@ -149,6 +143,74 @@
 .moreButtonCard {
   width: 100%;
   max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.buttonsCard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.editButton {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.deleteButton {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(220, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.adminButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.addButton {
+  justify-self: flex-end;
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
   padding: 9px 20px;
   background-color: rgb(15, 73, 138);
   color: white;
@@ -165,16 +227,17 @@
 
 .sortContainer {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 6px 0 0 0;
+  margin: 38px 0 0 0;
+  width: 100%;
+  max-width: 300px;
 }
 
 .sortContainer select {
   padding: 9px 30px 9px 9px;
   width: auto;
   max-width: 330px;
-  border: 0.5px solid rgb(77, 77, 77);
+  max-height: 40px;
+  border: 1px solid rgb(77, 77, 77);
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
   color: rgb(77, 77, 77);
@@ -184,7 +247,6 @@
   option {
     background-color: rgb(255, 255, 255);
     color: rgb(77, 77, 77);
-    font-family: Montserrat, sans-serif;
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
@@ -193,11 +255,10 @@
 }
 
 .footerContainer {
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1), 10px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
@@ -206,7 +267,6 @@
 }
 
 .footerTitle {
-  font-family: Montserrat, sans-serif;
   font-weight: 700;
   font-size: 18px;
   line-height: 22px;
@@ -216,7 +276,6 @@
 }
 
 .footerContacts {
-  font-family: Montserrat, sans-serif;
   font-weight: 500;
   font-size: 40px;
   line-height: 49px;
@@ -225,16 +284,14 @@
 }
 
 .pagination {
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 53px 0;
-  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1), 10px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .paginationText {
-  font-family: Montserrat, sans-serif;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
@@ -246,6 +303,13 @@
   display: flex;
   width: 80%;
   justify-content: space-between;
+}
+
+.moreSortContainer {
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 768px) {

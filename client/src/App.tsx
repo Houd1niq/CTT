@@ -1,5 +1,5 @@
-import './App.scss';
 import React, { useState } from 'react';
+import './App.scss';
 
 interface Patent {
     id: string;
@@ -19,6 +19,8 @@ function App() {
 
     const [patents, setPatents] = useState<Patent[]>(initialPatents);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [file, setFile] = useState<File | null>(null);
 
     const sortPatents = (order: 'asc' | 'desc') => {
         return [...patents].sort((a, b) => {
@@ -32,6 +34,20 @@ function App() {
         const newOrder = event.target.value as 'asc' | 'desc';
         setSortOrder(newOrder);
         setPatents(sortPatents(newOrder));
+    };
+
+    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        const files = event.dataTransfer.files;
+        if (files.length) {
+            setFile(files[0]);
+        }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length) {
+            setFile(event.target.files[0]);
+        }
     };
 
     const PatentCard: React.FC<Patent> = ({ id, type, name, date, area }) => (
@@ -52,6 +68,14 @@ function App() {
             </div>
         </div>
     );
+
+    const handleAddButtonClick = () => {
+        setIsPopupOpen(true);
+    };
+
+    const handleClosePopup = () => {
+        setIsPopupOpen(false);
+    };
 
     return (
         <div className="firstContainer">
@@ -94,7 +118,7 @@ function App() {
                             </select>
                         </div>
                         <div>
-                            <button className="addButton">Добавить</button>
+                            <button className="addButton" onClick={handleAddButtonClick}>Добавить</button>
                         </div>
                     </div>
                     {patents.map((patent) => <PatentCard key={patent.id} {...patent} />)}
@@ -113,6 +137,60 @@ function App() {
                     </div>
                 </footer>
             </div>
+            {isPopupOpen && (
+                <div className="popupContainer">
+                    <div className="popup">
+                        <form>
+                            <label className="popupLabel">№ патента/свидетельства</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="popupLabel">Вид</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="popupLabel">Название</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="popupLabel">Дата регистрации</label>
+                            <input type="date" className="popupInput"/>
+                            <label className="popupLabel">Область техники</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="popupLabel">Срок действия патента</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="popupLabel">Контактное лицо</label>
+                            <input type="text" className="popupInput"/>
+                            <label className="notification">
+                                <input type="checkbox"/> Включить уведомления
+                            </label>
+                            <div
+                                className="fileUpload"
+                                onDrop={handleDrop}
+                                onDragOver={(e) => e.preventDefault()}
+                            >
+                                <div className="fileUploadContent">
+                                    <img
+                                        src="../public/icons8-upload-file-48.png"
+                                        alt="Upload Icon"
+                                        className="uploadIcon"
+                                    />
+                                    <p className="uploadText">Drag&Drop files here</p>
+                                    <p className="orText">or</p>
+                                    <label htmlFor="fileUpload" className="browseButton">
+                                        Browse Files
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="fileUpload"
+                                        className="fileInput"
+                                        onChange={handleFileChange}
+                                    />
+                                </div>
+                            </div>
+                            {file && <p className="fileName">{file.name}</p>}
+                            <div className="popupButtons">
+                                <button className="closePopup" onClick={handleClosePopup}>Закрыть</button>
+                                <button type="submit" className="popupSubmit">Добавить патент</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

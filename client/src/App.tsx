@@ -43,7 +43,13 @@ function App() {
                 <div className="cardRow"><span className="label">Дата регистрации</span><span className="value">{date}</span></div>
                 <div className="cardRow"><span className="label">Область техники</span><span className="value">{area}</span></div>
             </div>
-            <button className="moreButtonCard">Подробнее</button>
+            <div className="buttonsCard">
+                <div className="adminButtons">
+                    <button className="editButton">Изменить</button>
+                    <button className="deleteButton">Удалить</button>
+                </div>
+                <button className="moreButtonCard">Подробнее</button>
+            </div>
         </div>
     );
 
@@ -51,10 +57,6 @@ function App() {
         <div className="firstContainer">
             <div className="headerContainer">
                 <img src="/headerImage.png" alt="headerImage" className="image"/>
-                <div className="search">
-                    <label className="searchLabel">Поиск</label>
-                    <input type="text" className="searchInput" placeholder="Введите название патента"/>
-                </div>
             </div>
             <div className="contentContainer">
                 <div className="filterContainer">
@@ -79,12 +81,21 @@ function App() {
                     </div>
                 </div>
                 <div className="mainContainer">
-                    <div className="sortContainer">
-                        <select id="sortSelect" value={sortOrder} onChange={handleSortChange}>
-                            <option value="" disabled>Сортировать</option>
-                            <option value="asc">По возрастанию даты регистрации</option>
-                            <option value="desc">По убыванию даты регистрации</option>
-                        </select>
+                    <div className="moreSortContainer">
+                        <div className="search">
+                            <label className="searchLabel">Поиск</label>
+                            <input type="text" className="searchInput" placeholder="Введите название патента"/>
+                        </div>
+                        <div className="sortContainer">
+                            <select id="sortSelect" value={sortOrder} onChange={handleSortChange}>
+                                <option value="">Сортировать</option>
+                                <option value="asc">По возрастанию даты регистрации</option>
+                                <option value="desc">По убыванию даты регистрации</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button className="addButton">Добавить</button>
+                        </div>
                     </div>
                     {patents.map((patent) => <PatentCard key={patent.id} {...patent} />)}
                 </div>

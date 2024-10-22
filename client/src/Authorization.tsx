@@ -4,46 +4,33 @@ import './Authorization.scss';
 const Authorization = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [emailError, setEmailError] = useState('');
 
-    const validateEmail = (email: string) => {
-        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return re.test(String(email).toLowerCase());
-    };
+    const validateEmail = (email: string) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.toLowerCase());
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, validator?: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setEmail(value);
-        if (value && !validateEmail(value)) {
-            setEmailError('Неправильный формат почты');
-        } else {
-            setEmailError('');
-        }
+        setter(value);
+        if (validator) validator(value);
     };
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    }
 
     useEffect(() => {
-        if (email && password && !emailError) {
-            setIsButtonDisabled(false);
-        } else {
-            setIsButtonDisabled(true);
-        }
-    }, [email, password, emailError]);
+        const isEmailValid = validateEmail(email);
+        setEmailError(isEmailValid || !email ? '' : 'Неправильный формат почты');
+    }, [email]);
+
+    const isButtonDisabled = !(email && password && !emailError);
 
     return (
         <div className="authContainer">
             <div className="authForm">
                 <h1 className="authTitle">Авторизация</h1>
-                <input type="email" placeholder="Почта" className="authInput" value={email} onChange={handleEmailChange}/>
-                <input type="password" placeholder="Пароль" className="authInput" value={password} onChange={handlePasswordChange}/>
-                {<p className={`errorLogin ${emailError ? 'visible' : ''}`}>{emailError || ' '}</p>}
+                <input type="email" placeholder="Почта" className="authInput" value={email} onChange={handleInputChange(setEmail, validateEmail)} />
+                <input type="password" placeholder="Пароль" className="authInput" value={password} onChange={handleInputChange(setPassword)} />
+                <p className={`errorLogin ${emailError ? 'visible' : ''}`}>{emailError || ' '}</p>
                 <div className="buttonWithForgot">
                     <p className="forgotPassword">Забыли пароль?</p>
-                    <button className="loginButton" disabled={isButtonDisabled} style={{ backgroundColor: isButtonDisabled ? 'grey' : 'rgb(15, 74, 138)' }}>Войти</button>
+                    <button className={`loginButton ${isButtonDisabled ? 'disabled' : ''}`} disabled={isButtonDisabled}>Войти</button>
                 </div>
             </div>
         </div>

@@ -1,3 +1,7 @@
+body {
+
+}
+
 .firstContainer {
   display: flex;
   flex-direction: column;
@@ -22,8 +26,6 @@
 .search {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 228px;
 }
 
 .searchLabel {
@@ -36,27 +38,25 @@
 }
 
 .searchInput {
-  width: 222px;
+  width: 258px;
   height: 40px;
   border-radius: 10px;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(77, 77, 77);
-  padding: 0 0 0 10px;
+  padding: 4px 0 0 10px;
   box-sizing: border-box;
   text-align: left;
+  font-family: Montserrat, sans-serif;
 
-  ::placeholder {
+  &::placeholder {
     font-family: Montserrat, sans-serif;
     font-weight: 500;
     font-size: 18px;
     line-height: 17px;
     color: rgb(77, 77, 77);
     text-align: center;
+    transform: translateX(-12px);
   }
-}
-
-.searchInput::placeholder {
-  font-family: Montserrat, sans-serif;
 }
 
 .filterContainer {
@@ -109,7 +109,7 @@
   padding: 20px;
   margin-top: 20px;
   background-color: white;
-  width: 886px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -217,7 +217,6 @@
 }
 
 .addButton {
-  margin: 38px 0 0 208px;
   width: 100%;
   max-width: 150px;
   height: 40px;
@@ -228,6 +227,8 @@
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  justify-self: flex-end;
+  margin-left: auto;
 
   &:hover {
     background-color: #0162bb;
@@ -236,13 +237,12 @@
 
 .sortContainer {
   display: flex;
-  margin: 38px 0 0 0;
   width: 100%;
   max-width: 300px;
 }
 
 .sortContainer select {
-  padding: 9px 30px 9px 9px;
+  padding: 9px 0 9px 9px;
   width: auto;
   max-width: 330px;
   max-height: 40px;
@@ -295,6 +295,7 @@
 }
 
 .pagination {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,25 +324,18 @@
   }
 }
 
-
-.paginationText {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
-  color: rgb(15, 73, 138);
-  text-align: center;
-}
-
 .contentContainer {
   display: flex;
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
+  padding-right: 15px;
 }
 
 .moreSortContainer {
+  gap: 10px;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: end;
 }
 
 .popupContainer {
@@ -360,8 +354,7 @@
   background: rgb(255, 255, 255);
   padding: 20px;
   border-radius: 10px;
-  width: 588px;
-  height: 870px;
+  width: 28%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -472,7 +465,7 @@
 
   .uploadText {
     font-size: 16px;
-    color: #777;
+    color: rgb(77, 77 ,77);
     margin-bottom: 10px;
   }
 
@@ -485,7 +478,7 @@
   .fileSeparator {
     width: 100%;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 15px 0 5px 0;
+    margin: 15px 0 12px 0;
   }
 
   .fileDisplay {
@@ -597,34 +590,5 @@
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
-  }
-}
-
-@media (max-width: 768px) {
-  .headerContainer {
-    padding: 0 10px;
-  }
-
-  .search {
-    top: 70%;
-    left: 5%;
-  }
-
-  .layoutContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .filterContainer {
-    width: 90%;
-    margin: 10px 0;
-  }
-
-  .mainContainer {
-    width: 90%;
-  }
-
-  .footerContacts {
-    font-size: 12px;
   }
 }

@@ -11,7 +11,7 @@ const Authorization = () => {
     const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>, validator?: (value: string) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setter(value);
-        if (validator) validator(value);
+        validator?.(value);
     };
 
     useEffect(() => {

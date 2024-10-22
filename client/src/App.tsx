@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.scss';
 
 interface Patent {
@@ -10,23 +10,71 @@ interface Patent {
 }
 
 const initialPatents: Patent[] = [
-    { id: '2023685049', type: 'Программы для ЭВМ', name: 'Программа имитации работы режимов лабораторного макета', date: '22.11.2023', area: 'Робототехника, автоматика и управление' },
-    { id: '2023685048', type: 'Программы для ЭВМ', name: 'Программа анализа производственных процессов', date: '18.10.2023', area: 'Автоматизация процессов' },
-    { id: '2023685047', type: 'Программы для ЭВМ', name: 'Программа управления оборудованием', date: '05.09.2023', area: 'Промышленная автоматизация' },
-    { id: '2023685046', type: 'Программы для ЭВМ', name: 'Программа для анализа данных в медицине', date: '12.08.2023', area: 'Медицинские технологии' },
-    { id: '123', type: 'Программы для ЭВМ', name: 'Программа для анализа данных в медицине', date: '12.08.2023', area: 'Медицинские технологии' },
-    { id: '1234', type: 'Программы для ЭВМ', name: 'Программа для анализа данных в медицине', date: '12.08.2023', area: 'Медицинские технологии' },
-    { id: '12345', type: 'Программы для ЭВМ', name: 'Программа для анализа данных в медицине', date: '12.08.2023', area: 'Медицинские технологии' },
-    { id: '123456', type: 'Программы для ЭВМ', name: 'Программа для анализа данных в медицине', date: '12.08.2023', area: 'Медицинские технологии' },
+    {
+        id: '2023685049',
+        type: 'Программы для ЭВМ',
+        name: 'Программа имитации работы режимов лабораторного макета',
+        date: '22.11.2023',
+        area: 'Робототехника, автоматика и управление'
+    },
+    {
+        id: '2023685048',
+        type: 'Программы для ЭВМ',
+        name: 'Программа анализа производственных процессов',
+        date: '18.10.2023',
+        area: 'Автоматизация процессов'
+    },
+    {
+        id: '2023685047',
+        type: 'Программы для ЭВМ',
+        name: 'Программа управления оборудованием',
+        date: '05.09.2023',
+        area: 'Промышленная автоматизация'
+    },
+    {
+        id: '2023685046',
+        type: 'Программы для ЭВМ',
+        name: 'Программа для анализа данных в медицине',
+        date: '12.08.2023',
+        area: 'Медицинские технологии'
+    },
+    {
+        id: '123',
+        type: 'Программы для ЭВМ',
+        name: 'Программа для анализа данных в медицине',
+        date: '12.08.2023',
+        area: 'Медицинские технологии'
+    },
+    {
+        id: '1234',
+        type: 'Программы для ЭВМ',
+        name: 'Программа для анализа данных в медицине',
+        date: '12.08.2023',
+        area: 'Медицинские технологии'
+    },
+    {
+        id: '12345',
+        type: 'Программы для ЭВМ',
+        name: 'Программа для анализа данных в медицине',
+        date: '12.08.2023',
+        area: 'Медицинские технологии'
+    },
+    {
+        id: '123456',
+        type: 'Программы для ЭВМ',
+        name: 'Программа для анализа данных в медицине',
+        date: '12.08.2023',
+        area: 'Медицинские технологии'
+    },
 ];
 
-const Filter: React.FC<{ title: string; options: string[] }> = ({ title, options }) => (
+const Filter: React.FC<{ title: string; options: string[] }> = ({title, options}) => (
     <div className="filterSection">
         <div className="filterTitle">{title}</div>
         {options.map(option => (
             <div className="filterOption" key={option}>
                 <label>
-                    <input type="checkbox" />
+                    <input type="checkbox"/>
                     <span>{option}</span>
                 </label>
             </div>
@@ -34,10 +82,23 @@ const Filter: React.FC<{ title: string; options: string[] }> = ({ title, options
     </div>
 );
 
-const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => void; }> = ({ id, type, name, date, area, onDelete }) => (
+const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => void; }> = ({
+                                                                                              id,
+                                                                                              type,
+                                                                                              name,
+                                                                                              date,
+                                                                                              area,
+                                                                                              onDelete
+                                                                                          }) => (
     <div className="card">
         <div className="cardContent">
-            {[{ label: '№ патента/свидетельства', value: id }, { label: 'Вид', value: type }, { label: 'Название', value: name }, { label: 'Дата регистрации', value: date }, { label: 'Область техники', value: area }].map(({ label, value }) => (
+            {[{label: '№ патента/свидетельства', value: id}, {label: 'Вид', value: type}, {
+                label: 'Название',
+                value: name
+            }, {label: 'Дата регистрации', value: date}, {label: 'Область техники', value: area}].map(({
+                                                                                                           label,
+                                                                                                           value
+                                                                                                       }) => (
                 <div className="cardRow" key={label}>
                     <span className="label">{label}</span><span className="value">{value}</span>
                 </div>
@@ -59,7 +120,7 @@ interface PaginationProps {
     onPageChange: (page: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({totalPages, currentPage, onPageChange}) => {
     const handlePreviousPage = () => {
         if (currentPage > 1) {
             onPageChange(currentPage - 1);
@@ -198,16 +259,29 @@ function App() {
         handleCloseAddPopup();
     };
 
+    useEffect(() => {
+        const allPopups = isAddPopupOpen || isDeletePopupOpen;
+        if (allPopups) {
+            const scrollWidth = window.innerWidth - document.documentElement.clientWidth
+            document.body.style.overflowY = 'hidden';
+            document.body.style.paddingRight = scrollWidth + "px";
+        }
+        else {document.body.style.overflowY = 'auto'
+        document.body.style.paddingRight = '0px'}
+    }, [isAddPopupOpen, isDeletePopupOpen]);
+
     return (
         <div className="firstContainer">
             <div className="headerContainer">
-                <img src="/headerImage.png" alt="headerImage" className="image" />
+                <img src="/headerImage.png" alt="headerImage" className="image"/>
             </div>
             <div className="contentContainer">
                 <div className="filterContainer">
                     <div className="filterHeading">Фильтрация</div>
-                    <Filter title="По видам" options={['Определенный вид 1', 'Определенный вид 2', 'Определенный вид 3', 'Определенный вид 4', 'Определенный вид 5', 'Определенный вид 6']} />
-                    <Filter title="По области техники" options={['Область техники 1', 'Область техники 2', 'Область техники 3', 'Область техники 4', 'Область техники 5', 'Область техники 6']} />
+                    <Filter title="По видам"
+                            options={['Определенный вид 1', 'Определенный вид 2', 'Определенный вид 3', 'Определенный вид 4', 'Определенный вид 5', 'Определенный вид 6']}/>
+                    <Filter title="По области техники"
+                            options={['Область техники 1', 'Область техники 2', 'Область техники 3', 'Область техники 4', 'Область техники 5', 'Область техники 6']}/>
                 </div>
                 <div className="mainContainer">
                     <div className="moreSortContainer">
@@ -216,7 +290,7 @@ function App() {
                             <input
                                 type="text"
                                 className="searchInput"
-                                placeholder="Введите название патента"
+                                placeholder="Введите для фильтрации"
                                 value={searchQuery}
                                 onChange={handleSearchChange}
                             />
@@ -228,14 +302,14 @@ function App() {
                                 <option value="desc">По убыванию даты регистрации</option>
                             </select>
                         </div>
-                        <div>
-                            <button className="addButton" onClick={handleAddButtonClick}>Добавить</button>
-                        </div>
+                        <button className="addButton" onClick={handleAddButtonClick}>Добавить</button>
                     </div>
                     {currentPatents.map(patent => (
                         <PatentCard key={patent.id} {...patent} onDelete={handleDeleteButtonClick}/>
                     ))}
                 </div>
+            </div>
+            <div className="pagination">
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={setCurrentPage}/>
             </div>
             <div className="footerContainer">
@@ -264,21 +338,24 @@ function App() {
                                 </div>
                             ))}
                             <label className="notification">
-                                <input type="checkbox" /> необходимость уведомления
+                                <input type="checkbox"/> необходимость уведомления
                             </label>
                             <div className="fileUpload" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
                                 <div className="fileUploadContent">
-                                    <img src="../public/icons8-upload-file-48.png" alt="Upload Icon" className="uploadIcon" />
+                                    <img src="../public/icons8-upload-file-48.png" alt="Upload Icon"
+                                         className="uploadIcon"/>
                                     <p className="uploadText">Перетащите файл сюда</p>
                                     <p className="orText">или</p>
                                     <label htmlFor="fileUpload" className="browseButton">Выберите файл</label>
-                                    <input type="file" id="fileUpload" className="fileInput" onChange={handleFileChange} />
-                                    {file && <hr className="fileSeparator" />}
+                                    <input type="file" id="fileUpload" className="fileInput"
+                                           onChange={handleFileChange}/>
+                                    {file && <hr className="fileSeparator"/>}
                                     <div className="uploadedFileName">{file?.name}</div>
                                 </div>
                             </div>
                             <div className="popupButtons">
-                                <button type="button" className="closePopup" onClick={handleCloseAddPopup}>Закрыть</button>
+                                <button type="button" className="closePopup" onClick={handleCloseAddPopup}>Закрыть
+                                </button>
                                 <button type="submit" className="popupSubmit">Добавить патент</button>
                             </div>
                         </form>

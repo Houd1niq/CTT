@@ -7,7 +7,27 @@ interface Patent {
     name: string;
     date: string;
     area: string;
+    expirationDate?: string;
+    contactPerson?: string;
 }
+interface NotificationProps {
+    message: string;
+    type: 'success' | 'error';
+    onClose: () => void;
+}
+
+const Notification: React.FC<NotificationProps> = ({ message, type, onClose }) => {
+    useEffect(() => {
+        const timer = setTimeout(onClose, 3000);
+        return () => clearTimeout(timer);
+    }, [onClose]);
+
+    return (
+        <div className={`notification ${type}`}>
+            <p>{message}</p>
+        </div>
+    );
+};
 
 const initialPatents: Patent[] = [
     {
@@ -82,23 +102,26 @@ const Filter: React.FC<{ title: string; options: string[] }> = ({title, options}
     </div>
 );
 
-const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => void; }> = ({
-                                                                                              id,
-                                                                                              type,
-                                                                                              name,
-                                                                                              date,
-                                                                                              area,
-                                                                                              onDelete
-                                                                                          }) => (
+const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => void; onEdit: (patent: Patent) => void }> = ({
+                                                                                                                               id,
+                                                                                                                               type,
+                                                                                                                               name,
+                                                                                                                               date,
+                                                                                                                               area,
+                                                                                                                               expirationDate,
+                                                                                                                               contactPerson,
+                                                                                                                               onDelete,
+                                                                                                                               onEdit,
+                                                                                                                           }) => (
     <div className="card">
         <div className="cardContent">
             {[{label: '№ патента/свидетельства', value: id}, {label: 'Вид', value: type}, {
                 label: 'Название',
                 value: name
             }, {label: 'Дата регистрации', value: date}, {label: 'Область техники', value: area}].map(({
-                                                                                                           label,
-                                                                                                           value
-                                                                                                       }) => (
+                                                                                                                                                                                                               label,
+                                                                                                                                                                                                               value
+                                                                                                                                                                                                           }) => (
                 <div className="cardRow" key={label}>
                     <span className="label">{label}</span><span className="value">{value}</span>
                 </div>
@@ -106,7 +129,7 @@ const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => vo
         </div>
         <div className="buttonsCard">
             <div className="adminButtons">
-                <button className="editButton">Изменить</button>
+                <button className="editButton" onClick={() => onEdit({ id, type, name, date, area, expirationDate, contactPerson })}>Изменить</button>
                 <button className="deleteButton" onClick={() => onDelete(id, name)}>Удалить</button>
             </div>
             <button className="moreButtonCard">Подробнее</button>
@@ -177,10 +200,38 @@ function App() {
     const [patentType, setPatentType] = useState('');
     const [patentName, setPatentName] = useState('');
     const [patentArea, setPatentArea] = useState('');
+    const [patentId, setPatentId] = useState('');
+    const [expirationDate, setExpirationDate] = useState('');
+    const [contactPerson, setContactPerson] = useState('');
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = Math.ceil(patents.length / itemsPerPage);
     const [searchQuery, setSearchQuery] = useState('');
+    const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
+    const [patentToEdit, setPatentToEdit] = useState<Patent | null>(null);
+    const [isFormDirty, setIsFormDirty] = useState(false);
+
+    const handleInputChange = () => setIsFormDirty(true);
+
+    const handleCloseOnOutsideClick = () => {
+        handleCloseAddPopup();
+    };
+
+    const handleEditButtonClick = (patent: Patent) => {
+        setPatentId(patent.id);
+        setPatentType(patent.type);
+        setPatentName(patent.name);
+        setPatentDate(patent.date);
+        setPatentArea(patent.area);
+        setExpirationDate(patent.expirationDate || '');
+        setContactPerson(patent.contactPerson || '');
+        setPatentToEdit(patent);
+        setIsAddPopupOpen(true);
+    };
+
+    const showNotification = (message: string, type: 'success' | 'error') => {
+        setNotification({ message, type });
+    };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
@@ -217,12 +268,22 @@ function App() {
     };
 
     const handleAddButtonClick = () => setIsAddPopupOpen(true);
-    const handleCloseAddPopup = () => {
+    const handleCloseAddPopup = (forceClose: boolean = false) => {
+        if (!forceClose && isFormDirty) {
+            const confirmClose = window.confirm("Вы уверены, что хотите закрыть окно? Все несохраненные изменения будут потеряны.");
+            if (!confirmClose) return;
+        }
+
+        setPatentId('');
         setPatentType('');
         setPatentName('');
         setPatentDate('');
         setPatentArea('');
+        setExpirationDate('');
+        setContactPerson('');
         setFile(null);
+        setPatentToEdit(null);
+        setIsFormDirty(false);
         setIsAddPopupOpen(false);
     };
 
@@ -243,20 +304,31 @@ function App() {
         if (patentToDelete) {
             setPatents(patents.filter(patent => patent.id !== patentToDelete.id));
             handleCloseDeletePopup();
+            showNotification('Патент успешно удален!', 'success');
         }
     };
 
     const handleAddPatent = (event: React.FormEvent) => {
         event.preventDefault();
-        const newPatent: Patent = {
-            id: Date.now().toString(),
+        const updatedPatent: Patent = {
+            id: patentId,
             type: patentType,
             name: patentName,
             date: patentDate,
             area: patentArea,
+            expirationDate: expirationDate,
+            contactPerson: contactPerson
         };
-        setPatents([...patents, newPatent]);
-        handleCloseAddPopup();
+
+        if (patentToEdit) {
+            setPatents(patents.map(pat => pat.id === patentToEdit.id ? updatedPatent : pat));
+            showNotification('Патент успешно обновлен!', 'success');
+        } else {
+            setPatents([...patents, updatedPatent]);
+            showNotification('Патент успешно добавлен!', 'success');
+        }
+
+        handleCloseAddPopup(true);
     };
 
     useEffect(() => {
@@ -265,9 +337,10 @@ function App() {
             const scrollWidth = window.innerWidth - document.documentElement.clientWidth
             document.body.style.overflowY = 'hidden';
             document.body.style.paddingRight = scrollWidth + "px";
+        } else {
+            document.body.style.overflowY = 'auto'
+            document.body.style.paddingRight = '0px'
         }
-        else {document.body.style.overflowY = 'auto'
-        document.body.style.paddingRight = '0px'}
     }, [isAddPopupOpen, isDeletePopupOpen]);
 
     return (
@@ -305,7 +378,7 @@ function App() {
                         <button className="addButton" onClick={handleAddButtonClick}>Добавить</button>
                     </div>
                     {currentPatents.map(patent => (
-                        <PatentCard key={patent.id} {...patent} onDelete={handleDeleteButtonClick}/>
+                        <PatentCard key={patent.id} {...patent} onDelete={handleDeleteButtonClick} onEdit={handleEditButtonClick} />
                     ))}
                 </div>
             </div>
@@ -323,40 +396,93 @@ function App() {
                 </footer>
             </div>
             {isAddPopupOpen && (
-                <div className="popupContainer">
-                    <div className="popup">
+                <div className="popupContainer" onClick={handleCloseOnOutsideClick}>
+                    <div className="popup" onClick={(e) => e.stopPropagation()}>
                         <form onSubmit={handleAddPatent}>
-                            {['№ патента/свидетельства', 'Вид', 'Название', 'Дата регистрации', 'Область техники', 'Срок действия патента', 'Контактное лицо'].map((label, index) => (
-                                <div key={index}>
-                                    <label className="popupLabel">{label}</label>
-                                    <input
-                                        type={label === 'Дата регистрации' ? 'date' : 'text'}
-                                        className="popupInput"
-                                        required
-                                        onChange={label === 'Дата регистрации' ? (e) => setPatentDate(e.target.value) : label === 'Вид' ? (e) => setPatentType(e.target.value) : label === 'Название' ? (e) => setPatentName(e.target.value) : label === 'Область техники' ? (e) => setPatentArea(e.target.value) : undefined}
-                                    />
-                                </div>
-                            ))}
-                            <label className="notification">
-                                <input type="checkbox"/> необходимость уведомления
-                            </label>
+                            <div>
+                                <label className="popupLabel">№ патента/свидетельства</label>
+                                <input
+                                    type="text"
+                                    className="popupInput"
+                                    value={patentId}
+                                    required
+                                    onChange={(e) => { setPatentId(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Вид</label>
+                                <input
+                                    type="text"
+                                    className="popupInput"
+                                    value={patentType}
+                                    required
+                                    onChange={(e) => { setPatentType(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Название</label>
+                                <input
+                                    type="text"
+                                    className="popupInput"
+                                    value={patentName}
+                                    required
+                                    onChange={(e) => { setPatentName(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Дата регистрации</label>
+                                <input
+                                    type="date"
+                                    className="popupInput"
+                                    value={patentDate}
+                                    required
+                                    onChange={(e) => { setPatentDate(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Область техники</label>
+                                <input
+                                    type="text"
+                                    className="popupInput"
+                                    value={patentArea}
+                                    required
+                                    onChange={(e) => { setPatentArea(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Дата истечения патента</label>
+                                <input
+                                    type="date"
+                                    className="popupInput"
+                                    value={expirationDate}
+                                    onChange={(e) => { setExpirationDate(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
+                            <div>
+                                <label className="popupLabel">Контактное лицо</label>
+                                <input
+                                    type="text"
+                                    className="popupInput"
+                                    value={contactPerson}
+                                    onChange={(e) => { setContactPerson(e.target.value); handleInputChange(); }}
+                                />
+                            </div>
                             <div className="fileUpload" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
                                 <div className="fileUploadContent">
-                                    <img src="../public/icons8-upload-file-48.png" alt="Upload Icon"
-                                         className="uploadIcon"/>
+                                    <img src="../public/icons8-upload-file-48.png" alt="Upload Icon" className="uploadIcon"/>
                                     <p className="uploadText">Перетащите файл сюда</p>
                                     <p className="orText">или</p>
                                     <label htmlFor="fileUpload" className="browseButton">Выберите файл</label>
-                                    <input type="file" id="fileUpload" className="fileInput"
-                                           onChange={handleFileChange}/>
+                                    <input type="file" id="fileUpload" className="fileInput" onChange={handleFileChange}/>
                                     {file && <hr className="fileSeparator"/>}
                                     <div className="uploadedFileName">{file?.name}</div>
                                 </div>
                             </div>
                             <div className="popupButtons">
-                                <button type="button" className="closePopup" onClick={handleCloseAddPopup}>Закрыть
+                                <button type="button" className="closePopup" onClick={() => handleCloseAddPopup(false)}>Закрыть</button>
+                                <button type="submit" className="popupSubmit">
+                                {patentToEdit ? 'Обновить патент' : 'Добавить патент'}
                                 </button>
-                                <button type="submit" className="popupSubmit">Добавить патент</button>
                             </div>
                         </form>
                     </div>
@@ -366,8 +492,7 @@ function App() {
                 <div className="popupContainerDelete">
                     <div className="popupDelete">
                         <p>
-                            Вы уверены, что хотите удалить патент "<span
-                            className="patentName">{patentToDelete.name}</span>"?
+                            Вы уверены, что хотите удалить патент "<span className="patentName">{patentToDelete.name}</span>"?
                         </p>
                         <div className="popupButtonsDelete">
                             <button className="confirmDeleteButton" onClick={handleConfirmDelete}>Да</button>
@@ -376,6 +501,7 @@ function App() {
                     </div>
                 </div>
             )}
+            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
         </div>
     );
 }

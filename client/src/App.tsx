@@ -467,21 +467,27 @@ function App() {
                                     onChange={(e) => { setContactPerson(e.target.value); handleInputChange(); }}
                                 />
                             </div>
-                            <div className="fileUpload" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
-                                <div className="fileUploadContent">
-                                    <img src="../public/icons8-upload-file-48.png" alt="Upload Icon" className="uploadIcon"/>
-                                    <p className="uploadText">Перетащите файл сюда</p>
-                                    <p className="orText">или</p>
-                                    <label htmlFor="fileUpload" className="browseButton">Выберите файл</label>
-                                    <input type="file" id="fileUpload" className="fileInput" onChange={handleFileChange}/>
-                                    {file && <hr className="fileSeparator"/>}
-                                    <div className="uploadedFileName">{file?.name}</div>
+                            {!patentToEdit && (
+                                <div className="fileUpload" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
+                                    <div className="fileUploadContent">
+                                        <img src="../public/icons8-upload-file-48.png" alt="Upload Icon"
+                                             className="uploadIcon"/>
+                                        <p className="uploadText">Перетащите файл сюда</p>
+                                        <p className="orText">или</p>
+                                        <label htmlFor="fileUpload" className="browseButton">Выберите файл</label>
+                                        <input type="file" id="fileUpload" className="fileInput"
+                                               onChange={handleFileChange}/>
+                                        {file && <hr className="fileSeparator"/>}
+                                        <div className="uploadedFileName">{file?.name}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             <div className="popupButtons">
-                                <button type="button" className="closePopup" onClick={() => handleCloseAddPopup(false)}>Закрыть</button>
+                                <button type="button" className="closePopup"
+                                        onClick={() => handleCloseAddPopup(false)}>Закрыть
+                                </button>
                                 <button type="submit" className="popupSubmit">
-                                {patentToEdit ? 'Обновить патент' : 'Добавить патент'}
+                                    {patentToEdit ? 'Обновить патент' : 'Добавить патент'}
                                 </button>
                             </div>
                         </form>
@@ -492,7 +498,8 @@ function App() {
                 <div className="popupContainerDelete">
                     <div className="popupDelete">
                         <p>
-                            Вы уверены, что хотите удалить патент "<span className="patentName">{patentToDelete.name}</span>"?
+                            Вы уверены, что хотите удалить патент "<span
+                            className="patentName">{patentToDelete.name}</span>"?
                         </p>
                         <div className="popupButtonsDelete">
                             <button className="confirmDeleteButton" onClick={handleConfirmDelete}>Да</button>

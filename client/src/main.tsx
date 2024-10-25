@@ -7,6 +7,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import Authorization from "./Authorization.tsx";
+import Forgot from "./Forgot.tsx";
 
 const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
     {
         path: '/auth',
         element: <Authorization/>
+    },
+    {
+      path: '/forgot',
+      element: <Forgot/>
     },
 ]);
 

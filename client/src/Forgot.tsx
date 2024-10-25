@@ -21,6 +21,7 @@ const Forgot: React.FC = () => {
     };
 
     const isPasswordMatch = password === confirmPassword && password.length > 0;
+    const showError = (password.length > 0 || confirmPassword.length > 0) && !isPasswordMatch;
 
     return (
         <div className="forgotContainer">
@@ -57,7 +58,7 @@ const Forgot: React.FC = () => {
                             onClick={toggleShowPassword}
                         />
                     </div>
-                    <p className={`errorMessage ${isPasswordMatch ? 'hidden' : ''}`}>
+                    <p className={`errorMessage ${showError ? '' : 'hidden'}`}>
                         Пароли не совпадают
                     </p>
                 </div>

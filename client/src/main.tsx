@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import Authorization from "./Authorization.tsx";
 import Forgot from "./Forgot.tsx";
+import EmailConfirm from "./EmailConfirm.tsx";
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
       path: '/forgot',
       element: <Forgot/>
+    },
+    {
+      path: '/emailConfirm',
+      element: <EmailConfirm/>
     },
 ]);
 

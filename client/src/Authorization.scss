@@ -97,3 +97,13 @@
   width: 100%;
   flex-direction: column;
 }
+
+.passwordContainer {
+  position: relative;
+  display: flex;
+}
+
+.togglePassword {
+  position: absolute;
+  cursor: pointer;
+}

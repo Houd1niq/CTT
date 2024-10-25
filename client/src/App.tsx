@@ -10,13 +10,14 @@ interface Patent {
     expirationDate?: string;
     contactPerson?: string;
 }
+
 interface NotificationProps {
     message: string;
     type: 'success' | 'error';
     onClose: () => void;
 }
 
-const Notification: React.FC<NotificationProps> = ({ message, type, onClose }) => {
+const Notification: React.FC<NotificationProps> = ({message, type, onClose}) => {
     useEffect(() => {
         const timer = setTimeout(onClose, 3000);
         return () => clearTimeout(timer);
@@ -112,30 +113,37 @@ const PatentCard: React.FC<Patent & { onDelete: (id: string, name: string) => vo
                                                                                                                                contactPerson,
                                                                                                                                onDelete,
                                                                                                                                onEdit,
-                                                                                                                           }) => (
-    <div className="card">
-        <div className="cardContent">
-            {[{label: '№ патента/свидетельства', value: id}, {label: 'Вид', value: type}, {
-                label: 'Название',
-                value: name
-            }, {label: 'Дата регистрации', value: date}, {label: 'Область техники', value: area}].map(({
-                                                                                                                                                                                                               label,
-                                                                                                                                                                                                               value
-                                                                                                                                                                                                           }) => (
-                <div className="cardRow" key={label}>
-                    <span className="label">{label}</span><span className="value">{value}</span>
-                </div>
-            ))}
-        </div>
-        <div className="buttonsCard">
-            <div className="adminButtons">
-                <button className="editButton" onClick={() => onEdit({ id, type, name, date, area, expirationDate, contactPerson })}>Изменить</button>
-                <button className="deleteButton" onClick={() => onDelete(id, name)}>Удалить</button>
+                                                                                                                           }) => {
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr.split('.').reverse().join('-'));
+        return date.toLocaleDateString('ru-RU');
+    };
+
+    return (
+        <div className="card">
+            <div className="cardContent">
+                {[{label: '№ патента/свидетельства', value: id}, {label: 'Вид', value: type}, {
+                    label: 'Название',
+                    value: name
+                }, {label: 'Дата регистрации', value: formatDate(date)}, {label: 'Область техники', value: area}].map(({
+                                                                                                                           label,
+                                                                                                                           value
+                                                                                                                       }) => (
+                    <div className="cardRow" key={label}>
+                        <span className="label">{label}</span><span className="value">{value}</span>
+                    </div>
+                ))}
             </div>
-            <button className="moreButtonCard">Подробнее</button>
+            <div className="buttonsCard">
+                <div className="adminButtons">
+                    <button className="editButton" onClick={() => onEdit({ id, type, name, date, area, expirationDate, contactPerson })}>Изменить</button>
+                    <button className="deleteButton" onClick={() => onDelete(id, name)}>Удалить</button>
+                </div>
+                <button className="moreButtonCard">Подробнее</button>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 interface PaginationProps {
     totalPages: number;
@@ -230,7 +238,7 @@ function App() {
     };
 
     const showNotification = (message: string, type: 'success' | 'error') => {
-        setNotification({ message, type });
+        setNotification({message, type});
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -378,7 +386,8 @@ function App() {
                         <button className="addButton" onClick={handleAddButtonClick}>Добавить</button>
                     </div>
                     {currentPatents.map(patent => (
-                        <PatentCard key={patent.id} {...patent} onDelete={handleDeleteButtonClick} onEdit={handleEditButtonClick} />
+                        <PatentCard key={patent.id} {...patent} onDelete={handleDeleteButtonClick}
+                                    onEdit={handleEditButtonClick}/>
                     ))}
                 </div>
             </div>
@@ -406,7 +415,10 @@ function App() {
                                     className="popupInput"
                                     value={patentId}
                                     required
-                                    onChange={(e) => { setPatentId(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setPatentId(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -416,7 +428,10 @@ function App() {
                                     className="popupInput"
                                     value={patentType}
                                     required
-                                    onChange={(e) => { setPatentType(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setPatentType(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -426,7 +441,10 @@ function App() {
                                     className="popupInput"
                                     value={patentName}
                                     required
-                                    onChange={(e) => { setPatentName(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setPatentName(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -436,7 +454,10 @@ function App() {
                                     className="popupInput"
                                     value={patentDate}
                                     required
-                                    onChange={(e) => { setPatentDate(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setPatentDate(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -446,7 +467,10 @@ function App() {
                                     className="popupInput"
                                     value={patentArea}
                                     required
-                                    onChange={(e) => { setPatentArea(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setPatentArea(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -455,7 +479,10 @@ function App() {
                                     type="date"
                                     className="popupInput"
                                     value={expirationDate}
-                                    onChange={(e) => { setExpirationDate(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setExpirationDate(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             <div>
@@ -464,7 +491,10 @@ function App() {
                                     type="text"
                                     className="popupInput"
                                     value={contactPerson}
-                                    onChange={(e) => { setContactPerson(e.target.value); handleInputChange(); }}
+                                    onChange={(e) => {
+                                        setContactPerson(e.target.value);
+                                        handleInputChange();
+                                    }}
                                 />
                             </div>
                             {!patentToEdit && (
@@ -508,7 +538,8 @@ function App() {
                     </div>
                 </div>
             )}
-            {notification && <Notification message={notification.message} type={notification.type} onClose={() => setNotification(null)} />}
+            {notification && <Notification message={notification.message} type={notification.type}
+                                           onClose={() => setNotification(null)}/>}
         </div>
     );
 }

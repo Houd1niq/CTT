@@ -1,18 +1,18 @@
-import { Injectable } from "@nestjs/common";
+    import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 // import { RevokedTokensService } from "./revokedTokens.service";
 
 @Injectable()
-export class AuthService {
+export class ResetPasswordService {
   constructor(
-    private prisma: PrismaService // private jwtService: JwtService // private revokedTokensService: RevokedTokensService
+    private prisma: PrismaService, // private jwtService: JwtService // private revokedTokensService: RevokedTokensService
   ) {}
 
   async generateResetToken(email: string) {
-    const token = Math.floor(100000 + Math.random() * 900000).toString();
-    this.prisma.admin.update({
+    const token = String(Math.floor(100000 + Math.random() * 900000));
+    return this.prisma.admin.update({
       where: { email },
       data: {
         resetToken: token,

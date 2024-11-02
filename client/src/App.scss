@@ -1,7 +1,3 @@
-body {
-
-}
-
 .firstContainer {
   display: flex;
   flex-direction: column;
@@ -14,13 +10,60 @@ body {
 
 .headerContainer {
   position: relative;
-  text-align: center;
+  display: flex;
+  width: 100%;
+  height: 450px;
 }
 
 .image {
-  margin: 0 auto;
-  width: 1200px;
-  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blueOverlay {
+  width: 50%;
+  height: 100%;
+  background: rgb(15, 73, 138);
+}
+
+.transparentOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  right: 80%;
+  width: 140px;
+}
+
+.title {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: rgb(255, 255, 255);
+  font-family: Montserrat, sans-serif;
+  font-size: 58px;
+  font-weight: 500;
+  line-height: 61px;
+  text-align: left;
+
+  .line1 {
+    display: block;
+  }
+
+  .line2 {
+    display: block;
+  }
 }
 
 .search {
@@ -380,6 +423,19 @@ body {
   margin-bottom: 10px;
   font-family: Montserrat, sans-serif;
   font-size: 18px;
+}
+
+.checkboxPrivate {
+  color: rgb(15, 73, 138);
+  font-weight: 700;
+  width: 500px;
+  user-select: none;
+}
+
+.checkboxPrivate {
+  input[type="checkbox"] {
+    margin-right: 4px;
+  }
 }
 
 .popupInput {

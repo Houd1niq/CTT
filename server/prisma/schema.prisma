@@ -38,8 +38,8 @@ model Patent {
   id                 Int             @id @default(autoincrement())
   createdAt          DateTime        @default(now())
   name               String          @db.VarChar(255)
-  dateOfRegistratiom DateTime
-  dateOfExpirtion    DateTime
+  dateOfRegistration DateTime
+  dateOfExpiration   DateTime
   contact            String
   isPrivate          Boolean
   patentLink         String

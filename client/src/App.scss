@@ -735,12 +735,16 @@
 
   .searchLabel {
     font-size: 12px;
-    margin: 20px 0 0 0;
+    margin: 20px 10px 0 10px;
     width: 0;
   }
 
+  .search {
+    width: 244px;
+  }
+
   .searchInput {
-    width: 264px;
+    width: 260px;
     height: 35px;
     margin: 10px 0 0 0;
 
@@ -937,9 +941,12 @@
     flex-wrap: wrap;
 
     .filterButton,
-    .searchLabel,
     .searchInput {
       flex: 0 1 29.5%;
+    }
+
+    .searchLabel {
+      flex: 0 0 15%;
     }
 
     .sortContainer,
@@ -951,13 +958,17 @@
 }
 
 @media (max-width: 375px) {
+  .search {
+    width: 217px;
+  }
+
   .searchLabel {
     font-size: 12px;
-    margin: 20px 40px 0 0;
+    margin: 20px 10px 0 0;
   }
 
   .searchInput {
-    width: 185px;
+    width: 182px;
     height: 35px;
     margin: 10px 0 0 0;
 

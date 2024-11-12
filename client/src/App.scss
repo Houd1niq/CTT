@@ -715,6 +715,10 @@
 }
 
 @media (max-width: 425px) {
+  .contentContainer {
+    padding-right: 0;
+  }
+
   .filterContainer {
     display: none;
   }
@@ -722,6 +726,7 @@
   .filterButton {
     height: 35px;
     font-size: 12px;
+    margin: 10px 10px 0 8px;
   }
 
   .moreSortContainer {
@@ -730,22 +735,26 @@
 
   .searchLabel {
     font-size: 12px;
+    margin: 20px 0 0 0;
+    width: 0;
   }
 
   .searchInput {
-    width: 180px;
+    width: 264px;
     height: 35px;
+    margin: 10px 0 0 0;
 
     &::placeholder {
       font-size: 12px;
-      transform: translateX(-14px);
+      transform: translateX(-28px);
     }
   }
 
   .sortContainer select {
-    max-width: 120px;
+    max-width: 125px;
     max-height: 35px;
     font-size: 12px;
+    margin: 0 0 0 8px;
 
     option {
       font-size: 12px;
@@ -756,11 +765,14 @@
     font-size: 12px;
     max-width: 100px;
     height: 30px;
+    margin-right: 8px;
+    margin-top: 5px;
   }
 
   .card {
     padding: 10px;
-    margin: 20px 14px 0 8px;
+    margin-left: 8px;
+    width: 96.5%;
   }
 
   .cardRow {
@@ -810,7 +822,7 @@
 
   .title {
     top: 40%;
-    left: 2.5%;
+    left: 5%;
     font-size: 28px;
     line-height: 28px;
   }
@@ -917,7 +929,53 @@
   }
 
   .search {
-    display: flex;
     flex-direction: row;
+  }
+
+  .moreSortContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .filterButton,
+    .searchLabel,
+    .searchInput {
+      flex: 0 1 29.5%;
+    }
+
+    .sortContainer,
+    .addButton {
+      display: flex;
+      justify-content: left;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .searchLabel {
+    font-size: 12px;
+    margin: 20px 40px 0 0;
+  }
+
+  .searchInput {
+    width: 185px;
+    height: 35px;
+    margin: 10px 0 0 0;
+
+    &::placeholder {
+      font-size: 12px;
+      transform: translateX(-15px);
+    }
+  }
+
+  .sortContainer select {
+    width: 115px;
+  }
+
+  .sortContainer {
+    width: 115px;
+  }
+
+  .title {
+    left: 2%;
   }
 }

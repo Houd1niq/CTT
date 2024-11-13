@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import './App.scss';
 
 interface Patent {
@@ -268,9 +268,32 @@ function App() {
     const [isPrivate, setIsPrivate] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
 
-    const toggleFilters = () => {
-        setShowFilters(prev => !prev);
+    const popupRef = useRef<HTMLDivElement>(null);
+    const toggleFilters = () => setShowFilters(prev => !prev);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        const target = event.target as HTMLElement | null;
+
+        if (
+            target &&
+            popupRef.current &&
+            !popupRef.current.contains(target) &&
+            !target.closest('.filterButton')
+        ) {
+            setShowFilters(false);
+        }
     };
+
+    useEffect(() => {
+        if (showFilters) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showFilters]);
 
     const handleInputChange = () => setIsFormDirty(true);
 
@@ -461,15 +484,17 @@ function App() {
                 </div>
                 <div className="mainContainer">
                     <div className="moreSortContainer">
-                        <button className="filterButton" onClick={toggleFilters}>
-                            <span className="hamburgerIcon">☰</span> Фильтрация
-                        </button>
-                        {showFilters && (
-                            <div className="popupContainerFilter">
-                                <Filter title="По видам" options={['Определенный вид 1', 'Определенный вид 2', 'Определенный вид 3', 'Определенный вид 4', 'Определенный вид 5', 'Определенный вид 6']} />
-                                <Filter title="По области техники" options={['Область техники 1', 'Область техники 2', 'Область техники 3', 'Область техники 4', 'Область техники 5', 'Область техники 6']} />
-                            </div>
-                        )}
+                        <div className="filterButtonPopup">
+                            <button className="filterButton" onClick={toggleFilters}>
+                                <span className="hamburgerIcon">☰</span> Фильтрация
+                            </button>
+                            {showFilters && (
+                                <div ref={popupRef} className="popupContainerFilter">
+                                    <Filter title="По видам" options={['Определенный вид 1', 'Определенный вид 2', 'Определенный вид 3', 'Определенный вид 4', 'Определенный вид 5', 'Определенный вид 6']} />
+                                    <Filter title="По области техники" options={['Область техники 1', 'Область техники 2', 'Область техники 3', 'Область техники 4', 'Область техники 5', 'Область техники 6']} />
+                                </div>
+                            )}
+                        </div>
                         <div className="search">
                             <label className="searchLabel">Поиск</label>
                             <input

@@ -282,6 +282,7 @@
   display: flex;
   width: 100%;
   max-width: 300px;
+  margin: 0 0 0 10px;
 }
 
 .sortContainer select {
@@ -375,7 +376,6 @@
 }
 
 .moreSortContainer {
-  gap: 10px;
   width: 100%;
   display: flex;
   align-items: end;
@@ -579,6 +579,7 @@
     white-space: nowrap;
     overflow: hidden;
     max-width: 100%;
+    width: 200px;
   }
 }
 
@@ -697,11 +698,11 @@
 
 .popupContainerFilter {
   position: absolute;
-  top: 505px;
-  left: 130px;
+  top: 195px;
+  left: 8px;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   width: 220px;
   height: 420px;
   padding: 20px 0 0 0;
@@ -735,7 +736,7 @@
 
   .searchLabel {
     font-size: 12px;
-    margin: 20px 10px 0 10px;
+    margin: 20px 10px 0 21px;
     width: 0;
   }
 
@@ -744,13 +745,13 @@
   }
 
   .searchInput {
-    width: 260px;
+    width: 265px;
     height: 35px;
     margin: 10px 0 0 0;
 
     &::placeholder {
       font-size: 12px;
-      transform: translateX(-28px);
+      transform: translateX(-26px);
     }
   }
 
@@ -949,10 +950,12 @@
       flex: 0 0 15%;
     }
 
-    .sortContainer,
+    .sortContainer {
+      margin: 10px 0 0 0;
+    }
+
     .addButton {
-      display: flex;
-      justify-content: left;
+      margin: 15px 0 0 18px;
     }
   }
 }
@@ -964,22 +967,22 @@
 
   .searchLabel {
     font-size: 12px;
-    margin: 20px 10px 0 0;
+    margin: 20px 10px 0 12px;
   }
 
   .searchInput {
-    width: 182px;
+    width: 172px;
     height: 35px;
     margin: 10px 0 0 0;
 
     &::placeholder {
       font-size: 12px;
-      transform: translateX(-15px);
+      transform: translateX(-9px);
     }
   }
 
   .sortContainer select {
-    width: 115px;
+    width: 125px;
   }
 
   .sortContainer {
@@ -988,5 +991,9 @@
 
   .title {
     left: 2%;
+  }
+
+  .addButton {
+    margin: 15px 0 0 155px !important;
   }
 }

@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id               Int       @id @default(autoincrement())
+  createdAt        DateTime  @default(now())
+  email            String    @unique @db.VarChar(255)
+  hash             String
+  hashedRt         String?
+  resetToken       String?
+  resetTokenExpiry DateTime?
+}
+
+model PatentType {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String   @unique @db.VarChar(255)
+  Patent    Patent[]
+}
+
+model TechnologyField {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String   @unique @db.VarChar(255)
+  Patent    Patent[]
+}
+
+model Patent {
+  id                 Int             @id @default(autoincrement())
+  createdAt          DateTime        @default(now())
+  patentNumber       String          @unique @db.VarChar(255)
+  name               String          @db.VarChar(255)
+  dateOfRegistration DateTime
+  dateOfExpiration   DateTime
+  contact            String
+  isPrivate          Boolean
+  patentLink         String          @unique
+  PatentTypeId       Int
+  patentType         PatentType      @relation(fields: [PatentTypeId], references: [id])
+  TechnologyFieldId  Int
+  technologyField    TechnologyField @relation(fields: [TechnologyFieldId], references: [id])
+}

@@ -1,58 +1,68 @@
 import {
-  Body,
-  Controller,
-  ForbiddenException,
-  Post,
-  Req,
-  Res,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
+    BadRequestException,
+    Body,
+    Controller, Delete,
+    ForbiddenException, Get, Param,
+    Post, Query,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
 } from "@nestjs/common";
-import { Request, Response } from "express";
-import { CreatePatentDto } from "./dto/patent.dto";
-import { PatentService } from "./patent.service";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
-import { AuthGuard } from "@nestjs/passport";
-import { PayloadType } from "../auth/strategies";
+import {Request} from "express";
+import {CreatePatentDto} from "./dto/patent.dto";
+import {PatentService} from "./patent.service";
+import {AuthGuard} from "@nestjs/passport";
+import {PayloadType} from "../auth/strategies";
+import {PatentFileInterceptor} from "./helpers/decorators";
 
 @Controller("patent")
 export class PatentController {
-  constructor(private patentService: PatentService) {}
-
-  @UseGuards(AuthGuard("jwt"))
-  @Post("")
-  @UseInterceptors(
-    FileInterceptor("file", {
-      storage: diskStorage({
-        destination: "./uploads",
-        filename: (req, file, cb) => {
-          const uniqueSuffix =
-            Date.now() + "-" + Math.round(Math.random() * 1e9);
-          cb(null, `${uniqueSuffix}-${file.originalname}`);
-        },
-      }),
-      fileFilter: (req, file, cb) => {
-        if (file.mimetype === "application/pdf") {
-          cb(null, true);
-        } else {
-          cb(new Error("Только в формате PDF"), false);
-        }
-      },
-    })
-  )
-  async create(
-    @Body() dto: CreatePatentDto,
-    @Res() res: Response,
-    @UploadedFile() file: any,
-    @Req() req: Request
-  ) {
-    const user = req.user as PayloadType;
-    if (!user) {
-      throw new ForbiddenException("Access denied");
+    constructor(private patentService: PatentService) {
     }
-    console.log(file);
-    // return await this.patentService.createPatent(dto);
-  }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Post("")
+    @UseInterceptors(PatentFileInterceptor())
+    async create(
+        @Body() dto: CreatePatentDto,
+        @UploadedFile() file: { filename: string },
+        @Req() req: Request
+    ) {
+        const user = req.user as PayloadType;
+        if (!user) {
+            throw new ForbiddenException("Access denied");
+        }
+        if (!file) {
+            throw new BadRequestException("Файл не загружен");
+        }
+        dto.patentFile = file.filename;
+
+        return await this.patentService.createPatent(dto);
+    }
+
+    @Get("")
+    async getAll(
+        @Query("page") page: string,
+        @Query("sort") sort: string,
+        @Query("technologyFieldId") technologyFieldId: string,
+        @Query("patentTypeId") patentTypeId: string
+    ) {
+        return await this.patentService.getAllPatents(page, sort, technologyFieldId, patentTypeId)
+    }
+
+    @Get('search')
+    async search(
+        @Query('query') query: string
+    ) {
+        return await this.patentService.searchPatent(query)
+    }
+
+    @Delete(':patentNumber')
+    @UseGuards(AuthGuard('jwt'))
+    async delete(
+        @Param('patentNumber') patentNumber: string
+    ) {
+        return await this.patentService.deletePatent(patentNumber)
+    }
 }

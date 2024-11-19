@@ -23,28 +23,29 @@ model Admin {
 model PatentType {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  name      String   @db.VarChar(255)
+  name      String   @unique @db.VarChar(255)
   Patent    Patent[]
 }
 
 model TechnologyField {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  name      String   @db.VarChar(255)
+  name      String   @unique @db.VarChar(255)
   Patent    Patent[]
 }
 
 model Patent {
   id                 Int             @id @default(autoincrement())
   createdAt          DateTime        @default(now())
+  patentNumber       String          @unique @db.VarChar(255)
   name               String          @db.VarChar(255)
   dateOfRegistration DateTime
   dateOfExpiration   DateTime
   contact            String
   isPrivate          Boolean
-  patentLink         String
+  patentLink         String          @unique
   PatentTypeId       Int
-  patent             PatentType      @relation(fields: [PatentTypeId], references: [id])
+  patentType         PatentType      @relation(fields: [PatentTypeId], references: [id])
   TechnologyFieldId  Int
   technologyField    TechnologyField @relation(fields: [TechnologyFieldId], references: [id])
 }

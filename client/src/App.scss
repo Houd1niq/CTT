@@ -1,3 +1,999 @@
-.wrapper {
-  background: red;
+.firstContainer {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+  max-width: 2002px;
+  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1), 10px 0 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  font-family: Montserrat, sans-serif;
+}
+
+.headerContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 450px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blueOverlay {
+  width: 50%;
+  height: 100%;
+  background: rgb(15, 73, 138);
+}
+
+.transparentOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  right: 80%;
+  width: 140px;
+}
+
+.title {
+  position: absolute;
+  top: 50%;
+  left: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: rgb(255, 255, 255);
+  font-family: Montserrat, sans-serif;
+  font-size: 58px;
+  font-weight: 500;
+  line-height: 61px;
+  text-align: left;
+
+  .line1 {
+    display: block;
+  }
+
+  .line2 {
+    display: block;
+  }
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchLabel {
+  margin: 10px 0 6px 0;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgb(15, 73, 138);
+  cursor: default;
+}
+
+.searchInput {
+  width: 258px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(77, 77, 77);
+  padding: 4px 0 0 10px;
+  box-sizing: border-box;
+  text-align: left;
+  font-family: Montserrat, sans-serif;
+
+  &::placeholder {
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 17px;
+    color: rgb(77, 77, 77);
+    text-align: center;
+    transform: translateX(-17px);
+  }
+}
+
+.filterContainer {
+  width: 300px;
+  min-width: 300px;
+}
+
+.filterHeading {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgb(15, 73, 138);
+  text-align: left;
+  line-height: 22px;
+  margin: 10px 0 20px 14px;
+}
+
+.filterTitle {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 17px;
+  color: rgb(15, 73, 138);
+  margin: 0 0 10px 14px;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 17px;
+  margin: 0 0 10px 14px;
+  user-select: none;
+}
+
+.filterOption:last-child {
+  margin-bottom: 30px;
+}
+
+.filterOption input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.mainContainer {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.card {
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(77, 77, 77);
+}
+
+.label {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgb(15, 73, 138);
+  flex-basis: 45%;
+  text-align: left;
+}
+
+.value {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(77, 77, 77);
+  flex-basis: 55%;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+}
+
+.moreButtonCard {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.buttonsCard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.editButton {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.deleteButton {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(220, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(240, 0, 0);
+  }
+}
+
+.adminButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.addButton {
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  justify-self: flex-end;
+  margin-left: auto;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.sortContainer {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 0 0 10px;
+}
+
+.sortContainer select {
+  padding: 9px 0 9px 9px;
+  width: auto;
+  max-width: 330px;
+  max-height: 40px;
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(77, 77, 77);
+  cursor: pointer;
+  font-size: 18px;
+  font-family: Montserrat, sans-serif;
+
+  option {
+    background-color: rgb(255, 255, 255);
+    color: rgb(77, 77, 77);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: left;
+    font-family: Montserrat, sans-serif;
+  }
+}
+
+.footerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer {
+  background-color: rgba(15, 73, 138, 0.1);
+  text-align: center;
+}
+
+.footerTitle {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgb(15, 73, 138);
+  margin-bottom: 10px;
+  padding: 63px 0 21px 0;
+}
+
+.footerContacts {
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 49px;
+  color: rgb(140, 137, 135);
+  padding: 0 0 75px 0;
+}
+
+.pagination {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+
+  button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    &:hover {
+      background: #f0f0f0;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+.contentContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-right: 15px;
+}
+
+.moreSortContainer {
+  width: 100%;
+  display: flex;
+  align-items: end;
+}
+
+.popupContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 10px;
+  width: 28%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.popupLabel {
+  color: rgb(15, 73, 138);
+  font-weight: 700;
+  width: 500px;
+  cursor: default;
+}
+
+.popupLabel,
+.popupInput,
+.fileUpload label,
+.fileUpload input {
+  margin-bottom: 10px;
+  font-family: Montserrat, sans-serif;
+  font-size: 18px;
+}
+
+.checkboxPrivate {
+  color: rgb(15, 73, 138);
+  font-weight: 700;
+  width: 500px;
+  user-select: none;
+}
+
+.checkboxPrivate {
+  input[type="checkbox"] {
+    margin-right: 4px;
+  }
+}
+
+.popupInput {
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  max-width: 500px;
+  height: 40px;
+}
+
+.fileUpload {
+  margin: 20px 0;
+}
+
+.closePopup {
+  width: 100%;
+  max-width: 212px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(220, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgb(240, 0, 0);
+  }
+}
+
+.popupSubmit {
+  width: 100%;
+  max-width: 212px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(15, 73, 138);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.closePopup {
+  width: 100%;
+  max-width: 212px;
+  height: 40px;
+  padding: 9px 20px;
+  background-color: rgb(220, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0 0 0;
+  gap: 30px;
+}
+
+.fileUpload {
+  border: 2px dashed rgb(204, 204, 204);
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  background-color: rgb(245, 245, 245);
+  margin: 10px 0;
+  height: 250px;
+
+  .fileUploadContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .uploadIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+
+  .uploadText {
+    font-size: 16px;
+    color: rgb(77, 77 ,77);
+    margin-bottom: 10px;
+  }
+
+  .orText {
+    font-size: 14px;
+    color: rgb(170, 170, 170);
+    margin-bottom: 10px;
+  }
+
+  .fileSeparator {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 15px 0 12px 0;
+  }
+
+  .fileDisplay {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .browseButton {
+    background-color: rgb(15, 73, 138);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0162bb;
+    }
+  }
+
+  .fileInput {
+    display: none;
+  }
+
+  .uploadedFileName {
+    font-size: 16px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    width: 200px;
+  }
+}
+
+.popupContainerDelete {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupDelete {
+  background: rgb(255, 255, 255);
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.popupDelete p {
+  color: rgb(77, 77, 77);
+  font-size: 16px;
+  font-family: Montserrat, sans-serif;
+  margin-bottom: 20px;
+}
+
+.patentName {
+  color: rgb(15, 73, 138);
+  font-weight: bold;
+}
+
+.popupButtonsDelete {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.confirmDeleteButton,
+.closeButton {
+  width: 48%;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+}
+
+.confirmDeleteButton {
+  background-color: rgb(15, 73, 138);
+  color: white;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+}
+
+.closeButton {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(77, 77, 77);
+  color: rgb(77, 77, 77);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.notification {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  z-index: 1000;
+
+  &.success {
+    background-color: #4caf50;
+  }
+
+  &.error {
+    background-color: #f44336;
+  }
+}
+
+.filterButton {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  color: rgb(77, 77, 77);
+  width: 125px;
+  height: 40px;
+}
+
+.hamburgerIcon {
+  font-size: 24px;
+  margin: 0 4px 2px 0;
+}
+
+.popupContainerFilter {
+  position: absolute;
+  top: 195px;
+  left: 8px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 220px;
+  height: 420px;
+  padding: 20px 0 0 0;
+  z-index: 1;
+}
+
+@media (min-width: 426px) {
+  .filterButton {
+    display: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .contentContainer {
+    padding-right: 0;
+  }
+
+  .filterContainer {
+    display: none;
+  }
+
+  .filterButton {
+    height: 35px;
+    font-size: 12px;
+    margin: 10px 10px 0 8px;
+  }
+
+  .moreSortContainer {
+    align-items: flex-start;
+  }
+
+  .searchLabel {
+    font-size: 12px;
+    margin: 20px 10px 0 21px;
+    width: 0;
+  }
+
+  .search {
+    width: 244px;
+  }
+
+  .searchInput {
+    width: 265px;
+    height: 35px;
+    margin: 10px 0 0 0;
+
+    &::placeholder {
+      font-size: 12px;
+      transform: translateX(-26px);
+    }
+  }
+
+  .sortContainer select {
+    max-width: 125px;
+    max-height: 35px;
+    font-size: 12px;
+    margin: 0 0 0 8px;
+
+    option {
+      font-size: 12px;
+    }
+  }
+
+  .addButton {
+    font-size: 12px;
+    max-width: 100px;
+    height: 30px;
+    margin-right: 8px;
+    margin-top: 5px;
+  }
+
+  .card {
+    padding: 10px;
+    margin-left: 8px;
+    width: 96.5%;
+  }
+
+  .cardRow {
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+  }
+
+  .label {
+    font-size: 12px;
+    flex-basis: 47%;
+  }
+
+  .value {
+    font-size: 12px;
+    flex-basis: 51%;
+  }
+
+  .editButton {
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .deleteButton {
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .moreButtonCard {
+    max-width: 120px;
+    height: 30px;
+    font-size: 12px;
+
+    &:hover {
+      background-color: #0162bb;
+    }
+  }
+
+  .headerContainer {
+    height: 150px;
+  }
+
+  .logo {
+    top: 3px;
+    right: 76%;
+    width: 80px;
+  }
+
+  .title {
+    top: 40%;
+    left: 5%;
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  .image {
+    width: 66.5%;
+  }
+
+  .footerTitle {
+    font-size: 18px;
+  }
+
+  .footerContacts {
+    font-size: 24px;
+  }
+
+  .firstContainer {
+    max-width: 100%;
+  }
+
+  .popup {
+    padding: 10px;
+    width: 70%;
+  }
+
+  .popupLabel,
+  .popupInput,
+  .fileUpload label,
+  .fileUpload input {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .checkboxPrivate {
+    font-size: 14px;
+  }
+
+  .popupInput {
+    height: 30px;
+  }
+
+  .popupSubmit {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 20px;
+  }
+
+  .closePopup {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 20px;
+  }
+
+  .fileUpload {
+    padding: 10px;
+    height: 125px;
+
+    .uploadIcon {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 0;
+    }
+
+    .uploadText {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .orText {
+      font-size: 12px;
+      margin-bottom: 0;
+    }
+
+    .browseButton {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .fileSeparator {
+      width: 100%;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      margin: 5px 0 5px 0;
+    }
+
+    .uploadedFileName {
+      font-size: 14px;
+    }
+  }
+
+  .popupDelete {
+    padding: 20px;
+    width: 300px;
+  }
+
+  .popupDelete p {
+    font-size: 14px;
+  }
+
+  .confirmDeleteButton,
+  .closeButton {
+    width: 48%;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .search {
+    flex-direction: row;
+  }
+
+  .moreSortContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .filterButton,
+    .searchInput {
+      flex: 0 1 29.5%;
+    }
+
+    .searchLabel {
+      flex: 0 0 15%;
+    }
+
+    .sortContainer {
+      margin: 10px 0 0 0;
+    }
+
+    .addButton {
+      margin: 15px 0 0 18px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .search {
+    width: 217px;
+  }
+
+  .searchLabel {
+    font-size: 12px;
+    margin: 20px 10px 0 12px;
+  }
+
+  .searchInput {
+    width: 172px;
+    height: 35px;
+    margin: 10px 0 0 0;
+
+    &::placeholder {
+      font-size: 12px;
+      transform: translateX(-9px);
+    }
+  }
+
+  .sortContainer select {
+    width: 125px;
+  }
+
+  .sortContainer {
+    width: 115px;
+  }
+
+  .title {
+    left: 2%;
+  }
+
+  .addButton {
+    margin: 15px 0 0 155px !important;
+  }
 }

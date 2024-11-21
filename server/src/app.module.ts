@@ -1,13 +1,14 @@
-import { Module } from "@nestjs/common";
-import { PrismaModule } from "./prisma/prisma.module";
-import { AuthModule } from "./auth/auth.module";
+import {Module} from "@nestjs/common";
+import {PrismaModule} from "./prisma/prisma.module";
+import {AuthModule} from "./auth/auth.module";
 // import { ServeStaticModule } from '@nestjs/serve-static';
 // import { join } from 'path';
-import { PatentModule } from './patent/patent.module';
-import { SearchModule } from './search-module/search-module.module';
-import { PatentTypeModule } from './patent-type/patent-type.module';
-import { TechnologyFieldModule } from './technology-field/technology-field.module';
-import { FilesModule } from './files/files.module';
+import {PatentModule} from './patent/patent.module';
+import {SearchModule} from './search-module/search-module.module';
+import {PatentTypeModule} from './patent-type/patent-type.module';
+import {TechnologyFieldModule} from './technology-field/technology-field.module';
+import {FilesModule} from './files/files.module';
+import {UserModule} from "./user/user.module";
 
 @Module({
   imports: [
@@ -18,10 +19,12 @@ import { FilesModule } from './files/files.module';
     PatentTypeModule,
     TechnologyFieldModule,
     FilesModule,
+    UserModule
     // ServeStaticModule.forRoot({
     //   rootPath: join(__dirname, '..', 'static'),
     // }),
   ],
   controllers: [],
 })
-export class AppModule {}
+export class AppModule {
+}

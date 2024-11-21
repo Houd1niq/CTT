@@ -1,13 +1,21 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, Dispatch, SetStateAction, ChangeEvent, FormEvent} from 'react';
 import './Authorization.scss';
-import eyeOpenIcon from './assets/eye-svgrepo-com.svg';
-import eyeClosedIcon from './assets/eye-closed-svgrepo-com.svg';
+import eyeOpenIcon from '../../assets/eye-svgrepo-com.svg';
+import eyeClosedIcon from '../../assets/eye-closed-svgrepo-com.svg';
+import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
+import {setAccessToken} from "../../store/slices/authSlice.ts";
+import {useAppDispatch} from "../../store/hooks.ts";
+import {useNavigate} from "react-router-dom";
 
 const Authorization = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate();
+
+  const [login, loginResponse] = authApiSlice.useLoginMutation();
 
   const toggleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
@@ -18,27 +26,41 @@ const Authorization = () => {
       email.toLowerCase(),
     );
 
+  //todo: Уведомление об некореектном пароле, состояние загрузки
+
   const handleInputChange =
     (
-      setter: React.Dispatch<React.SetStateAction<string>>,
+      setter: Dispatch<SetStateAction<string>>,
       validator?: (value: string) => void,
     ) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setter(value);
-      validator?.(value);
-    };
+      (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setter(value);
+        validator?.(value);
+      };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    login({email, password});
+  }
 
   useEffect(() => {
     const isEmailValid = validateEmail(email);
     setEmailError(isEmailValid || !email ? '' : 'Неправильный формат почты');
   }, [email]);
 
+  useEffect(() => {
+    if (loginResponse.isSuccess) {
+      dispatch(setAccessToken(loginResponse.data?.accessToken))
+      navigate('/');
+    }
+  }, [loginResponse]);
+
   const isButtonDisabled = !(email && password && !emailError);
 
   return (
     <div className="authContainer">
-      <div className="authForm">
+      <form onSubmit={handleSubmit} className="authForm">
         <h1 className="authTitle">Авторизация</h1>
         <input
           type="email"
@@ -68,13 +90,14 @@ const Authorization = () => {
         <div className="buttonWithForgot">
           <p className="forgotPassword">Забыли пароль?</p>
           <button
+            type="submit"
             className={`loginButton ${isButtonDisabled ? 'disabled' : ''}`}
             disabled={isButtonDisabled}
           >
             Войти
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

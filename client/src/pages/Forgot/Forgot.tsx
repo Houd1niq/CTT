@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './Forgot.scss';
-import eyeOpenIcon from './assets/eye-svgrepo-com.svg';
-import eyeClosedIcon from './assets/eye-closed-svgrepo-com.svg';
+import eyeOpenIcon from '../../assets/eye-svgrepo-com.svg';
+import eyeClosedIcon from '../../assets/eye-closed-svgrepo-com.svg';
 
 const Forgot: React.FC = () => {
   const [password, setPassword] = useState('');

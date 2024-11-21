@@ -1,12 +1,13 @@
-import { Body, Controller, Get, UseGuards, Req } from "@nestjs/common";
-import { UserService } from "./user.service";
-import { AuthGuard } from "@nestjs/passport";
-import { Request } from "express";
-import { PayloadType } from "../auth/strategies";
+import {Controller, Get, UseGuards, Req} from "@nestjs/common";
+import {UserService} from "./user.service";
+import {AuthGuard} from "@nestjs/passport";
+import {Request} from "express";
+import {PayloadType} from "../auth/strategies";
 
 @Controller("user")
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+  }
 
   @Get("info")
   @UseGuards(AuthGuard("jwt"))

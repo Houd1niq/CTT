@@ -3,6 +3,8 @@ import {ChangeEvent, useCallback} from "react";
 import {setSearchQuery} from "../../store/slices/searchSlice.ts";
 import {debounce} from "../../utils/debounce.ts";
 
+import './search-field.scss'
+
 export const SearchField = () => {
   const dispatch = useAppDispatch();
   const debouncedSearch = useCallback(debounce((event: ChangeEvent<HTMLInputElement>) => {

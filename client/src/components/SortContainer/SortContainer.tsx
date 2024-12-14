@@ -2,12 +2,13 @@ import React from "react";
 import {useAppDispatch} from "../../store/hooks.ts";
 import {setPatentSort} from "../../store/slices/searchSlice.ts";
 
+import './sort-container.scss'
+
 export const SortContainer = () => {
   const dispatch = useAppDispatch()
 
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newOrder = event.target.value as 'asc' | 'desc' | ';';
-    console.log(newOrder)
     dispatch(setPatentSort(newOrder));
   };
 

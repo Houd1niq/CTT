@@ -1,6 +1,7 @@
 import {PatentForm} from "../PatentForm/PatentForm.tsx";
 import {Patent, patentsApiSlice} from "../../../services/CTTApi/patentsApiSlice.ts";
 import {useEffect} from "react";
+import './edit-patent-modal.scss'
 
 type AddPatentModalProps = {
   onClose: () => void;

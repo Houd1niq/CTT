@@ -8,6 +8,8 @@ interface PatentCardProps {
   isActionsGranted?: boolean
 }
 
+import './patent-card.scss'
+
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
   return date.toLocaleDateString('ru-RU');
@@ -44,13 +46,13 @@ export const PatentCard: React.FC<PatentCardProps> = (props) => {
           </div>
         ))}
       </div>
-      <div className="buttonsCard">
 
+      <div className="buttonsCard">
         {isActionsGranted && <div className="adminButtons">
-          <button className="editButton" onClick={() => onEdit(data)}>
+          <button className="button editButton" onClick={() => onEdit(data)}>
             Изменить
           </button>
-          <button className="deleteButton" onClick={() => onDelete(data.id, data.name)}>
+          <button className="button deleteButton" onClick={() => onDelete(data.id, data.name)}>
             Удалить
           </button>
         </div>}
@@ -59,8 +61,9 @@ export const PatentCard: React.FC<PatentCardProps> = (props) => {
           onClick={() => {
             window.open(`http://localhost:5000/files/${data.patentLink}`, '_blank')
           }}
-          className="moreButtonCard">Подробнее</button>}
+          className="button moreButtonCard">Подробнее</button>}
       </div>
+
     </div>
   );
 };

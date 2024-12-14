@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import {setPage} from "../../store/slices/searchSlice.ts";
+import './pagination.scss'
 
 export const Pagination: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)

@@ -9,16 +9,17 @@ import {
   Res,
   UseGuards,
 } from "@nestjs/common";
-import { AuthService } from "./auth.service";
+import {AuthService} from "./auth.service";
 import {AuthDto, ChangePasswordDto, ResetConfirmDto, ResetDto} from "./dto";
-import { Request, Response } from "express";
-import { AuthGuard } from "@nestjs/passport";
-import { PayloadType } from "./strategies";
+import {Request, Response} from "express";
+import {AuthGuard} from "@nestjs/passport";
+import {PayloadType} from "./strategies";
 import {ResetPasswordService} from "./resetPassword.service";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService, private resetPasswordService: ResetPasswordService) {}
+  constructor(private authService: AuthService, private resetPasswordService: ResetPasswordService) {
+  }
 
   @Post("signin")
   @HttpCode(HttpStatus.CREATED)
@@ -29,7 +30,7 @@ export class AuthController {
       secure: true,
       httpOnly: true,
     });
-    return res.send({ accessToken: tokens.access_token });
+    return res.send({accessToken: tokens.access_token});
   }
 
   @UseGuards(AuthGuard("jwt"))
@@ -46,40 +47,39 @@ export class AuthController {
   @Post('reset')
   @HttpCode(HttpStatus.CREATED)
   async reset(@Body() dto: ResetDto, @Res() res: Response) {
-   const result = await this.resetPasswordService.generateResetToken(dto.email);
-   if (result) {
-    res.status(HttpStatus.OK)
-    return res.send()
-   }
-   console.log(result)
+    const result = await this.resetPasswordService.generateResetToken(dto.email);
+    if (result) {
+      res.status(HttpStatus.OK)
+      return res.send()
+    }
   }
 
   @Post('confirm-reset')
   async generateReset(@Body() dto: ResetConfirmDto, @Res() res: Response) {
-      const result = await this.resetPasswordService.checkResetToken(dto.email, dto.code)
-      if (result) {
-          res.status(HttpStatus.OK)
-          return res.send()
-      } else {
-          res.status(HttpStatus.BAD_REQUEST)
-          return res.send()
-      }
+    const result = await this.resetPasswordService.checkResetToken(dto.email, dto.code)
+    if (result) {
+      res.status(HttpStatus.OK)
+      return res.send()
+    } else {
+      res.status(HttpStatus.BAD_REQUEST)
+      return res.send()
+    }
   }
 
   @Post('change-password')
   async changePassword(@Body() dto: ChangePasswordDto, @Res() res: Response) {
-      if (dto.password !== dto.confirmPassword) {
-          res.status(HttpStatus.BAD_REQUEST)
-          return res.send()
-      }
-      const result = await this.resetPasswordService.resetPassword(dto.email, dto.password, dto.code)
-        if (result) {
-            res.status(HttpStatus.OK)
-            return res.send()
-        } else {
-            res.status(HttpStatus.BAD_REQUEST)
-            return res.send()
-        }
+    if (dto.password !== dto.confirmPassword) {
+      res.status(HttpStatus.BAD_REQUEST)
+      return res.send()
+    }
+    const result = await this.resetPasswordService.resetPassword(dto.email, dto.password, dto.code)
+    if (result) {
+      res.status(HttpStatus.OK)
+      return res.send()
+    } else {
+      res.status(HttpStatus.BAD_REQUEST)
+      return res.send()
+    }
   }
 
   // @HttpCode(HttpStatus.OK)
@@ -107,6 +107,6 @@ export class AuthController {
       secure: true,
       httpOnly: true,
     });
-    return res.send({ accessToken: tokens.access_token });
+    return res.send({accessToken: tokens.access_token});
   }
 }

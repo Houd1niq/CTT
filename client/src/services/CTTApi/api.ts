@@ -21,15 +21,16 @@ export type refreshResponse = {
 };
 
 export interface ErrorType {
-  data: { statusCode: number; message: string[] | string; error: string };
+  data: { statusCode: number; message: string[] | string; error: string; status: string };
   status: number;
 }
 
-let baseUrl = window.location.origin;
+let baseUrl = "http://localhost:5000";
+// let baseUrl = window.location.origin;
 
-if (import.meta.env.DEV) {
-  baseUrl = "http://localhost:5000";
-}
+// if (import.meta.env.DEV) {
+//   baseUrl = "http://localhost:5000";
+// }
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,

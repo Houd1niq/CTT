@@ -49,7 +49,6 @@ export class PatentController {
     @Req() req: Request
   ) {
     const user = req.user as PayloadType;
-    console.log(req)
     if (!user) {
       throw new ForbiddenException("Access denied");
     }

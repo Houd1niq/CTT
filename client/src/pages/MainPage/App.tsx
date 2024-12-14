@@ -1,45 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import './App.scss';
 import {PatentContainer} from "../../components/Patents/PatentsContainer/PatentContainer.tsx";
-import {TechnologyFieldFilter} from "../../components/Filter/TechnologyFieldFilter.tsx";
-import {PatentTypeFilter} from "../../components/Filter/PatentTypeFilter.tsx";
+import {TechnologyFieldFilter} from "../../components/Filters/TechnologyFieldFilter/TechnologyFieldFilter.tsx";
+import {PatentTypeFilter} from "../../components/Filters/PatentTypeFilter/PatentTypeFilter.tsx";
 import {SortContainer} from "../../components/SortContainer/SortContainer.tsx";
 import {SearchField} from "../../components/SearchField/SearchField.tsx";
 import {AddPatentModal} from "../../components/Modals/AddPatentModal/AddPatentModal.tsx";
 import {Pagination} from "../../components/Pagination/Pagination.tsx";
-
-interface NotificationProps {
-  message: string;
-  type: 'success' | 'error';
-  onClose: () => void;
-}
-
-const Notification: React.FC<NotificationProps> = ({
-                                                     message,
-                                                     type,
-                                                     onClose,
-                                                   }) => {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 3000);
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div className={`notification ${type}`}>
-      <p>{message}</p>
-    </div>
-  );
-};
-
+import {Header} from "../../components/Header/Header.tsx";
+import {Footer} from "../../components/Footer/Footer.tsx";
 
 function App() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
-
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: 'success' | 'error';
-  } | null>(null);
-
   const [showFilters, setShowFilters] = useState(false);
 
   const popupRef = useRef<HTMLDivElement>(null);
@@ -68,11 +40,6 @@ function App() {
     };
   }, [showFilters]);
 
-
-  // const showNotification = (message: string, type: 'success' | 'error') => {
-  //   setNotification({message, type});
-  // };
-
   const handleAddButtonClick = () => {
     setIsAddPopupOpen(true);
   };
@@ -95,22 +62,11 @@ function App() {
 
   return (
     <div className="firstContainer">
-
-      <header className="headerContainer">
-        <div className="blueOverlay"></div>
-        <img src="/image%204.png" alt="headerImage" className="image"/>
-        <div className="transparentOverlay"></div>
-        <img src="/image%202.png" alt="headerLogo" className="logo"/>
-        <h1 className="title">
-          <span className="line1">Центр трансфера</span>
-          <span className="line2">технологий</span>
-        </h1>
-      </header>
+      <Header/>
 
       <div className="contentContainer">
-
         <div className="filterContainer">
-          <div className="filterHeading">Фильтрация</div>
+          <div className="filterHeading">Фильтрация!!</div>
           <PatentTypeFilter/>
           <TechnologyFieldFilter/>
         </div>
@@ -132,7 +88,7 @@ function App() {
 
             <SearchField/>
             <SortContainer/>
-            <button className="addButton" onClick={handleAddButtonClick}>
+            <button className="button addButton" onClick={handleAddButtonClick}>
               Добавить
             </button>
           </div>
@@ -143,23 +99,9 @@ function App() {
 
       <Pagination/>
 
-      <div className="footerContainer">
-        <footer className="footer">
-          <h3 className="footerTitle">Контакты</h3>
-          <div className="footerContacts">
-          </div>
-        </footer>
-      </div>
+      <Footer/>
 
       <AddPatentModal onClose={() => setIsAddPopupOpen(false)} visible={isAddPopupOpen}/>
-
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
     </div>
   );
 }

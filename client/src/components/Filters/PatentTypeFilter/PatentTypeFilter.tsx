@@ -1,7 +1,7 @@
-import {Filter} from "./Filter.tsx";
-import {useAppDispatch} from "../../store/hooks.ts";
-import {removePatentTypeFilter, setPatentTypeFilter} from "../../store/slices/searchSlice.ts";
-import {patentsApiSlice} from "../../services/CTTApi/patentsApiSlice.ts";
+import {Filter} from "../Filter/Filter.tsx";
+import {useAppDispatch} from "../../../store/hooks.ts";
+import {removePatentTypeFilter, setPatentTypeFilter} from "../../../store/slices/searchSlice.ts";
+import {patentsApiSlice} from "../../../services/CTTApi/patentsApiSlice.ts";
 
 export const PatentTypeFilter = () => {
   const dispatch = useAppDispatch();

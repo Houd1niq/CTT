@@ -1,5 +1,6 @@
 import {Patent, patentsApiSlice} from "../../../services/CTTApi/patentsApiSlice.ts";
 import {useEffect} from "react";
+import './delete-modal.scss'
 
 type DeleteModalProps = {
   patentToDelete: Patent;

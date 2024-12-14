@@ -1,0 +1,115 @@
+.card {
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .cardContent {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .cardRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(77, 77, 77);
+
+    & > .label {
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 22px;
+      color: rgb(15, 73, 138);
+      flex-basis: 45%;
+      text-align: left;
+    }
+
+    & > .value {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      color: rgb(77, 77, 77);
+      flex-basis: 55%;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 500px;
+    }
+  }
+
+  .buttonsCard {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .adminButtons {
+      display: flex;
+      gap: 10px;
+
+      .editButton {
+        background-color: rgb(15, 73, 138);
+
+        &:hover {
+          background-color: #0162bb;
+        }
+      }
+
+      .deleteButton {
+        background-color: rgb(220, 0, 0);
+
+        &:hover {
+          background-color: rgb(240, 0, 0);
+        }
+      }
+    }
+
+    .moreButtonCard {
+      background-color: rgb(15, 73, 138);
+
+      &:hover {
+        background-color: #0162bb;
+      }
+    }
+
+  }
+}
+
+
+@media (max-width: 425px) {
+  .card {
+    padding: 10px;
+    margin-left: 8px;
+    width: 96.5%;
+
+    .cardRow {
+      margin-bottom: 1px;
+      padding-bottom: 1px;
+
+      & > .label {
+        font-size: 12px;
+        flex-basis: 47%;
+      }
+
+      & > .value {
+        font-size: 12px;
+        flex-basis: 51%;
+      }
+    }
+
+    .moreButtonCard {
+      max-width: 120px;
+
+      &:hover {
+        background-color: #0162bb;
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
-import {ChangeEvent, useState, DragEvent} from "react";
+import {ChangeEvent, useState, DragEvent, FormEvent} from "react";
 import {Patent} from "../../../services/CTTApi/patentsApiSlice.ts";
+import './patent-form.scss'
 
 interface PatentFormProps {
   formType: 'add' | 'edit';
@@ -32,27 +33,29 @@ export const PatentForm = (props: PatentFormProps) => {
     if (event.target.files?.length) setFile(event.target.files[0]);
   };
 
-  return (
-    <form className="patent-form" onSubmit={e => {
-      e.preventDefault()
-      const formData = new FormData()
-      formData.append('patentFile', file as Blob)
-      formData.append('isPrivate', isPrivate.toString())
-      formData.append('patentNumber', patentNumber)
-      formData.append('patentTypeId', patentTypeId.toString())
-      formData.append('name', patentName)
-      formData.append('dateOfRegistration', patentDateOfRegistration)
-      formData.append('technologyFieldId', technologyFieldId.toString())
-      formData.append('dateOfExpiration', patentDateOfExpiration)
-      formData.append('contact', contact)
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('patentFile', file as Blob)
+    formData.append('isPrivate', isPrivate.toString())
+    formData.append('patentNumber', patentNumber)
+    formData.append('patentTypeId', patentTypeId.toString())
+    formData.append('name', patentName)
+    formData.append('dateOfRegistration', patentDateOfRegistration)
+    formData.append('technologyFieldId', technologyFieldId.toString())
+    formData.append('dateOfExpiration', patentDateOfExpiration)
+    formData.append('contact', contact)
 
-      onSubmit(formData)
-    }}>
+    onSubmit(formData)
+  }
+
+  return (
+    <form className="patent-form" onSubmit={handleSubmit}>
       <div>
-        <label className="popupLabel">№ патента/свидетельства</label>
+        <label className="patent-form-label">№ патента/свидетельства</label>
         <input
           type="text"
-          className="popupInput"
+          className="patent-form-input"
           name="patentNumber"
           value={patentNumber}
           required
@@ -61,10 +64,10 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div className="form-select-wrapper">
-        <label className="popupLabel">Вид</label>
+      <div>
+        <label className="patent-form-label">Вид</label>
         <select
-          className="popupInput"
+          className="patent-form-input"
           value={patentTypeId}
           onChange={(e) => {
             setPatentTypeId(Number(e.target.value));
@@ -76,10 +79,10 @@ export const PatentForm = (props: PatentFormProps) => {
         </select>
       </div>
       <div>
-        <label className="popupLabel">Название</label>
+        <label className="patent-form-label">Название</label>
         <input
           type="text"
-          className="popupInput"
+          className="patent-form-input"
           name="name"
           value={patentName}
           required
@@ -89,10 +92,10 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="popupLabel">Дата регистрации</label>
+        <label className="patent-form-label">Дата регистрации</label>
         <input
           type="date"
-          className="popupInput"
+          className="patent-form-input"
           name="dateOfRegistration"
           value={patentDateOfRegistration.split('T')[0]}
           required
@@ -102,9 +105,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="popupLabel">Область техники</label>
+        <label className="patent-form-label">Область техники</label>
         <select
-          className="popupInput"
+          className="patent-form-input"
           value={technologyFieldId}
           onChange={(e) => {
             setTechnologyFieldId(Number(e.target.value));
@@ -116,10 +119,10 @@ export const PatentForm = (props: PatentFormProps) => {
         </select>
       </div>
       <div>
-        <label className="popupLabel">Дата истечения патента</label>
+        <label className="patent-form-label">Дата истечения патента</label>
         <input
           type="date"
-          className="popupInput"
+          className="patent-form-input"
           name="dateOfExpiration"
           value={patentDateOfExpiration.split('T')[0]}
           required
@@ -129,10 +132,10 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="popupLabel">Контактное лицо</label>
+        <label className="patent-form-label">Контактное лицо</label>
         <input
           type="text"
-          className="popupInput"
+          className="patent-form-input"
           name="contact"
           value={contact}
           required
@@ -180,15 +183,7 @@ export const PatentForm = (props: PatentFormProps) => {
           </div>
         </div>
       )}
-      {/*<div className="popupButtons">*/}
-      {/*  <button*/}
-      {/*    type="button"*/}
-      {/*    className="closePopup"*/}
-      {/*    onClick={() => handleCloseAddPopup(false)}*/}
-      {/*  >*/}
-      {/*    Закрыть*/}
-      {/*  </button>*/}
-      <button type="submit" className="popupSubmit">
+      <button type="submit" className="patent-form-submit button">
         {formType === 'edit' ? 'Обновить патент' : 'Добавить патент'}
       </button>
     </form>

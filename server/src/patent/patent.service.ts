@@ -40,7 +40,6 @@ export class PatentService {
         }
       })
     } catch (e) {
-      console.log(e)
       throw new BadRequestException('Ошибка при создании патента, скорее всего патент с таким номером уже существует')
     }
     await this.patentSearchService.indexPatent(dto)
@@ -52,8 +51,6 @@ export class PatentService {
     const result = await this.patentSearchService.searchPatent(query)
     //@ts-ignore
     const patentNumbers: string[] = result.hits.map(hit => hit._source.patentNumber)
-
-    console.log(patentNumbers)
 
     const technologyFields = technologyFieldId ? technologyFieldId.split(',').map(Number) : undefined
     const patentTypeIds = patentTypeId ? patentTypeId.split(',').map(Number) : undefined
@@ -151,7 +148,6 @@ export class PatentService {
   }
 
   async editPatent(dto: EditPatentDto, patentId: string) {
-    console.log(dto)
     //@ts-ignore
     dto.dateOfExpiration = new Date(dto.dateOfExpiration.split('T')[0])
     //@ts-ignore

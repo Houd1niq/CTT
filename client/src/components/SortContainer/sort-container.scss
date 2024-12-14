@@ -1,0 +1,57 @@
+.sortContainer {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 0 0 10px;
+
+  & > select {
+    padding: 9px 0 9px 9px;
+    width: auto;
+    max-width: 330px;
+    max-height: 40px;
+    border: 1px solid rgb(77, 77, 77);
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    font-size: 18px;
+    font-family: Montserrat, sans-serif;
+
+    & > option {
+      background-color: rgb(255, 255, 255);
+      color: rgb(77, 77, 77);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+      text-align: left;
+      font-family: Montserrat, sans-serif;
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .sortContainer {
+    margin: 10px 0 0 0;
+
+    & > select {
+      max-width: 125px;
+      max-height: 35px;
+      font-size: 12px;
+      margin: 0 0 0 8px;
+
+      & > option {
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .sortContainer {
+    width: 115px;
+
+    & > select {
+      width: 125px;
+    }
+  }
+}

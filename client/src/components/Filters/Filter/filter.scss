@@ -1,0 +1,32 @@
+.filterTitle {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 17px;
+  color: rgb(15, 73, 138);
+  margin: 0 0 10px 14px;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 17px;
+  margin: 0 0 10px 14px;
+  user-select: none;
+
+  &:has(input[type="checkbox"]:checked) {
+    text-decoration: underline;
+  }
+
+  &:has(input[type="checkbox"]:focus-visible) {
+    text-decoration: underline;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+}
+
+.filterOption:last-child {
+  margin-bottom: 30px;
+}

@@ -8,6 +8,8 @@ import Forgot from './pages/Forgot/Forgot.tsx';
 import EmailConfirm from './pages/EmailConfirm/EmailConfirm.tsx';
 import {Provider} from 'react-redux'
 import {store} from "./store/store.ts";
+import {Notification} from "./components/Notification/Notification.tsx";
+import {askNotificationPermission} from "./utils/notification.ts";
 
 const router = createBrowserRouter([
   {
@@ -31,7 +33,12 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
+      <Notification/>
       <RouterProvider router={router}/>
     </Provider>
   </StrictMode>,
 );
+
+document.addEventListener('DOMContentLoaded', () => {
+  askNotificationPermission()
+})

@@ -7,6 +7,7 @@ import {EditPatentModal} from "../../Modals/EditPatentModal/EditPatentModal.tsx"
 import {DeleteModal} from "../../Modals/DeleteModal/DeleteModal.tsx";
 import {setTotalPages} from "../../../store/slices/searchSlice.ts";
 import {BeatLoader} from "react-spinners";
+import './patent-container.scss'
 
 type PatentContainerProps = {
   className?: string;
@@ -79,10 +80,13 @@ export const PatentContainer = (props: PatentContainerProps) => {
     return <div className="loader-container"><BeatLoader/></div>
   }
 
+  // @ts-ignore
+  const isOffline = patentsResponse?.error?.status === 'FETCH_ERROR'
+
   return (
     <>
       <div className={className}>
-        {patents?.map(patent => {
+        {isOffline ? <p>Кажется нет подключения к интернету</p> : patents?.map(patent => {
           return <PatentCard
             onDelete={() => {
               setPatentToDelete(patent)
@@ -97,9 +101,11 @@ export const PatentContainer = (props: PatentContainerProps) => {
             key={patent.patentNumber}/>
         })}
       </div>
+
       {patentToEdit &&
         <EditPatentModal onClose={() => setIsEditPopupOpen(false)} visible={isEditPopupOpen} patent={patentToEdit}/>
       }
+
       {patentToDelete &&
         <DeleteModal
           patentToDelete={patentToDelete}

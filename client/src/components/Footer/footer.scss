@@ -1,0 +1,45 @@
+.footerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  & > .footer {
+    background-color: rgba(15, 73, 138, 0.1);
+    text-align: center;
+
+    & > .footerContacts {
+      font-weight: 500;
+      font-size: 40px;
+      line-height: 49px;
+      color: rgb(140, 137, 135);
+      padding: 0 0 75px 0;
+
+      .footerTitle {
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 22px;
+        color: rgb(15, 73, 138);
+        margin-bottom: 10px;
+        padding: 63px 0 21px 0;
+
+        & ~ p {
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          color: rgb(77, 77, 77);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .footerTitle {
+    font-size: 18px;
+  }
+
+  .footerContacts {
+    font-size: 24px;
+  }
+}

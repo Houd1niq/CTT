@@ -1,5 +1,6 @@
 import React from "react";
-import {FilterType} from "../../services/CTTApi/patentsApiSlice.ts";
+import {FilterType} from "../../../services/CTTApi/patentsApiSlice.ts";
+import './filter.scss'
 
 interface FilterProps {
   title: string;

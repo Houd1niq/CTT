@@ -1,0 +1,29 @@
+.pagination {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+
+  button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+
+    &.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    &:hover {
+      background: #f0f0f0;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}

@@ -1,0 +1,91 @@
+@mixin button-styles($background-color, $color, $hover-background-color) {
+  background-color: $background-color;
+  color: $color;
+
+  &:hover {
+    background-color: $hover-background-color;
+  }
+}
+
+.popupContainerDelete {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .popupDelete {
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    & > p {
+      color: rgb(77, 77, 77);
+      font-size: 16px;
+      font-family: Montserrat, sans-serif;
+      margin-bottom: 20px;
+
+
+      .patentName {
+        color: rgb(15, 73, 138);
+        font-weight: bold;
+      }
+    }
+
+    .popupButtonsDelete {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .confirmDeleteButton,
+      .closeButton {
+        width: 48%;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+      }
+
+      .confirmDeleteButton {
+        @include button-styles(rgb(15, 73, 138), white, #0162bb);
+      }
+
+      .closeButton {
+        @include button-styles(rgb(255, 255, 255), rgb(77, 77, 77), rgba(0, 0, 0, 0.1));
+        border: 1px solid rgb(77, 77, 77);
+      }
+    }
+  }
+}
+
+
+@media (max-width: 425px) {
+  .popupDelete {
+    padding: 20px;
+    width: 300px;
+  }
+
+  .popupDelete p {
+    font-size: 14px;
+  }
+
+  .confirmDeleteButton,
+  .closeButton {
+    width: 48%;
+    height: 30px;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,26 @@
+# Используем официальный Node.js образ
+FROM node:20-alpine
+
+# Устанавливаем рабочую директорию внутри контейнера
+WORKDIR /app
+
+# Копируем package.json и lock-файл
+COPY package.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем все файлы проекта в контейнер
+COPY . .
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Собираем приложение
+RUN npm run build
+
+# Указываем порт, на котором приложение будет работать
+EXPOSE 5000
+
+# Команда запуска приложения
+CMD ["npm", "run", "start:prod"]

@@ -9,6 +9,12 @@ import {PatentTypeModule} from './patent-type/patent-type.module';
 import {TechnologyFieldModule} from './technology-field/technology-field.module';
 import {FilesModule} from './files/files.module';
 import {UserModule} from "./user/user.module";
+import {EmailModule} from './email/email.module';
+import {MailerModule} from "@nestjs-modules/mailer";
+import {SchedulerModule} from './scheduler/scheduler.module';
+import * as process from "process";
+import {ServeStaticModule} from "@nestjs/serve-static";
+import {join} from "path";
 
 @Module({
   imports: [
@@ -19,10 +25,23 @@ import {UserModule} from "./user/user.module";
     PatentTypeModule,
     TechnologyFieldModule,
     FilesModule,
-    UserModule
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'static'),
-    // }),
+    UserModule,
+    EmailModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.SMTP_LOGIN,
+          pass: process.env.SMTP_PASS,
+        },
+      },
+    }),
+    SchedulerModule,
   ],
   controllers: [],
 })

@@ -9,10 +9,14 @@ import {AddPatentModal} from "../../components/Modals/AddPatentModal/AddPatentMo
 import {Pagination} from "../../components/Pagination/Pagination.tsx";
 import {Header} from "../../components/Header/Header.tsx";
 import {Footer} from "../../components/Footer/Footer.tsx";
+import {userApiSlice} from "../../services/CTTApi/userApiSlice.ts";
+import {DatePicker} from "antd-v5";
 
 function App() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+
+  const {data: user} = userApiSlice.useGetMeQuery();
 
   const popupRef = useRef<HTMLDivElement>(null);
   const toggleFilters = () => setShowFilters(prev => !prev);
@@ -66,7 +70,7 @@ function App() {
 
       <div className="contentContainer">
         <div className="filterContainer">
-          <div className="filterHeading">Фильтрация!!</div>
+          <div className="filterHeading">Фильтрация</div>
           <PatentTypeFilter/>
           <TechnologyFieldFilter/>
         </div>
@@ -88,9 +92,9 @@ function App() {
 
             <SearchField/>
             <SortContainer/>
-            <button className="button addButton" onClick={handleAddButtonClick}>
+            {user && <button className="button addButton" onClick={handleAddButtonClick}>
               Добавить
-            </button>
+            </button>}
           </div>
 
           <PatentContainer/>
@@ -98,6 +102,7 @@ function App() {
       </div>
 
       <Pagination/>
+      <DatePicker/>
 
       <Footer/>
 

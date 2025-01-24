@@ -1,42 +1,48 @@
-    import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma/prisma.service";
-import * as bcrypt from "bcrypt";
-import { JwtService } from "@nestjs/jwt";
+import {Injectable} from "@nestjs/common";
+import {PrismaService} from "../prisma/prisma.service";
+import * as bcrypt from "bcryptjs";
+// import { JwtService } from "@nestjs/jwt";
+import {EmailService} from "../email/email.service";
+
 // import { RevokedTokensService } from "./revokedTokens.service";
 
 @Injectable()
 export class ResetPasswordService {
   constructor(
-    private prisma: PrismaService, // private jwtService: JwtService // private revokedTokensService: RevokedTokensService
-  ) {}
+    private prisma: PrismaService, private emailService: EmailService
+  ) {
+  }
 
   async generateResetToken(email: string) {
     const token = String(Math.floor(100000 + Math.random() * 900000));
-    return this.prisma.admin.update({
-      where: { email },
+    const res = await this.prisma.admin.update({
+      where: {email},
       data: {
         resetToken: token,
         resetTokenExpiry: new Date(Date.now() + 600000),
       },
     });
+    await this.emailService.sendConfirmationCode(email, token)
+    return res
   }
 
   async checkResetToken(email: string, token: string) {
     const user = await this.prisma.admin.findUnique({
-      where: { email },
+      where: {email},
     });
     if (
       !user ||
-      user.resetToken !== token ||
-      user.resetTokenExpiry < new Date()
+      user.resetToken !== token
     ) {
-      await this.prisma.admin.update({
-        where: { email },
-        data: {
-          resetToken: null,
-          resetTokenExpiry: null,
-        },
-      });
+      if (user.resetTokenExpiry < new Date()) {
+        await this.prisma.admin.update({
+          where: {email},
+          data: {
+            resetToken: null,
+            resetTokenExpiry: null,
+          },
+        })
+      }
       return false;
     }
     return true;
@@ -44,26 +50,27 @@ export class ResetPasswordService {
 
   async resetPassword(email: string, password: string, token: string) {
     const user = await this.prisma.admin.findUnique({
-      where: { email },
+      where: {email},
     });
     if (
       !user ||
-      user.resetToken !== token ||
-      user.resetTokenExpiry < new Date()
+      user.resetToken !== token
     ) {
-      await this.prisma.admin.update({
-        where: { email },
-        data: {
-          resetToken: null,
-          resetTokenExpiry: null,
-        },
-      });
+      if (user.resetTokenExpiry < new Date()) {
+        await this.prisma.admin.update({
+          where: {email},
+          data: {
+            resetToken: null,
+            resetTokenExpiry: null,
+          },
+        });
+      }
       return false;
     }
 
     const hash = await bcrypt.hash(password, 10);
     await this.prisma.admin.update({
-      where: { email },
+      where: {email},
       data: {
         hash,
         resetToken: null,

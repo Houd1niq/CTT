@@ -1,0 +1,103 @@
+.forgotContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.forgotForm {
+  width: 500px;
+  height: 500px;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.forgotTitle {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 49px;
+  margin: 61px 0 45px 0;
+  color: rgb(15, 73, 138);
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.forgotInput {
+  width: 280px;
+  height: 40px;
+  padding: 12px;
+  border: 1px solid rgb(77, 77, 77);
+  border-radius: 10px;
+  margin: 0 auto 20px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+}
+
+.togglePassword {
+  position: absolute;
+  cursor: pointer;
+  width: 10%;
+  top: 6px;
+  transform: translateX(870%);
+}
+
+.forgotContent {
+  margin: 0 auto;
+}
+
+.forgotLabel {
+  margin: 0 0 7px 0;
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgb(77, 77, 77);
+}
+
+.confirmButton {
+  margin: 36px auto;
+  font-family: Montserrat, sans-serif;
+  width: 100%;
+  max-width: 150px;
+  height: 40px;
+  padding: 10px;
+  background-color: rgb(15, 74, 138);
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+
+  &:hover {
+    background-color: #0162bb;
+  }
+
+  &.disabled {
+    background-color: grey;
+    cursor: default;
+  }
+}
+
+.errorMessage {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: rgb(209, 91, 91);
+  height: 20px;
+  text-align: center;
+  margin-top: -10px;
+  visibility: visible;
+
+  &.hidden {
+    visibility: hidden;
+  }
+}

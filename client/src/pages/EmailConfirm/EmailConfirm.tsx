@@ -1,10 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import './EmailConfirm.scss';
+import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
+import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
+import {useNavigate} from "react-router-dom";
+import {setRecoveryToken} from "../../store/slices/authSlice.ts";
+import {useNotification} from "../../components/Notification/hooks/notification-hooks.ts";
 
 const EmailConfirm: React.FC = () => {
   const [code, setCode] = useState<string[]>(Array(6).fill(''));
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [resendCountdown, setResendCountdown] = useState<number | null>(null);
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const {setNotification} = useNotification()
+  const email = useAppSelector(state => state.authReducer.recoveryEmail)
+
+  const [confirmTrigger, confirmResponse] = authApiSlice.useConfirmEmailMutation()
 
   useEffect(() => {
     setIsButtonDisabled(code.some((digit) => digit === ''));
@@ -43,15 +55,20 @@ const EmailConfirm: React.FC = () => {
     }
   };
 
-  const handleResendClick = () => {
-    setResendCountdown(60);
-  };
+  const handleSubmit = () => {
+    if (!email) return
+    confirmTrigger({email, code: code.join('')})
+    dispatch(setRecoveryToken(code.join('')))
+  }
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  useEffect(() => {
+    if (confirmResponse.isSuccess) {
+      navigate('../forgot')
+    }
+    if (confirmResponse.isError) {
+      setNotification({message: 'Код веедён неверно или его время действия истекло', type: 'error'})
+    }
+  }, [confirmResponse]);
 
   return (
     <div className="emailContainer">
@@ -59,8 +76,7 @@ const EmailConfirm: React.FC = () => {
         <div className="information">
           <h1 className="emailTitle">Подтверждение эл. почты</h1>
           <p className="emailLabel">
-            Введите код из письма, который мы отправили на почту
-            XXXXXXXXXXXXXXXXXXXXXXXXX
+            Введите код из письма, который мы отправили на указанную электронную почту
           </p>
         </div>
         <div className="emailForm">
@@ -80,18 +96,10 @@ const EmailConfirm: React.FC = () => {
         <button
           className={`confirmButtonEmail ${isButtonDisabled ? 'disabled' : ''}`}
           disabled={isButtonDisabled}
+          onClick={handleSubmit}
         >
           Подтвердить
         </button>
-        {resendCountdown !== null && resendCountdown > 0 ? (
-          <p className="sendCodeAgain">
-            Повторно отправить код можно через {formatTime(resendCountdown)}
-          </p>
-        ) : (
-          <button className="sendCodeAgainButton" onClick={handleResendClick}>
-            Отправить повторно
-          </button>
-        )}
       </div>
     </div>
   );

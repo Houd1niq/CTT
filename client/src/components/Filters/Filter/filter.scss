@@ -4,6 +4,9 @@
   line-height: 17px;
   color: rgb(15, 73, 138);
   margin: 0 0 10px 14px;
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
 }
 
 .filterOption {
@@ -13,18 +16,24 @@
   line-height: 17px;
   margin: 0 0 10px 14px;
   user-select: none;
-
-  &:has(input[type="checkbox"]:checked) {
-    text-decoration: underline;
-  }
-
-  &:has(input[type="checkbox"]:focus-visible) {
-    text-decoration: underline;
-  }
+  justify-content: space-between;
+  gap: 6px;
 
   input[type="checkbox"] {
     margin-right: 10px;
   }
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+.action-buttons {
+  display: inline-flex;
+  gap: 4px;
 }
 
 .filterOption:last-child {

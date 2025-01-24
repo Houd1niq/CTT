@@ -1,37 +1,38 @@
-import {Patent, patentsApiSlice} from "../../../services/CTTApi/patentsApiSlice.ts";
-import {useEffect} from "react";
 import './delete-modal.scss'
 
-type DeleteModalProps = {
-  patentToDelete: Patent;
+type DeleteModalProps<T> = {
+  // patentToDelete?: Patent;
+  name?: string;
+  identifier?: T;
   visible: boolean;
   onClose: () => void;
+  onSubmit: (identifier: T) => void;
+  title: string
 }
 
-export const DeleteModal = (props: DeleteModalProps) => {
-  const {patentToDelete, visible, onClose} = props;
+export const DeleteModal = <T = number>(props: DeleteModalProps<T>) => {
+  const {visible, onClose, onSubmit, title, name, identifier} = props;
 
-  const [trigger, deleteResponse] = patentsApiSlice.useDeletePatentMutation()
+  // const [trigger, deleteResponse] = patentsApiSlice.useDeletePatentMutation()
+
+  // useEffect(() => {
+  //   if ((deleteResponse.isSuccess && !deleteResponse.isLoading) || (deleteResponse.isError && !deleteResponse.isLoading)) {
+  //     onClose();
+  //   }
+  // }, [deleteResponse.isError, deleteResponse.isSuccess]);
+
+  if (!visible || !identifier) return null
 
   const handleConfirmDelete = () => {
-    trigger(patentToDelete.patentNumber);
+    onSubmit(identifier);
   };
-
-  useEffect(() => {
-    if (deleteResponse.isSuccess) {
-      onClose();
-    }
-  }, [deleteResponse]);
-
-
-  if (!visible) return null
 
   return (
     <div className="popupContainerDelete">
       <div className="popupDelete">
         <p>
-          Вы уверены, что хотите удалить патент "
-          <span className="patentName">{patentToDelete.name}</span>"?
+          {title} "
+          <span className="patentName">{name}</span>"?
         </p>
         <div className="popupButtonsDelete">
           <button

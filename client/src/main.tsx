@@ -9,7 +9,7 @@ import EmailConfirm from './pages/EmailConfirm/EmailConfirm.tsx';
 import {Provider} from 'react-redux'
 import {store} from "./store/store.ts";
 import {Notification} from "./components/Notification/Notification.tsx";
-import {askNotificationPermission} from "./utils/notification.ts";
+import Reset from "./pages/Reset/Reset.tsx";
 
 const router = createBrowserRouter([
   {
@@ -21,11 +21,15 @@ const router = createBrowserRouter([
     element: <Authorization/>,
   },
   {
+    path: '/reset',
+    element: <Reset/>,
+  },
+  {
     path: '/forgot',
     element: <Forgot/>,
   },
   {
-    path: '/emailConfirm',
+    path: '/confirm',
     element: <EmailConfirm/>,
   },
 ]);
@@ -39,6 +43,15 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 );
 
-document.addEventListener('DOMContentLoaded', () => {
-  askNotificationPermission()
-})
+window.addEventListener('message', (event) => {
+  if (event.origin !== 'https://localhost:3000') {
+    console.warn('Непредвиденное сообщение:', event);
+    return;
+  }
+
+  console.log('Получено сообщение:', event.data);
+  console.log(event)
+
+  // Ответное сообщение
+  // event.source.postMessage({ action: 'response', payload: 'Hello back!' }, event.origin);
+});

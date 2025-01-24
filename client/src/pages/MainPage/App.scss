@@ -9,8 +9,8 @@
 }
 
 .filterContainer {
+  padding-right: 15px;
   width: 300px;
-  min-width: 300px;
 }
 
 .filterHeading {
@@ -24,7 +24,7 @@
 
 .mainContainer {
   flex-grow: 1;
-  width: 100%;
+  max-width: 100%;
 }
 
 .button {
@@ -52,7 +52,6 @@
 .contentContainer {
   display: flex;
   width: 100%;
-  justify-content: space-between;
   padding-right: 15px;
 }
 
@@ -84,16 +83,20 @@
   margin: 0 4px 2px 0;
 }
 
+.filterButtonPopup {
+  position: relative;
+}
+
 .popupContainerFilter {
   position: absolute;
-  top: 195px;
+  top: 100%;
   left: 8px;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  width: 220px;
-  height: 420px;
-  padding: 20px 0 0 0;
+  width: 95vw;
+  min-height: 420px;
+  padding: 20px 10px 0 0;
   z-index: 1;
 }
 

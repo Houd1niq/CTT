@@ -8,6 +8,7 @@ import {DeleteModal} from "../../Modals/DeleteModal/DeleteModal.tsx";
 import {setTotalPages} from "../../../store/slices/searchSlice.ts";
 import {BeatLoader} from "react-spinners";
 import './patent-container.scss'
+import {filtersApiSlice} from "../../../services/CTTApi/filtersApiSlice.ts";
 
 type PatentContainerProps = {
   className?: string;
@@ -18,7 +19,7 @@ export const PatentContainer = (props: PatentContainerProps) => {
     className,
   } = props;
 
-  const {data: user} = userApiSlice.useGetMeQuery(undefined)
+  const {currentData: user} = userApiSlice.useGetMeQuery()
   const dispatch = useAppDispatch()
 
   const [patents, setPatents] = useState<Patent[]>([])
@@ -30,6 +31,7 @@ export const PatentContainer = (props: PatentContainerProps) => {
 
   const [fetchPatents, patentsResponse] = patentsApiSlice.useLazyGetPatentsQuery()
   const [fetchPatentsSearch, patentsSearchResponse] = patentsApiSlice.useLazySearchPatentsQuery()
+  const [deleteTrigger, deleteResponse] = patentsApiSlice.useDeletePatentMutation()
 
   const technologyFieldsFilter = useAppSelector(state => state.searchReducer.technologyFieldFilters)
   const patentTypeFilters = useAppSelector(state => state.searchReducer.patentTypeFilters)
@@ -37,8 +39,8 @@ export const PatentContainer = (props: PatentContainerProps) => {
   const searchQuery = useAppSelector(state => state.searchReducer.searchQuery)
   const page = useAppSelector(state => state.searchReducer.page)
 
-  const {isLoading: patentTypesIsLoading} = patentsApiSlice.useGetPatentTypesQuery('')
-  const {isLoading: technologyFieldsIsLoading} = patentsApiSlice.useGetTechnologyFieldsQuery('')
+  const {isLoading: patentTypesIsLoading} = filtersApiSlice.useGetPatentTypesQuery('')
+  const {isLoading: technologyFieldsIsLoading} = filtersApiSlice.useGetTechnologyFieldsQuery('')
 
   const isAdmin = Boolean(user?.id)
 
@@ -76,17 +78,26 @@ export const PatentContainer = (props: PatentContainerProps) => {
     }
   }, [patentsResponse, patentsSearchResponse, searchQuery]);
 
-  if ((patentsResponse.isFetching && !searchQuery) || (patentsSearchResponse.isFetching && searchQuery)) {
-    return <div className="loader-container"><BeatLoader/></div>
-  }
+  useEffect(() => {
+    if ((deleteResponse.isSuccess && !deleteResponse.isLoading) || (deleteResponse.isError && !deleteResponse.isLoading)) {
+      closeDeleteModal();
+    }
+  }, [deleteResponse.isError, deleteResponse.isSuccess]);
 
   // @ts-ignore
   const isOffline = patentsResponse?.error?.status === 'FETCH_ERROR'
+  const isLoading = (patentsResponse.isFetching && !searchQuery) || (patentsSearchResponse.isFetching && searchQuery)
+
+  const closeDeleteModal = () => {
+    setIsDeletePopupOpen(false)
+    setPatentToDelete(undefined)
+  }
 
   return (
     <>
       <div className={className}>
-        {isOffline ? <p>Кажется нет подключения к интернету</p> : patents?.map(patent => {
+        {isOffline && <p>Кажется нет подключения к интернету</p>}
+        {isLoading ? <div className="loader-container"><BeatLoader/></div> : patents?.map(patent => {
           return <PatentCard
             onDelete={() => {
               setPatentToDelete(patent)
@@ -106,11 +117,15 @@ export const PatentContainer = (props: PatentContainerProps) => {
         <EditPatentModal onClose={() => setIsEditPopupOpen(false)} visible={isEditPopupOpen} patent={patentToEdit}/>
       }
 
-      {patentToDelete &&
-        <DeleteModal
-          patentToDelete={patentToDelete}
-          visible={isDeletePopupOpen}
-          onClose={() => setIsDeletePopupOpen(false)}/>}
+      {/*{patentToDelete &&*/}
+      <DeleteModal<string>
+        key="delete"
+        identifier={patentToDelete?.patentNumber}
+        name={patentToDelete?.name}
+        visible={isDeletePopupOpen}
+        title="Вы действительно уверены, что хотите удалить патент"
+        onSubmit={deleteTrigger}
+        onClose={closeDeleteModal}/>
     </>
   );
 };

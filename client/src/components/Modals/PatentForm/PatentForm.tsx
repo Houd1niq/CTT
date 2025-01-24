@@ -1,5 +1,6 @@
 import {ChangeEvent, useState, DragEvent, FormEvent} from "react";
 import {Patent} from "../../../services/CTTApi/patentsApiSlice.ts";
+import UploadIcon from '@assets/icons/icons8-upload-file-48.png'
 import './patent-form.scss'
 
 interface PatentFormProps {
@@ -12,7 +13,7 @@ interface PatentFormProps {
 
 export const PatentForm = (props: PatentFormProps) => {
   const {formType, onSubmit, technologyFields, patentTypes, patent} = props
-  const [isPrivate, setIsPrivate] = useState<boolean>(false)
+  const [isPrivate, setIsPrivate] = useState<boolean>(patent?.isPrivate || false)
   const [technologyFieldId, setTechnologyFieldId] = useState<number>(patent?.technologyField.id || 1)
   const [patentTypeId, setPatentTypeId] = useState<number>(patent?.patentType.id || 1)
   const [patentNumber, setPatentNumber] = useState<string>(patent?.patentNumber || '')
@@ -162,7 +163,7 @@ export const PatentForm = (props: PatentFormProps) => {
         >
           <div className="fileUploadContent">
             <img
-              src="../../../public/icons8-upload-file-48.png"
+              src={UploadIcon}
               alt="Upload Icon"
               className="uploadIcon"
             />

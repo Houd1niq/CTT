@@ -1,6 +1,7 @@
 import {PatentForm} from "../PatentForm/PatentForm.tsx";
 import {patentsApiSlice} from "../../../services/CTTApi/patentsApiSlice.ts";
 import {useEffect} from "react";
+import {filtersApiSlice} from "../../../services/CTTApi/filtersApiSlice.ts";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -11,8 +12,8 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
   const {visible, onClose} = props;
 
   const [trigger, response] = patentsApiSlice.useCreatePatentMutation()
-  const {data: patentTypes} = patentsApiSlice.useGetPatentTypesQuery('')
-  const {data: technologyFields} = patentsApiSlice.useGetTechnologyFieldsQuery('')
+  const {data: patentTypes} = filtersApiSlice.useGetPatentTypesQuery('')
+  const {data: technologyFields} = filtersApiSlice.useGetTechnologyFieldsQuery('')
 
   const handleCloseAddPopup = (forceClose: boolean = false) => {
     if (!forceClose) {

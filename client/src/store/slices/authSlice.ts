@@ -6,10 +6,14 @@ export type TUser = {
 
 interface AuthState {
   accessToken: string | null;
+  recoveryEmail: string | null;
+  recoveryToken: string | null
 }
 
 const initialState: AuthState = {
   accessToken: localStorage.getItem("accessToken"),
+  recoveryEmail: null,
+  recoveryToken: null
 };
 
 const AuthSlice = createSlice({
@@ -25,8 +29,16 @@ const AuthSlice = createSlice({
       state.accessToken = null;
       localStorage.removeItem("accessToken");
     },
+
+    setRecoveryEmail(state, action: PayloadAction<string | null>) {
+      state.recoveryEmail = action.payload
+    },
+
+    setRecoveryToken(state, action: PayloadAction<string | null>) {
+      state.recoveryToken = action.payload
+    }
   },
 });
 
-export const {setAccessToken, logOut} = AuthSlice.actions;
+export const {setAccessToken, logOut, setRecoveryToken, setRecoveryEmail} = AuthSlice.actions;
 export default AuthSlice.reducer;

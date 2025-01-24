@@ -20,11 +20,6 @@ export interface Patent {
   }
 }
 
-export interface FilterType {
-  id: number,
-  name: string
-}
-
 interface PatentsBody {
   page?: number,
   sort?: string,
@@ -38,13 +33,6 @@ interface PantentsSearchBody extends Omit<PatentsBody, 'page'> {
 
 export const patentsApiSlice = CTTApi.injectEndpoints({
   endpoints: (build) => ({
-    getTechnologyFields: build.query<FilterType[], any>({
-      query: () => ({
-        url: "technology-field",
-        method: "GET",
-      }),
-    }),
-
     getFile: build.query<any, string>({
       query: (patentLink) => ({
         url: `files/${patentLink}`,
@@ -90,13 +78,6 @@ export const patentsApiSlice = CTTApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Patents"],
-    }),
-
-    getPatentTypes: build.query<FilterType[], any>({
-      query: () => ({
-        url: "patent-type",
-        method: "GET",
-      }),
     }),
 
     getPatents: build.query<{ patents: Patent[], totalPages: number }, PatentsBody>({

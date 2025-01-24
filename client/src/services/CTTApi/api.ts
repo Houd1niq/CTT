@@ -25,12 +25,12 @@ export interface ErrorType {
   status: number;
 }
 
-let baseUrl = "http://localhost:5000";
-// let baseUrl = window.location.origin;
+// let baseUrl = "http://localhost:5000";
+let baseUrl = window.location.origin;
 
-// if (import.meta.env.DEV) {
-//   baseUrl = "http://localhost:5000";
-// }
+if (import.meta.env.DEV) {
+  baseUrl = "http://localhost:5000";
+}
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
@@ -72,6 +72,6 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
 export const CTTApi = createApi({
   reducerPath: "CTTApi",
   baseQuery: baseQueryWithReFetch,
-  tagTypes: ['Patents'],
+  tagTypes: ['Patents', 'TechnologyFields', 'PatentTypes', 'User'],
   endpoints: () => ({}),
 });

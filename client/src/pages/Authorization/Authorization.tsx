@@ -5,7 +5,7 @@ import eyeClosedIcon from '../../assets/eye-closed-svgrepo-com.svg';
 import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
 import {setAccessToken} from "../../store/slices/authSlice.ts";
 import {useAppDispatch} from "../../store/hooks.ts";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Authorization = () => {
   const [email, setEmail] = useState('');
@@ -88,7 +88,7 @@ const Authorization = () => {
           {emailError || ' '}
         </p>
         <div className="buttonWithForgot">
-          <p className="forgotPassword">Забыли пароль?</p>
+          <Link to="../reset" className="forgotPassword">Забыли пароль?</Link>
           <button
             type="submit"
             className={`loginButton ${isButtonDisabled ? 'disabled' : ''}`}

@@ -59,7 +59,7 @@ export const PatentCard: React.FC<PatentCardProps> = (props) => {
 
         {(!data.isPrivate) && <button
           onClick={() => {
-            window.open(`http://localhost:5000/files/${data.patentLink}`, '_blank')
+            window.open(`${window.location.origin}/files/${data.patentLink}`, '_blank')
           }}
           className="button moreButtonCard">Подробнее</button>}
       </div>

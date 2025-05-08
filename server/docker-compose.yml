@@ -20,6 +20,7 @@ services:
       - elasticsearch
     volumes:
       - /app/node_modules
+      - /app/uploads
 
   postgres:
     image: postgres:15

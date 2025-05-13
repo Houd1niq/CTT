@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import './Forgot.scss';
-import eyeOpenIcon from '../../assets/eye-svgrepo-com.svg';
-import eyeClosedIcon from '../../assets/eye-closed-svgrepo-com.svg';
-import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
-import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
+import eyeOpenIcon from '@shared/assets/eye-svgrepo-com.svg';
+import eyeClosedIcon from '@shared/assets/eye-closed-svgrepo-com.svg';
+import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
+import {useAppDispatch, useAppSelector} from "@shared/utils/hooks.ts";
 import {useNavigate} from "react-router-dom";
-import {useNotification} from "../../components/Notification/hooks/notification-hooks.ts";
-import {setRecoveryEmail, setRecoveryToken} from "../../store/slices/authSlice.ts";
+import {useNotification} from "@shared/model/notification/notification-hooks.ts";
+import {setRecoveryEmail, setRecoveryToken} from "@features/auth/model/authSlice.ts";
 
 const Forgot: React.FC = () => {
   const [password, setPassword] = useState('');

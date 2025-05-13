@@ -1,11 +1,11 @@
 import React, {FormEvent, useEffect, useState} from 'react';
 import './Reset.scss';
-import {Input} from "../../components/ui/Input/Input.tsx";
-import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
-import {useNotification} from "../../components/Notification/hooks/notification-hooks.ts";
+import {Input} from "../../shared/ui/Input/Input.tsx";
+import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
+import {useNotification} from "@shared/model/notification/notification-hooks.ts";
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../store/hooks.ts";
-import {setRecoveryEmail} from "../../store/slices/authSlice.ts";
+import {useAppDispatch} from "@shared/utils/hooks.ts";
+import {setRecoveryEmail} from "@features/auth/model/authSlice.ts";
 
 const Reset: React.FC = () => {
   const [email, setEmail] = useState('')

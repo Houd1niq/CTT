@@ -1,10 +1,10 @@
 import {useState, useEffect, Dispatch, SetStateAction, ChangeEvent, FormEvent} from 'react';
 import './Authorization.scss';
-import eyeOpenIcon from '../../assets/eye-svgrepo-com.svg';
-import eyeClosedIcon from '../../assets/eye-closed-svgrepo-com.svg';
-import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
-import {setAccessToken} from "../../store/slices/authSlice.ts";
-import {useAppDispatch} from "../../store/hooks.ts";
+import eyeOpenIcon from '@shared/assets/eye-svgrepo-com.svg';
+import eyeClosedIcon from '@shared/assets/eye-closed-svgrepo-com.svg';
+import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
+import {setAccessToken} from "@features/auth/model/authSlice.ts";
+import {useAppDispatch} from "@shared/utils/hooks.ts";
 import {Link, useNavigate} from "react-router-dom";
 
 const Authorization = () => {

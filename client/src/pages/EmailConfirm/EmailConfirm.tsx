@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import './EmailConfirm.scss';
-import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
-import {authApiSlice} from "../../services/CTTApi/authApiSlice.ts";
+import {useAppDispatch, useAppSelector} from "@shared/utils/hooks.ts";
+import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
 import {useNavigate} from "react-router-dom";
-import {setRecoveryToken} from "../../store/slices/authSlice.ts";
-import {useNotification} from "../../components/Notification/hooks/notification-hooks.ts";
+import {setRecoveryToken} from "@features/auth/model/authSlice.ts";
+import {useNotification} from "@shared/model/notification/notification-hooks.ts";
 
 const EmailConfirm: React.FC = () => {
   const [code, setCode] = useState<string[]>(Array(6).fill(''));

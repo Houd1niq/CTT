@@ -1,16 +1,15 @@
 import {useEffect, useState, useRef} from 'react';
 import './App.scss';
-import {PatentContainer} from "../../components/Patents/PatentsContainer/PatentContainer.tsx";
-import {TechnologyFieldFilter} from "../../components/Filters/TechnologyFieldFilter/TechnologyFieldFilter.tsx";
-import {PatentTypeFilter} from "../../components/Filters/PatentTypeFilter/PatentTypeFilter.tsx";
-import {SortContainer} from "../../components/SortContainer/SortContainer.tsx";
-import {SearchField} from "../../components/SearchField/SearchField.tsx";
-import {AddPatentModal} from "../../components/Modals/AddPatentModal/AddPatentModal.tsx";
-import {Pagination} from "../../components/Pagination/Pagination.tsx";
-import {Header} from "../../components/Header/Header.tsx";
-import {Footer} from "../../components/Footer/Footer.tsx";
-import {userApiSlice} from "../../services/CTTApi/userApiSlice.ts";
-import {DatePicker} from "antd-v5";
+import {PatentContainer} from "@widgets/PatentsContainer/ui/PatentContainer.tsx";
+import {TechnologyFieldFilter} from "@features/patentSearch/ui/TechnologyFieldFilter/TechnologyFieldFilter.tsx";
+import {PatentTypeFilter} from "@features/patentSearch/ui/PatentTypeFilter/PatentTypeFilter.tsx";
+import {SortContainer} from "@features/patentSearch/ui/SortContainer/SortContainer.tsx";
+import {SearchField} from "@features/patentSearch/ui/SearchField/SearchField.tsx";
+import {AddPatentModal} from "@features/patentManagement/ui/AddPatentModal/AddPatentModal.tsx";
+import {Pagination} from "@features/patentSearch/ui/Pagination/Pagination.tsx";
+import {Header} from "@widgets/Header/ui/Header.tsx";
+import {Footer} from "@widgets/Footer/ui/Footer.tsx";
+import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
 
 function App() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -102,7 +101,6 @@ function App() {
       </div>
 
       <Pagination/>
-      <DatePicker/>
 
       <Footer/>
 

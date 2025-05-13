@@ -28,8 +28,8 @@ interface SearchOptions {
 
 @Injectable()
 export class PatentSearchService {
-  private readonly index = 'patents';
-  private readonly newIndex = 'patents_v2';
+  private readonly index = '.geoip_databases';
+  private readonly newIndex = 'patentsv1';
   private readonly defaultPageSize = 20;
   private readonly maxPageSize = 100;
 
@@ -44,86 +44,35 @@ export class PatentSearchService {
       });
 
       if (!newIndexExists) {
-        await this.elasticsearchService.indices.create({
-          index: this.newIndex,
-          body: {
-            settings: {
-              analysis: {
-                analyzer: {
-                  patent_analyzer: {
-                    type: 'custom',
-                    tokenizer: 'standard',
-                    filter: [
-                      'lowercase',
-                      'russian_stop',
-                      'english_stop',
-                      'length_filter',
-                      'russian_morphology',
-                      'english_morphology'
-                    ]
-                  }
-                },
-                filter: {
-                  russian_stop: {
-                    type: 'stop',
-                    stopwords: [
-                      'и', 'в', 'во', 'не', 'что', 'он', 'на', 'я', 'с',
-                      'со', 'как', 'а', 'то', 'все', 'она', 'так', 'его',
-                      'но', 'да', 'ты', 'к', 'у', 'же', 'вы', 'за', 'бы',
-                      'по', 'только', 'ее', 'мне', 'было', 'вот', 'от',
-                      'меня', 'еще', 'нет', 'о', 'из', 'ему', 'теперь',
-                      'когда', 'который', 'этот', 'наш', 'мой', 'их',
-                      'был', 'до', 'уж', 'среди'
-                    ]
-                  },
-                  english_stop: {
-                    type: 'stop',
-                    stopwords: [
-                      'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but',
-                      'by', 'for', 'if', 'in', 'into', 'is', 'it', 'no',
-                      'not', 'of', 'on', 'or', 'such', 'that', 'the',
-                      'their', 'then', 'there', 'these', 'they', 'this',
-                      'to', 'was', 'will', 'with'
-                    ]
-                  },
-                  length_filter: {
-                    type: 'length',
-                    min: 3,
-                    max: 20
-                  }
-                }
-              }
-            },
-            mappings: {
-              properties: {
-                patentNumber: { type: 'keyword' },
-                name: {
-                  type: 'text',
-                  analyzer: 'patent_analyzer',
-                  fields: {
-                    keyword: { type: 'keyword' }
-                  }
-                },
-                pdfContent: {
-                  type: 'text',
-                  analyzer: 'patent_analyzer'
-                }
-              }
+        const indexBody = {
+          mappings: {
+            properties: {
+              patentNumber: {type: 'keyword'},
+              name: {type: 'text', analyzer: 'russian'},
+              pdfContent: {type: 'text', analyzer: 'russian'}
             }
           }
+        } as const;
+
+        console.log('Creating index with body:', JSON.stringify(indexBody, null, 2));
+
+        await this.elasticsearchService.indices.create({
+          index: this.newIndex,
+          body: indexBody
         });
 
-        // Проверяем существование старого индекса
         const oldIndexExists = await this.elasticsearchService.indices.exists({
           index: this.index
-        });
+        })
 
-        // Если старый индекс существует, переносим данные
+        console.log('oldIndexExists', oldIndexExists)
+
         if (oldIndexExists) {
           await this.migrateData();
         }
       }
     } catch (error) {
+      console.log(error);
       throw new Error(`Failed to initialize Elasticsearch index: ${error.message}`);
     }
   }
@@ -143,12 +92,14 @@ export class PatentSearchService {
 
       // Создаем bulk запрос для переноса только существующих полей
       const bulkBody = response.hits.hits.flatMap(hit => [
-        { index: { _index: this.newIndex, _id: hit._id } },
+        {index: {_index: this.newIndex, _id: hit._id}},
         {
           patentNumber: hit._source.patentNumber,
           name: hit._source.name
         }
       ]);
+
+      console.log(bulkBody)
 
       if (bulkBody.length > 0) {
         await this.elasticsearchService.bulk({
@@ -238,45 +189,25 @@ export class PatentSearchService {
                   }
                 },
                 {
-                  match: {
-                    name: {
-                      query,
-                      fuzziness: 'AUTO',
-                      operator: 'and',
-                      prefix_length: 2,
-                      max_expansions: 50,
-                      boost: 2.0,  // Средний вес для названия
-                      analyzer: 'patent_analyzer'
-                    }
-                  }
+                  match: {name: {query, fuzziness: 'AUTO'}}
                 },
                 {
-                  match: {
-                    pdfContent: {
-                      query,
-                      fuzziness: 'AUTO',
-                      operator: 'and',
-                      prefix_length: 2,
-                      max_expansions: 50,
-                      boost: 1.0,  // Меньший вес для содержимого PDF
-                      analyzer: 'patent_analyzer'
-                    }
-                  }
-                }
+                  match: {pdfContent: {query, fuzziness: 'AUTO'}}
+                },
               ],
               minimum_should_match: 1
             }
           },
           sort: options.sortField ? [
-            { [options.sortField]: { order: options.sortOrder || 'desc' } }
+            {[options.sortField]: {order: options.sortOrder || 'desc'}}
           ] : [
-            { _score: { order: 'desc' } }  // Сортировка по релевантности по умолчанию
+            {_score: {order: 'desc'}}  // Сортировка по релевантности по умолчанию
           ]
         }
       });
 
-      const total = typeof response.hits.total === 'number' 
-        ? response.hits.total 
+      const total = typeof response.hits.total === 'number'
+        ? response.hits.total
         : response.hits.total.value;
 
       return {

@@ -4,31 +4,38 @@ import {PrismaService} from "../prisma/prisma.service";
 import {PatentSearchService} from "./patentSearch.service";
 import {Patent} from "@prisma/client";
 import {PdfService} from "../files/pdf.service";
+import * as fs from "node:fs";
+import {join} from "path";
 
 @Injectable()
 export class PatentService {
   private itemsPerPage = 10
 
   constructor(
-    private prismaService: PrismaService, 
+    private prismaService: PrismaService,
     private patentSearchService: PatentSearchService,
     private pdfService: PdfService
-  ) {}
+  ) {
+  }
 
   async createPatent(dto: CreatePatentDto) {
     //@ts-ignore
     dto.dateOfExpiration = new Date(dto.dateOfExpiration)
     //@ts-ignore
     dto.dateOfRegistration = new Date(dto.dateOfRegistration)
-    
+
     let patent = undefined;
     let pdfContent = undefined;
 
     try {
       // Extract PDF content if file is provided
       if (dto.patentFile) {
-        const fileBuffer = Buffer.from(dto.patentFile, 'base64');
-        pdfContent = await this.pdfService.extractTextFromPdf(fileBuffer);
+        console.log(dto.patentFile)
+        const fileBuffer = fs.readFileSync(join(process.cwd(), 'uploads', dto.patentFile));
+        console.log(fileBuffer)
+        // pdfContent = await this.pdfService.extractTextFromPdf(fileBuffer);
+        pdfContent = await this.pdfService.extractTextFromPdfWithStructure(join(process.cwd(), 'uploads', dto.patentFile));
+        console.log(pdfContent)
       }
 
       patent = await this.prismaService.patent.create({

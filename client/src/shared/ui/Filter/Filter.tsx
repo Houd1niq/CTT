@@ -32,7 +32,7 @@ export const Filter: React.FC<FilterProps> = (props) => {
     <div className="filterSection">
       <div className="filterTitle">
         {title}
-        {isActionVisible && <button onClick={onAdd}>
+        {isActionVisible && <button data-testid="add" onClick={onAdd}>
           <AddIcon className="icon"/>
         </button>}
       </div>
@@ -45,11 +45,11 @@ export const Filter: React.FC<FilterProps> = (props) => {
             <span>{option.name}</span>
           </label>
           {isActionVisible && <div className="action-buttons">
-            <button onClick={() => onEdit?.(option.name, option.id)}>
+            <button data-testid={`edit-${option.id}`} onClick={() => onEdit?.(option.name, option.id)}>
               <EditIcon className="icon"/>
             </button>
             {deletable && deletable.find(item => item.id === option.id) &&
-              <button onClick={() => onDelete?.(option.name, option.id)}>
+              <button data-testid={`delete-${option.id}`} onClick={() => onDelete?.(option.name, option.id)}>
                 <DeleteIcon className="icon"/>
               </button>}
           </div>}

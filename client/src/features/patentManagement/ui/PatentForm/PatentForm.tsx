@@ -53,8 +53,9 @@ export const PatentForm = (props: PatentFormProps) => {
   return (
     <form className="patent-form" onSubmit={handleSubmit}>
       <div>
-        <label className="patent-form-label">№ патента/свидетельства</label>
+        <label className="patent-form-label" htmlFor="patentNumber">№ патента/свидетельства</label>
         <input
+          id="patentNumber"
           type="text"
           className="patent-form-input"
           name="patentNumber"
@@ -66,8 +67,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="patent-form-label">Вид</label>
+        <label className="patent-form-label" htmlFor="patentType">Вид</label>
         <select
+          id="patentType"
           className="patent-form-input"
           value={patentTypeId}
           onChange={(e) => {
@@ -80,8 +82,9 @@ export const PatentForm = (props: PatentFormProps) => {
         </select>
       </div>
       <div>
-        <label className="patent-form-label">Название</label>
+        <label className="patent-form-label" htmlFor="patentName">Название</label>
         <input
+          id="patentName"
           type="text"
           className="patent-form-input"
           name="name"
@@ -93,8 +96,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="patent-form-label">Дата регистрации</label>
+        <label className="patent-form-label" htmlFor="dateOfRegistration">Дата регистрации</label>
         <input
+          id="dateOfRegistration"
           type="date"
           className="patent-form-input"
           name="dateOfRegistration"
@@ -106,8 +110,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="patent-form-label">Область техники</label>
+        <label className="patent-form-label" htmlFor="technologyField">Область техники</label>
         <select
+          id="technologyField"
           className="patent-form-input"
           value={technologyFieldId}
           onChange={(e) => {
@@ -120,8 +125,9 @@ export const PatentForm = (props: PatentFormProps) => {
         </select>
       </div>
       <div>
-        <label className="patent-form-label">Дата истечения патента</label>
+        <label className="patent-form-label" htmlFor="dateOfExpiration">Дата истечения патента</label>
         <input
+          id="dateOfExpiration"
           type="date"
           className="patent-form-input"
           name="dateOfExpiration"
@@ -133,8 +139,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="patent-form-label">Контактное лицо</label>
+        <label className="patent-form-label" htmlFor="contact">Контактное лицо</label>
         <input
+          id="contact"
           type="text"
           className="patent-form-input"
           name="contact"
@@ -146,8 +153,9 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div>
-        <label className="checkboxPrivate">
+        <label className="checkboxPrivate" htmlFor="isPrivate">
           <input
+            id="isPrivate"
             type="checkbox"
             checked={isPrivate}
             onChange={() => setIsPrivate(!isPrivate)}

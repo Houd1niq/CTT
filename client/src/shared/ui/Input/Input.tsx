@@ -3,27 +3,36 @@ import cls from './input.module.scss';
 import {DetailedHTMLProps, InputHTMLAttributes} from "react";
 
 type InputProps = {
-  title: string
+  title: string;
   className?: string;
-} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+  inputTitle?: string; // HTML title attribute
+} & Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'title'>
 
 export const Input = (props: InputProps) => {
   const {
     className,
     name,
-    title
+    title,
+    inputTitle,
+    id = name, // Use name as id if not provided
+    type = 'text', // Default type is text
+    ...restProps
   } = props;
+  
   return (
     <div className={cn(className)}>
-      <label htmlFor={name} className={cls.label}>
+      <label htmlFor={id} className={cls.label}>
         {title}
       </label>
       <input
         className={cls.input}
         name={name}
-        {...props}
-      >
-      </input>
+        id={id}
+        type={type}
+        role={type === 'text' ? 'textbox' : undefined}
+        title={inputTitle}
+        {...restProps}
+      />
     </div>
   );
 };

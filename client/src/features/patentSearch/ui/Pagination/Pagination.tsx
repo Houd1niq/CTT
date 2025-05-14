@@ -48,7 +48,7 @@ export const Pagination: React.FC = () => {
   }
 
   return (
-    <div className="pagination">
+    <div data-testid="pagination" className="pagination">
       <button onClick={handlePreviousPage} disabled={currentPage === 1}>
         ⬅
       </button>

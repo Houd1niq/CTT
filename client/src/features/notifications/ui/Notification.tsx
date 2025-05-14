@@ -18,7 +18,7 @@ export const Notification: React.FC = () => {
   }
 
   return (
-    <div className={`notification ${notification.type}`}>
+    <div data-testid="notification" className={`notification ${notification.type}`}>
       <p>{notification.message}</p>
     </div>
   );

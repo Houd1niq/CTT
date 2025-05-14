@@ -21,14 +21,20 @@ export const FilterModal = (props: AddFilterProps) => {
     onSubmit({id: contentToEdit?.id || 0, name})
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
   return (
     <div className="filter-modal-container">
       <div className="filter-modal">
         <Input
           title={`Введите ${title}`}
-          onInput={(e) => setName(e.currentTarget.value)}
+          onChange={handleChange}
           value={name}
-          type="text"/>
+          type="text"
+          name="filter-input"
+        />
         <div className="popupButtonsDelete">
           <button
             className="confirmDeleteButton"

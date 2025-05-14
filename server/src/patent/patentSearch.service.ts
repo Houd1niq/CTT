@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {ElasticsearchService} from '@nestjs/elasticsearch';
 import {CreatePatentDto, EditPatentDto} from "./dto/patent.dto";
+import {TEST_INDICES} from "../test/const";
 
 interface PatentSearchBody {
   patentNumber: string;
@@ -28,13 +29,13 @@ interface SearchOptions {
 
 @Injectable()
 export class PatentSearchService {
-  private readonly index = '.geoip_databases';
-  private readonly newIndex = 'patentsv1';
+  private readonly index = 'patentsv1';
+  private readonly newIndex = process.env.NODE_ENV === 'test' ? TEST_INDICES.PATENTS : 'patentsv2';
   private readonly defaultPageSize = 20;
   private readonly maxPageSize = 100;
 
   constructor(private readonly elasticsearchService: ElasticsearchService) {
-    this.initializeIndex();
+    process.env.NODE_ENV !== 'test' && this.initializeIndex();
   }
 
   private async initializeIndex() {

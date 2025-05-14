@@ -1,9 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import { Client } from '@elastic/elasticsearch';
-import { config } from 'dotenv-flow';
+import {PrismaClient} from '@prisma/client';
+import {Client} from '@elastic/elasticsearch';
+import {config} from 'dotenv-flow';
+import {TEST_INDEX_PREFIX, TEST_INDICES} from "./const";
 
 // Загружаем переменные окружения из .env.test
-config({ node_env: 'test' });
+config({node_env: 'test'});
 
 // Создаем тестовую базу данных
 export const prisma = new PrismaClient({
@@ -19,13 +20,17 @@ export const elasticsearch = new Client({
   node: process.env.ELASTICSEARCH_URL || 'http://localhost:9200',
 });
 
-// Функция для очистки тестовой базы данных
+// Константы для тестового окружения
+
+// Функция для очистки базы данных
 export async function clearDatabase() {
   const tables = await prisma.$queryRaw<
     Array<{ tablename: string }>
-  >`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+  >`SELECT tablename
+    FROM pg_tables
+    WHERE schemaname = 'public'`;
 
-  for (const { tablename } of tables) {
+  for (const {tablename} of tables) {
     if (tablename !== '_prisma_migrations') {
       await prisma.$executeRawUnsafe(
         `TRUNCATE TABLE "public"."${tablename}" CASCADE;`,
@@ -34,15 +39,45 @@ export async function clearDatabase() {
   }
 }
 
-// Функция для очистки индексов Elasticsearch
+// Функция для очистки тестовых индексов Elasticsearch
 export async function clearElasticsearch() {
-  const indices = await elasticsearch.cat.indices({ format: 'json' });
-  const systemIndices = ['.geoip_databases', '.kibana', '.security', '.apm', '.watches'];
-  
+  const indices = await elasticsearch.cat.indices({format: 'json'});
+
   for (const index of indices) {
-    // Пропускаем системные индексы
-    if (!systemIndices.some(systemIndex => index.index.startsWith(systemIndex))) {
-      await elasticsearch.indices.delete({ index: index.index });
+    // Удаляем только тестовые индексы
+    if (index.index.startsWith(TEST_INDEX_PREFIX)) {
+      try {
+        await elasticsearch.indices.delete({index: index.index});
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+}
+
+// Функция для инициализации тестовых индексов
+export async function initializeTestIndices() {
+  // Создаем тестовый индекс для патентов
+  const patentsIndexExists = await elasticsearch.indices.exists({
+    index: TEST_INDICES.PATENTS,
+  });
+
+  if (!patentsIndexExists) {
+    try {
+      await elasticsearch.indices.create({
+        index: TEST_INDICES.PATENTS,
+        body: {
+          mappings: {
+            properties: {
+              patentNumber: {type: 'keyword'},
+              name: {type: 'text', analyzer: 'russian'},
+              pdfContent: {type: 'text', analyzer: 'russian'},
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error)
     }
   }
 }
@@ -52,15 +87,18 @@ beforeAll(async () => {
   // Очищаем базу данных перед всеми тестами
   await clearDatabase();
   await clearElasticsearch();
+  await initializeTestIndices();
 });
 
 // Очистка после каждого теста
 afterEach(async () => {
   await clearDatabase();
   await clearElasticsearch();
+  await initializeTestIndices();
 });
 
-// Закрытие соединений после всех тестов
+// Очистка после всех тестов
 afterAll(async () => {
   await prisma.$disconnect();
-}); 
+  await clearElasticsearch();
+});

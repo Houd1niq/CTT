@@ -1,7 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PatentSearchService } from '../../patent/patentSearch.service';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { CreatePatentDto, EditPatentDto } from '../../patent/dto/patent.dto';
+import {Test, TestingModule} from '@nestjs/testing';
+import {PatentSearchService} from '../../patent/patentSearch.service';
+import {ElasticsearchService} from '@nestjs/elasticsearch';
+import {CreatePatentDto, EditPatentDto} from '../../patent/dto/patent.dto';
+import {TEST_INDICES} from "../../test/const";
 
 jest.setTimeout(15000); // Увеличиваем таймаут до 15 секунд
 
@@ -46,13 +47,13 @@ describe('PatentSearchService', () => {
       await service['initializeIndex']();
 
       expect(mockElasticsearchService.indices.create).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         body: {
           mappings: {
             properties: {
-              patentNumber: { type: 'keyword' },
-              name: { type: 'text', analyzer: 'russian' },
-              pdfContent: { type: 'text', analyzer: 'russian' },
+              patentNumber: {type: 'keyword'},
+              name: {type: 'text', analyzer: 'russian'},
+              pdfContent: {type: 'text', analyzer: 'russian'},
             },
           },
         },
@@ -95,7 +96,7 @@ describe('PatentSearchService', () => {
       await service.deletePatent(patentNumber);
 
       expect(mockElasticsearchService.deleteByQuery).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         body: {
           query: {
             match: {
@@ -150,7 +151,7 @@ describe('PatentSearchService', () => {
       await service.indexPatent(mockPatent, pdfContent);
 
       expect(mockElasticsearchService.index).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         body: {
           patentNumber: mockPatent.patentNumber,
           name: mockPatent.name,
@@ -165,7 +166,7 @@ describe('PatentSearchService', () => {
       await service.indexPatent(mockPatent);
 
       expect(mockElasticsearchService.index).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         body: {
           patentNumber: mockPatent.patentNumber,
           name: mockPatent.name,
@@ -184,7 +185,7 @@ describe('PatentSearchService', () => {
     it('should search patents with default options', async () => {
       const mockResponse = {
         hits: {
-          total: { value: 1 },
+          total: {value: 1},
           hits: [
             {
               _id: '1',
@@ -204,7 +205,7 @@ describe('PatentSearchService', () => {
 
       expect(result).toBeDefined();
       expect(mockElasticsearchService.search).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         from: 0,
         size: 20,
         body: expect.any(Object),
@@ -214,7 +215,7 @@ describe('PatentSearchService', () => {
     it('should search patents with custom options', async () => {
       const mockResponse = {
         hits: {
-          total: { value: 1 },
+          total: {value: 1},
           hits: [
             {
               _id: '1',
@@ -239,11 +240,11 @@ describe('PatentSearchService', () => {
 
       expect(result).toBeDefined();
       expect(mockElasticsearchService.search).toHaveBeenCalledWith({
-        index: 'patentsv1',
+        index: TEST_INDICES.PATENTS,
         from: 10,
         size: 10,
         body: expect.any(Object),
       });
     });
   });
-}); 
+});

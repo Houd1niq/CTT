@@ -1,7 +1,8 @@
 import {Test, TestingModule} from '@nestjs/testing';
 import {UserService} from '../../user/user.service';
 import {PrismaService} from '../../prisma/prisma.service';
-import {BadRequestException} from '@nestjs/common';
+
+jest.setTimeout(15000);
 
 describe('UserService', () => {
   let service: UserService;

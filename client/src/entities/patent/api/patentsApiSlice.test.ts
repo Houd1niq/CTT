@@ -67,7 +67,7 @@ describe('patentsApiSlice Integration Tests', () => {
 
       expect('data' in result).toBe(true);
       if ('data' in result && result.data) {
-        expect(result.data).toEqual({success: true});
+        expect((result as any).data).toEqual({success: true});
       }
     });
   });

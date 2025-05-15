@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
+model User {
   id               Int       @id @default(autoincrement())
   createdAt        DateTime  @default(now())
   email            String    @unique @db.VarChar(255)
@@ -18,6 +18,27 @@ model Admin {
   hashedRt         String?
   resetToken       String?
   resetTokenExpiry DateTime?
+
+  RoleId Int
+  role   Role @relation(fields: [RoleId], references: [id])
+
+  InstituteId Int?
+  institute   Institute? @relation(fields: [InstituteId], references: [id])
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String   @unique @db.VarChar(255)
+  User      User[]
+}
+
+model Institute {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  name      String   @unique @db.VarChar(255)
+  User      User[]
+  Patent    Patent[]
 }
 
 model PatentType {
@@ -48,4 +69,7 @@ model Patent {
   patentType         PatentType      @relation(fields: [PatentTypeId], references: [id])
   TechnologyFieldId  Int
   technologyField    TechnologyField @relation(fields: [TechnologyFieldId], references: [id])
+
+  InstituteId Int
+  institute   Institute @relation(fields: [InstituteId], references: [id])
 }

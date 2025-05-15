@@ -39,6 +39,10 @@ export class CreatePatentDto {
   @IsNotEmpty()
   technologyFieldId: string;
 
+  @IsString()
+  @IsNotEmpty()
+  instituteId: string;
+
   patentFile: any;
 }
 

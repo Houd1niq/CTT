@@ -21,7 +21,7 @@ export class SchedulerService implements OnModuleInit {
       const startOfNextDay = new Date(startOfTomorrow);
       startOfNextDay.setDate(startOfTomorrow.getDate() + 1);
 
-      const admins = await this.prisma.admin.findMany()
+      const admins = await this.prisma.user.findMany()
 
       const patents = await this.prisma.patent.findMany({
         where: {

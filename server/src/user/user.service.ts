@@ -7,7 +7,7 @@ export class UserService {
   }
 
   async getUserInfo(email: string) {
-    const user = this.prisma.admin.findUnique({
+    const user = this.prisma.user.findUnique({
       where: {
         email
       },

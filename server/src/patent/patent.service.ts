@@ -52,6 +52,11 @@ export class PatentService {
               id: Number(dto.patentTypeId),
             },
           },
+          institute: {
+            connect: {
+              id: Number(dto.instituteId),
+            }
+          },
           technologyField: {
             connect: {
               id: Number(dto.technologyFieldId),

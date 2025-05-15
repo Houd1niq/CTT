@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   async signIn(dto: AuthDto): Promise<TokenTypes> {
-    const candidate = await this.prisma.admin.findUnique({
+    const candidate = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
       },
@@ -35,7 +35,7 @@ export class AuthService {
 
   async logout(email: string) {
     // await this.revokedTokensService.revoke(userId);
-    await this.prisma.admin.update({
+    await this.prisma.user.update({
       where: {email},
       data: {
         hashedRt: null,
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   async refresh(id: number, email: string, rt: string) {
-    const candidate = await this.prisma.admin.findUnique({
+    const candidate = await this.prisma.user.findUnique({
       where: {
         email,
       },
@@ -61,7 +61,7 @@ export class AuthService {
 
   async updateHashRtInDB(email: string, rt: string) {
     const hash = await this.hashData(rt);
-    await this.prisma.admin.update({
+    await this.prisma.user.update({
       where: {email},
       data: {hashedRt: hash},
     });

@@ -15,6 +15,7 @@ import {SchedulerModule} from './scheduler/scheduler.module';
 import * as process from "process";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import {join} from "path";
+import {InstituteModule} from './institute/institute.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import {join} from "path";
     FilesModule,
     UserModule,
     EmailModule,
+    InstituteModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
     }),

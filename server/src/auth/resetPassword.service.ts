@@ -15,7 +15,7 @@ export class ResetPasswordService {
 
   async generateResetToken(email: string) {
     const token = String(Math.floor(100000 + Math.random() * 900000));
-    const res = await this.prisma.admin.update({
+    const res = await this.prisma.user.update({
       where: {email},
       data: {
         resetToken: token,
@@ -27,7 +27,7 @@ export class ResetPasswordService {
   }
 
   async checkResetToken(email: string, token: string) {
-    const user = await this.prisma.admin.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {email},
     });
     if (
@@ -35,7 +35,7 @@ export class ResetPasswordService {
       user.resetToken !== token
     ) {
       if (user.resetTokenExpiry < new Date()) {
-        await this.prisma.admin.update({
+        await this.prisma.user.update({
           where: {email},
           data: {
             resetToken: null,
@@ -49,7 +49,7 @@ export class ResetPasswordService {
   }
 
   async resetPassword(email: string, password: string, token: string) {
-    const user = await this.prisma.admin.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {email},
     });
     if (
@@ -57,7 +57,7 @@ export class ResetPasswordService {
       user.resetToken !== token
     ) {
       if (user.resetTokenExpiry < new Date()) {
-        await this.prisma.admin.update({
+        await this.prisma.user.update({
           where: {email},
           data: {
             resetToken: null,
@@ -69,7 +69,7 @@ export class ResetPasswordService {
     }
 
     const hash = await bcrypt.hash(password, 10);
-    await this.prisma.admin.update({
+    await this.prisma.user.update({
       where: {email},
       data: {
         hash,

@@ -4,6 +4,7 @@ import {useEffect} from "react";
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
 import {useModalOverflow} from "@shared/utils/hooks.ts";
+import {instituteApiSlice} from "@entities/institute";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -16,6 +17,7 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
   const [trigger, response] = patentsApiSlice.useCreatePatentMutation()
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
+  const {data: institutes} = instituteApiSlice.useGetInstitutesQuery('')
 
   useModalOverflow(visible)
 
@@ -47,6 +49,7 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
         <PatentForm
           technologyFields={technologyFields}
           patentTypes={patentTypes}
+          institutes={institutes}
           onSubmit={handleSubmit}
           formType="add"/>
       </div>

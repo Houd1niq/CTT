@@ -4,7 +4,7 @@ import {Input} from "../Input/Input.tsx";
 import {useModalOverflow} from "@shared/utils/hooks.ts";
 
 type AddFilterProps = {
-  title: 'вид патента' | 'область техники'
+  title: 'вид патента' | 'область техники' | 'институт';
   visible: boolean;
   onClose: () => void;
   onSubmit: (arg: { id: number, name: string }) => void

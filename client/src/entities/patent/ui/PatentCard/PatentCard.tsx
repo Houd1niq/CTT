@@ -23,6 +23,8 @@ const generatePatentContent = (patent: Patent) => {
     {label: 'Название', value: patent.name,},
     {label: 'Дата регистрации', value: formatDate(patent.dateOfRegistration)},
     {label: 'Область техники', value: patent.technologyField.name},
+    {label: 'Институт', value: patent.institute.name},
+    {label: 'Контакты', value: patent.contact},
   ]
 }
 

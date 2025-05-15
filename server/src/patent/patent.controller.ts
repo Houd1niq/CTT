@@ -60,9 +60,10 @@ export class PatentController {
     @Query("page") page: string,
     @Query("sort") sort: string,
     @Query("technologyFieldId") technologyFieldId: string,
-    @Query("patentTypeId") patentTypeId: string
+    @Query("patentTypeId") patentTypeId: string,
+    @Query("instituteId") instituteId: string
   ) {
-    return await this.patentService.getAllPatents(page, sort, technologyFieldId, patentTypeId)
+    return await this.patentService.getAllPatents(page, sort, technologyFieldId, patentTypeId, instituteId)
   }
 
   @Get('search')
@@ -70,9 +71,10 @@ export class PatentController {
     @Query('query') query: string,
     @Query('sort') sort: string,
     @Query('technologyFieldId') technologyFieldId: string,
-    @Query('patentTypeId') patentTypeId: string
+    @Query('patentTypeId') patentTypeId: string,
+    @Query('instituteId') instituteId: string
   ) {
-    return await this.patentService.searchPatent(query, sort, technologyFieldId, patentTypeId)
+    return await this.patentService.searchPatent(query, sort, technologyFieldId, patentTypeId, instituteId)
   }
 
   @Delete(':patentNumber')

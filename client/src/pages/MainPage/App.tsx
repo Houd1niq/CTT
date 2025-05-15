@@ -11,6 +11,7 @@ import {Header} from "@widgets/Header/ui/Header.tsx";
 import {Footer} from "@widgets/Footer/ui/Footer.tsx";
 import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
 import {Button} from "@shared/ui/Button/Button.tsx";
+import {InstituteFilter} from "@features/patentSearch";
 
 function App() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -73,6 +74,7 @@ function App() {
           <div className="filterHeading">Фильтрация</div>
           <PatentTypeFilter/>
           <TechnologyFieldFilter/>
+          <InstituteFilter/>
         </div>
 
         <div className="mainContainer">

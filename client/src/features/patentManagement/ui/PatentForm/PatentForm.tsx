@@ -9,14 +9,16 @@ interface PatentFormProps {
   onSubmit: (formData: FormData) => void;
   technologyFields?: { id: number; name: string }[];
   patentTypes?: { id: number; name: string }[];
+  institutes?: { id: number; name: string }[];
   patent?: Patent;
 }
 
 export const PatentForm = (props: PatentFormProps) => {
-  const {formType, onSubmit, technologyFields, patentTypes, patent} = props
+  const {formType, onSubmit, technologyFields, patentTypes, patent, institutes} = props
   const [isPrivate, setIsPrivate] = useState<boolean>(patent?.isPrivate || false)
   const [technologyFieldId, setTechnologyFieldId] = useState<number>(patent?.technologyField.id || 1)
   const [patentTypeId, setPatentTypeId] = useState<number>(patent?.patentType.id || 1)
+  const [instituteId, setInstituteId] = useState<number>(patent?.institute.id || 1)
   const [patentNumber, setPatentNumber] = useState<string>(patent?.patentNumber || '')
   const [patentName, setPatentName] = useState<string>(patent?.name || '')
   const [patentDateOfRegistration, setPatentDateOfRegistration] = useState<string>(patent?.dateOfRegistration || '')
@@ -47,6 +49,7 @@ export const PatentForm = (props: PatentFormProps) => {
     formData.append('technologyFieldId', technologyFieldId.toString())
     formData.append('dateOfExpiration', patentDateOfExpiration)
     formData.append('contact', contact)
+    formData.append('instituteId', instituteId.toString())
 
     onSubmit(formData)
   }
@@ -68,21 +71,6 @@ export const PatentForm = (props: PatentFormProps) => {
         />
       </div>
       <div className="patent-form-field">
-        <label className="patent-form-label" htmlFor="patentType">Вид</label>
-        <select
-          id="patentType"
-          className="patent-form-input"
-          value={patentTypeId}
-          onChange={(e) => {
-            setPatentTypeId(Number(e.target.value));
-          }}
-        >
-          {patentTypes?.map(patentType => (
-            <option key={patentType.id} value={patentType.id}>{patentType.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="patentName">Название</label>
         <input
           id="patentName"
@@ -93,20 +81,6 @@ export const PatentForm = (props: PatentFormProps) => {
           required
           onChange={(e) => {
             setPatentName(e.target.value);
-          }}
-        />
-      </div>
-      <div className="patent-form-field">
-        <label className="patent-form-label" htmlFor="dateOfRegistration">Дата регистрации</label>
-        <input
-          id="dateOfRegistration"
-          type="date"
-          className="patent-form-input"
-          name="dateOfRegistration"
-          value={patentDateOfRegistration.split('T')[0]}
-          required
-          onChange={(e) => {
-            setPatentDateOfRegistration(e.target.value);
           }}
         />
       </div>
@@ -124,6 +98,51 @@ export const PatentForm = (props: PatentFormProps) => {
             <option key={technologyField.id} value={technologyField.id}>{technologyField.name}</option>
           ))}
         </select>
+      </div>
+      <div className="patent-form-field">
+        <label className="patent-form-label" htmlFor="patentType">Вид</label>
+        <select
+          id="patentType"
+          className="patent-form-input"
+          value={patentTypeId}
+          onChange={(e) => {
+            setPatentTypeId(Number(e.target.value));
+          }}
+        >
+          {patentTypes?.map(patentType => (
+            <option key={patentType.id} value={patentType.id}>{patentType.name}</option>
+          ))}
+        </select>
+      </div>
+      <div className="patent-form-field">
+        <label className="patent-form-label" htmlFor="institute">Институт</label>
+        <select
+          id="institute"
+          className="patent-form-input"
+          value={instituteId}
+          onChange={(e) => {
+            setInstituteId(Number(e.target.value));
+          }}
+        >
+          {institutes?.map(institute => (
+            <option key={institute.id} value={institute.id}>{institute.name}</option>
+          ))}
+        </select>
+
+      </div>
+      <div className="patent-form-field">
+        <label className="patent-form-label" htmlFor="dateOfRegistration">Дата регистрации</label>
+        <input
+          id="dateOfRegistration"
+          type="date"
+          className="patent-form-input"
+          name="dateOfRegistration"
+          value={patentDateOfRegistration.split('T')[0]}
+          required
+          onChange={(e) => {
+            setPatentDateOfRegistration(e.target.value);
+          }}
+        />
       </div>
       <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="dateOfExpiration">Дата истечения патента</label>

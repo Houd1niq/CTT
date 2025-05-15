@@ -6,6 +6,7 @@ import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyF
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
 import {Patent} from "@entities/patent";
 import {useModalOverflow} from "@shared/utils/hooks.ts";
+import {instituteApiSlice} from "@entities/institute";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -19,6 +20,7 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
   const [trigger, response] = patentsApiSlice.useEditPatentMutation()
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
+  const {data: institutes} = instituteApiSlice.useGetInstitutesQuery('')
 
   useModalOverflow(visible)
 
@@ -55,6 +57,7 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
         <PatentForm
           technologyFields={technologyFields}
           patentTypes={patentTypes}
+          institutes={institutes}
           onSubmit={handleSubmit}
           formType="edit"
           patent={patent}

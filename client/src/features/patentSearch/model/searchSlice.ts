@@ -4,6 +4,7 @@ import {SearchSliceState} from "@features/patentSearch/model/types.ts";
 const initialState: SearchSliceState = {
   patentTypeFilters: [],
   technologyFieldFilters: [],
+  instituteFilters: [],
   page: 1
 };
 
@@ -37,6 +38,14 @@ const SearchSlice = createSlice({
       state.technologyFieldFilters = state.technologyFieldFilters.filter((filter) => filter !== action.payload);
     },
 
+    setInstituteFilter(state, action: PayloadAction<number>) {
+      state.instituteFilters = [...state.instituteFilters, action.payload];
+    },
+
+    removeInstituteFilter(state, action: PayloadAction<number>) {
+      state.instituteFilters = state.instituteFilters.filter((filter) => filter !== action.payload);
+    },
+
     setPatentTypeFilter(state, action: PayloadAction<number>) {
       state.patentTypeFilters = [...state.patentTypeFilters, action.payload];
     },
@@ -57,5 +66,7 @@ export const {
   setPatentSort,
   setSearchQuery,
   setPage,
-  setTotalPages
+  setTotalPages,
+  setInstituteFilter,
+  removeInstituteFilter
 } = SearchSlice.actions;

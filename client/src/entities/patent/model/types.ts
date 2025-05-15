@@ -16,6 +16,10 @@ export interface Patent {
     id: number,
     name: string
   }
+  institute: {
+    id: number,
+    name: string
+  }
 }
 
 export interface PatentsBody {
@@ -23,6 +27,7 @@ export interface PatentsBody {
   sort?: string,
   technologyFieldId?: number[],
   patentTypeId?: number[],
+  instituteId?: number[]
 }
 
 export interface PatentsSearchBody extends Omit<PatentsBody, 'page'> {

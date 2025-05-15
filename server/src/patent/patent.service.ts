@@ -30,12 +30,7 @@ export class PatentService {
     try {
       // Extract PDF content if file is provided
       if (dto.patentFile) {
-        console.log(dto.patentFile)
-        const fileBuffer = fs.readFileSync(join(process.cwd(), 'uploads', dto.patentFile));
-        console.log(fileBuffer)
-        // pdfContent = await this.pdfService.extractTextFromPdf(fileBuffer);
         pdfContent = await this.pdfService.extractTextFromPdfWithStructure(join(process.cwd(), 'uploads', dto.patentFile));
-        console.log(pdfContent)
       }
 
       patent = await this.prismaService.patent.create({
@@ -73,13 +68,14 @@ export class PatentService {
     return patent
   }
 
-  async searchPatent(query: string, sort: string, technologyFieldId: string, patentTypeId: string) {
+  async searchPatent(query: string, sort: string, technologyFieldId: string, patentTypeId: string, instituteId: string) {
     const result = await this.patentSearchService.searchPatent(query)
     //@ts-ignore
     const patentNumbers: string[] = result.hits.map(hit => hit._source.patentNumber)
 
     const technologyFields = technologyFieldId ? technologyFieldId.split(',').map(Number) : undefined
     const patentTypeIds = patentTypeId ? patentTypeId.split(',').map(Number) : undefined
+    const instituteIds = instituteId ? instituteId.split(',').map(Number) : undefined
 
     const patents = await this.prismaService.patent.findMany({
       orderBy: {
@@ -98,11 +94,17 @@ export class PatentService {
           id: {
             in: patentTypeIds
           }
+        },
+        institute: {
+          id: {
+            in: instituteIds
+          }
         }
       },
       include: {
         patentType: true,
-        technologyField: true
+        technologyField: true,
+        institute: true
       },
     })
 
@@ -110,9 +112,11 @@ export class PatentService {
     return patents
   }
 
-  async getAllPatents(page: string = '1', sort: string, technologyFieldId: string, patentTypeId: string) {
+  async getAllPatents(page: string = '1', sort: string, technologyFieldId: string, patentTypeId: string, instituteId: string) {
     const technologyFields = technologyFieldId ? technologyFieldId.split(',').map(Number) : undefined
     const patentTypeIds = patentTypeId ? patentTypeId.split(',').map(Number) : undefined
+    const instituteIds = instituteId ? instituteId.split(',').map(Number) : undefined
+
     const patents = await this.prismaService.patent.findMany({
       skip: (Number(page) - 1) * this.itemsPerPage,
       take: this.itemsPerPage,
@@ -129,11 +133,17 @@ export class PatentService {
           id: {
             in: patentTypeIds
           }
+        },
+        institute: {
+          id: {
+            in: instituteIds
+          }
         }
       },
       include: {
         patentType: true,
-        technologyField: true
+        technologyField: true,
+        institute: true
       }
     })
 
@@ -147,6 +157,11 @@ export class PatentService {
         patentType: {
           id: {
             in: patentTypeIds
+          }
+        },
+        institute: {
+          id: {
+            in: instituteIds
           }
         }
       }
@@ -207,6 +222,11 @@ export class PatentService {
         technologyField: {
           connect: {
             id: Number(dto.technologyFieldId),
+          },
+        },
+        institute: {
+          connect: {
+            id: Number(dto.instituteId),
           },
         },
       }

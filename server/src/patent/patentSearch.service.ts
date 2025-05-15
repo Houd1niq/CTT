@@ -55,8 +55,6 @@ export class PatentSearchService {
           }
         } as const;
 
-        console.log('Creating index with body:', JSON.stringify(indexBody, null, 2));
-
         await this.elasticsearchService.indices.create({
           index: this.newIndex,
           body: indexBody
@@ -65,8 +63,6 @@ export class PatentSearchService {
         const oldIndexExists = await this.elasticsearchService.indices.exists({
           index: this.index
         })
-
-        console.log('oldIndexExists', oldIndexExists)
 
         if (oldIndexExists) {
           await this.migrateData();
@@ -99,8 +95,6 @@ export class PatentSearchService {
           name: hit._source.name
         }
       ]);
-
-      console.log(bulkBody)
 
       if (bulkBody.length > 0) {
         await this.elasticsearchService.bulk({

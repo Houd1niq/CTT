@@ -17,7 +17,6 @@ export class PdfService {
 
   async extractTextFromPdfWithStructure(filePath: string): Promise<string> {
     try {
-      console.log(filePath)
       return await parsePdfWithStructure(filePath);
     } catch (error) {
       console.error('Error extracting text from PDF:', error);
@@ -33,12 +32,8 @@ export async function parsePdfWithStructure(filePath: string): Promise<string> {
     pdfParser.on('pdfParser_dataError', err => reject(err.parserError));
 
     pdfParser.on('pdfParser_dataReady', pdfData => {
-      console.log(pdfData)
       const pages = pdfData.Pages;
 
-      console.log('pages', pages)
-
-      // Пример: собрать текст всех страниц с позиционированием
       const fullText = pages.map(page => {
         const texts = page.Texts.map(textObj => {
           return decodeURIComponent(textObj.R[0].T);

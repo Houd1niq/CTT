@@ -81,4 +81,8 @@ export class EditPatentDto {
   @IsString()
   @IsNotEmpty()
   technologyFieldId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  instituteId: string;
 }

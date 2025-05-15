@@ -11,6 +11,7 @@ import './patent-container.scss'
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
 import {Patent} from "@entities/patent";
+import {instituteApiSlice} from "@entities/institute";
 
 type PatentContainerProps = {
   className?: string;
@@ -37,17 +38,21 @@ export const PatentContainer = (props: PatentContainerProps) => {
 
   const technologyFieldsFilter = useAppSelector(state => state.searchReducer.technologyFieldFilters)
   const patentTypeFilters = useAppSelector(state => state.searchReducer.patentTypeFilters)
+  const instituteFilters = useAppSelector(state => state.searchReducer.instituteFilters)
   const patentSort = useAppSelector(state => state.searchReducer.patentSort)
   const searchQuery = useAppSelector(state => state.searchReducer.searchQuery)
   const page = useAppSelector(state => state.searchReducer.page)
 
   const {isLoading: patentTypesIsLoading} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {isLoading: technologyFieldsIsLoading} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
+  const {isLoading: institutesIsLoading} = instituteApiSlice.useGetInstitutesQuery('')
 
   const isAdmin = Boolean(user?.id)
 
   useEffect(() => {
-    if ((!patentTypesIsLoading || !patentTypeFilters.length) && (!technologyFieldsIsLoading || !technologyFieldsFilter.length)) {
+    if ((!patentTypesIsLoading || !patentTypeFilters.length)
+      && (!technologyFieldsIsLoading || !technologyFieldsFilter.length)
+      && (!institutesIsLoading || !instituteFilters.length)) {
 
       if (searchQuery) {
         fetchPatentsSearch({
@@ -55,17 +60,19 @@ export const PatentContainer = (props: PatentContainerProps) => {
           sort: patentSort,
           technologyFieldId: technologyFieldsFilter,
           patentTypeId: patentTypeFilters,
+          instituteId: instituteFilters
         })
       } else {
         fetchPatents({
           technologyFieldId: technologyFieldsFilter,
           patentTypeId: patentTypeFilters,
+          instituteId: instituteFilters,
           sort: patentSort,
           page: page
         })
       }
     }
-  }, [technologyFieldsFilter, patentTypeFilters, patentTypesIsLoading, technologyFieldsIsLoading, patentSort, searchQuery, page]);
+  }, [technologyFieldsFilter, patentTypeFilters, instituteFilters, institutesIsLoading, patentTypesIsLoading, technologyFieldsIsLoading, patentSort, searchQuery, page]);
 
   useEffect(() => {
     if (searchQuery) {

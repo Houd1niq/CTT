@@ -1,4 +1,5 @@
 import './delete-modal.scss'
+import {useModalOverflow} from "@shared/utils/hooks.ts";
 
 type DeleteModalProps<T> = {
   // patentToDelete?: Patent;
@@ -12,6 +13,8 @@ type DeleteModalProps<T> = {
 
 export const DeleteModal = <T = number>(props: DeleteModalProps<T>) => {
   const {visible, onClose, onSubmit, title, name, identifier} = props;
+
+  useModalOverflow(visible)
 
   if (!visible || !identifier) return null
 

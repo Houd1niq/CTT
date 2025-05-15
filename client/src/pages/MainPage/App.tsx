@@ -10,6 +10,7 @@ import {Pagination} from "@features/patentSearch/ui/Pagination/Pagination.tsx";
 import {Header} from "@widgets/Header/ui/Header.tsx";
 import {Footer} from "@widgets/Footer/ui/Footer.tsx";
 import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
+import {Button} from "@shared/ui/Button/Button.tsx";
 
 function App() {
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
@@ -79,7 +80,7 @@ function App() {
             {/*Фильтры на мобилке*/}
             <div className="filterButtonPopup">
               <button className="filterButton" onClick={toggleFilters}>
-                <span className="hamburgerIcon">☰</span> Фильтрация
+                <span className="hamburgerIcon">☰</span>
               </button>
               {showFilters && (
                 <div ref={popupRef} className="popupContainerFilter">
@@ -91,9 +92,9 @@ function App() {
 
             <SearchField/>
             <SortContainer/>
-            {user && <button className="button addButton" onClick={handleAddButtonClick}>
+            {user && <Button className="addButton" onClick={handleAddButtonClick}>
               Добавить
-            </button>}
+            </Button>}
           </div>
 
           <PatentContainer/>

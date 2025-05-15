@@ -89,6 +89,17 @@
     margin-left: 8px;
     width: 96.5%;
 
+    .adminButtons {
+      .editButton, .deleteButton {
+        max-width: none;
+      }
+    }
+
+    .buttonsCard {
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .cardRow {
       margin-bottom: 1px;
       padding-bottom: 1px;
@@ -105,7 +116,7 @@
     }
 
     .moreButtonCard {
-      max-width: 120px;
+      max-width: none;
 
       &:hover {
         background-color: #0162bb;

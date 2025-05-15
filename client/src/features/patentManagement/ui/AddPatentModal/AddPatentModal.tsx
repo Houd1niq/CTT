@@ -3,6 +3,7 @@ import {patentsApiSlice} from "@entities/patent/api/patentsApiSlice.ts";
 import {useEffect} from "react";
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
+import {useModalOverflow} from "@shared/utils/hooks.ts";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -15,6 +16,8 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
   const [trigger, response] = patentsApiSlice.useCreatePatentMutation()
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
+
+  useModalOverflow(visible)
 
   const handleCloseAddPopup = (forceClose: boolean = false) => {
     if (!forceClose) {

@@ -2,6 +2,7 @@ import {ChangeEvent, useState, DragEvent, FormEvent} from "react";
 import UploadIcon from '@shared/assets/icons/icons8-upload-file-48.png'
 import {Patent} from "@entities/patent";
 import './patent-form.scss'
+import {Button} from "@shared/ui/Button/Button.tsx";
 
 interface PatentFormProps {
   formType: 'add' | 'edit';
@@ -52,7 +53,7 @@ export const PatentForm = (props: PatentFormProps) => {
 
   return (
     <form className="patent-form" onSubmit={handleSubmit}>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="patentNumber">№ патента/свидетельства</label>
         <input
           id="patentNumber"
@@ -66,7 +67,7 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="patentType">Вид</label>
         <select
           id="patentType"
@@ -81,7 +82,7 @@ export const PatentForm = (props: PatentFormProps) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="patentName">Название</label>
         <input
           id="patentName"
@@ -95,7 +96,7 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="dateOfRegistration">Дата регистрации</label>
         <input
           id="dateOfRegistration"
@@ -109,7 +110,7 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="technologyField">Область техники</label>
         <select
           id="technologyField"
@@ -124,7 +125,7 @@ export const PatentForm = (props: PatentFormProps) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="dateOfExpiration">Дата истечения патента</label>
         <input
           id="dateOfExpiration"
@@ -138,7 +139,7 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="contact">Контактное лицо</label>
         <input
           id="contact"
@@ -152,7 +153,7 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div>
+      <div className="patent-form-field">
         <label className="checkboxPrivate" htmlFor="isPrivate">
           <input
             id="isPrivate"
@@ -192,9 +193,9 @@ export const PatentForm = (props: PatentFormProps) => {
           </div>
         </div>
       )}
-      <button type="submit" className="patent-form-submit button">
+      <Button type="submit" className="patent-form-submit">
         {formType === 'edit' ? 'Обновить патент' : 'Добавить патент'}
-      </button>
+      </Button>
     </form>
   );
 };

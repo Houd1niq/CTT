@@ -5,6 +5,7 @@ import './edit-patent-modal.scss'
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
 import {Patent} from "@entities/patent";
+import {useModalOverflow} from "@shared/utils/hooks.ts";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -18,6 +19,8 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
   const [trigger, response] = patentsApiSlice.useEditPatentMutation()
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
+
+  useModalOverflow(visible)
 
   const handleCloseEditPopup = (forceClose: boolean = false) => {
     if (!forceClose) {

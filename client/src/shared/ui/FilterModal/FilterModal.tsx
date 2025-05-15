@@ -1,6 +1,7 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import './filter-modal.scss'
 import {Input} from "../Input/Input.tsx";
+import {useModalOverflow} from "@shared/utils/hooks.ts";
 
 type AddFilterProps = {
   title: 'вид патента' | 'область техники'
@@ -14,6 +15,12 @@ export const FilterModal = (props: AddFilterProps) => {
   const {visible, onClose, title, onSubmit, contentToEdit} = props;
 
   const [name, setName] = useState<string>(contentToEdit?.name || '')
+
+  useEffect(() => {
+    setName(contentToEdit?.name || '')
+  }, [contentToEdit]);
+
+  useModalOverflow(visible)
 
   if (!visible) return null
 

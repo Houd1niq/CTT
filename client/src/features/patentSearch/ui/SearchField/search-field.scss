@@ -17,7 +17,7 @@
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(77, 77, 77);
-    padding: 4px 0 0 10px;
+    padding-left: 10px;
     box-sizing: border-box;
     text-align: left;
     font-family: Montserrat, sans-serif;
@@ -28,57 +28,62 @@
       font-size: 18px;
       line-height: 17px;
       color: rgb(77, 77, 77);
-      text-align: center;
-      transform: translateX(-17px);
+      //text-align: center;
+      //transform: translateX(-17px);
     }
   }
 }
 
 @media (max-width: 425px) {
   .search {
-    width: 244px;
-    flex-direction: row;
+    width: auto;
+    flex: 1 1 0;
+    //flex-shrink: 0;
+    //flex-grow: 1;
+    //padding-right: 10px;
+    //flex-direction: row;
 
     & > .searchLabel {
       font-size: 12px;
-      margin: 20px 10px 0 21px;
+      margin: 0;
+      //margin: 0 10px 0 0;
       width: 0;
-      flex: 0 0 15%;
+      //flex: 0 0 15%;
     }
 
 
     & > .searchInput {
-      width: 265px;
+      width: auto;
       height: 35px;
-      margin: 10px 0 0 0;
-      flex: 0 1 29.5%;
+      margin: 0;
+      //flex: 0 1 29.5%;
 
       &::placeholder {
         font-size: 12px;
-        transform: translateX(-26px);
+        //transform: translateX(-26px);
       }
     }
   }
 }
 
-@media (max-width: 375px) {
-  .search {
-    width: 217px;
-
-    & > .searchLabel {
-      font-size: 12px;
-      margin: 20px 10px 0 12px;
-    }
-
-    & > .searchInput {
-      width: 172px;
-      height: 35px;
-      margin: 10px 0 0 0;
-
-      &::placeholder {
-        font-size: 12px;
-        transform: translateX(-9px);
-      }
-    }
-  }
-}
+//@media (max-width: 375px) {
+//  .search {
+//    //width: 217px;
+//
+//    & > .searchLabel {
+//      font-size: 12px;
+//      //margin: 20px 10px 0 12px;
+//    }
+//
+//    & > .searchInput {
+//      //width: 172px;
+//      height: 35px;
+//      margin: 10px 0 0 0;
+//
+//      &::placeholder {
+//        font-size: 12px;
+//        transform: translateX(-9px);
+//      }
+//    }
+//  }
+//}

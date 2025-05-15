@@ -83,20 +83,20 @@ export const PatentTypeFilter = () => {
         isActionVisible={Boolean(user)}
       />
 
-      {filterModalVisible && <FilterModal
+      <FilterModal
         contentToEdit={itemToEdit ? itemToEdit : undefined}
         title="вид патента"
         visible={filterModalVisible}
         onClose={closeFilterModal}
-        onSubmit={submitHandler}/>}
+        onSubmit={submitHandler}/>
 
-      {deleteModalVisible && <DeleteModal
+      <DeleteModal
         visible={deleteModalVisible}
         onClose={closeDeleteModal}
         onSubmit={deleteTrigger}
         name={itemToDelete?.name}
         identifier={itemToDelete?.id}
-        title="Вы уверены, что хотите удалить тип патента"/>}
+        title="Вы уверены, что хотите удалить тип патента"/>
     </div>
   );
 };

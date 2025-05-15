@@ -7,7 +7,7 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  align-self: flex-end;
+  //align-self: flex-end;
   transition: background-color 0.3s ease;
 
   background-color: rgb(15, 73, 138);
@@ -22,5 +22,11 @@
 
   &:hover {
     background-color: #dc7777;
+  }
+}
+
+@media (max-width: 425px) {
+  .button {
+    height: 36px;
   }
 }

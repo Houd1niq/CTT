@@ -86,20 +86,20 @@ export const TechnologyFieldFilter = () => {
         isActionVisible={Boolean(user)}
       />
 
-      {filterModalVisible && <FilterModal
+      <FilterModal
         contentToEdit={itemToEdit ? itemToEdit : undefined}
         title="область техники"
         visible={filterModalVisible}
         onClose={closeFilterModal}
-        onSubmit={submitHandler}/>}
+        onSubmit={submitHandler}/>
 
-      {deleteModalVisible && <DeleteModal
+      <DeleteModal
         visible={deleteModalVisible}
         onClose={closeDeleteModal}
         onSubmit={deleteTrigger}
         name={itemToDelete?.name}
         identifier={itemToDelete?.id}
-        title="Вы уверены, что хотите удалить обалсть техники"/>}
+        title="Вы уверены, что хотите удалить обалсть техники"/>
     </div>
   );
 };

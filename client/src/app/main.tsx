@@ -10,6 +10,7 @@ import {Provider} from 'react-redux'
 import {store} from "./store/store.ts";
 import {Notification} from "@features/notifications/ui/Notification.tsx";
 import Reset from "../pages/Reset/Reset.tsx";
+import Admin from "../pages/Admin/Admin.tsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: '/confirm',
     element: <EmailConfirm/>,
+  },
+  {
+    path: '/admin',
+    element: <Admin/>,
   },
 ]);
 

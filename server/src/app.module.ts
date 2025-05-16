@@ -1,4 +1,5 @@
 import {Module} from "@nestjs/common";
+import {ConfigModule} from "@nestjs/config";
 import {PrismaModule} from "./prisma/prisma.module";
 import {AuthModule} from "./auth/auth.module";
 // import { ServeStaticModule } from '@nestjs/serve-static';
@@ -17,9 +18,13 @@ import {ServeStaticModule} from "@nestjs/serve-static";
 import {join} from "path";
 import {InstituteModule} from './institute/institute.module';
 import {AdminModule} from './admin/admin.module';
+import {LoggerModule} from "./logger/logger.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PrismaModule,
     AuthModule,
     PatentModule,
@@ -46,6 +51,7 @@ import {AdminModule} from './admin/admin.module';
       },
     }),
     SchedulerModule,
+    LoggerModule
   ],
   controllers: [],
 })

@@ -26,6 +26,7 @@
     "@elastic/elasticsearch": "^8.17.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^9.0.0",
     "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
@@ -53,7 +54,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "sanitize-html": "^2.17.0"
+    "sanitize-html": "^2.17.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

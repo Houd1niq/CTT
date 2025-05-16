@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id               Int       @id @default(autoincrement())
-  createdAt        DateTime  @default(now())
-  email            String    @unique @db.VarChar(255)
-  fullName         String?
-  hash             String
-  hashedRt         String?
-  resetToken       String?
-  resetTokenExpiry DateTime?
+  id                     Int       @id @default(autoincrement())
+  createdAt              DateTime  @default(now())
+  email                  String    @unique @db.VarChar(255)
+  fullName               String?
+  hash                   String
+  hashedRt               String?
+  resetToken             String?
+  resetTokenExpiry       DateTime?
+  authConfirmToken       String?
+  authConfirmTokenExpiry DateTime?
 
   RoleId Int
   role   Role @relation(fields: [RoleId], references: [id])
@@ -57,19 +59,21 @@ model TechnologyField {
 }
 
 model Patent {
-  id                 Int             @id @default(autoincrement())
-  createdAt          DateTime        @default(now())
-  patentNumber       String          @unique @db.VarChar(255)
-  name               String          @db.VarChar(255)
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  patentNumber       String   @unique @db.VarChar(255)
+  name               String   @db.VarChar(255)
   dateOfRegistration DateTime
   dateOfExpiration   DateTime
   contact            String
   isPrivate          Boolean
-  patentLink         String          @unique
-  PatentTypeId       Int
-  patentType         PatentType      @relation(fields: [PatentTypeId], references: [id])
-  TechnologyFieldId  Int
-  technologyField    TechnologyField @relation(fields: [TechnologyFieldId], references: [id])
+  patentLink         String   @unique
+
+  PatentTypeId Int
+  patentType   PatentType @relation(fields: [PatentTypeId], references: [id])
+
+  TechnologyFieldId Int
+  technologyField   TechnologyField @relation(fields: [TechnologyFieldId], references: [id])
 
   InstituteId Int
   institute   Institute @relation(fields: [InstituteId], references: [id])

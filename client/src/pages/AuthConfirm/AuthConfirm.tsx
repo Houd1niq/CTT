@@ -1,36 +1,25 @@
 import React, {useState, useEffect} from 'react';
-import './EmailConfirm.scss';
+import './auth-confirm.scss';
 import {useAppDispatch, useAppSelector} from "@shared/utils/hooks.ts";
 import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
 import {useNavigate} from "react-router-dom";
-import {setRecoveryToken} from "@features/auth/model/authSlice.ts";
+import {setAccessToken} from "@features/auth/model/authSlice.ts";
 import {useNotification} from "@shared/model/notification/notification-hooks.ts";
 
-const EmailConfirm: React.FC = () => {
+const AuthConfirm: React.FC = () => {
   const [code, setCode] = useState<string[]>(Array(6).fill(''));
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  // const [resendCountdown, setResendCountdown] = useState<number | null>(null);
 
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const {setNotification} = useNotification()
   const email = useAppSelector(state => state.authReducer.recoveryEmail)
 
-  const [confirmTrigger, confirmResponse] = authApiSlice.useConfirmEmailMutation()
+  const [confirmTrigger, confirmResponse] = authApiSlice.useConfirmAuthMutation()
 
   useEffect(() => {
     setIsButtonDisabled(code.some((digit) => digit === ''));
   }, [code]);
-
-  // useEffect(() => {
-  //   if (resendCountdown !== null && resendCountdown > 0) {
-  //     const timer = setInterval(
-  //       () => setResendCountdown((prev) => prev! - 1),
-  //       1000,
-  //     );
-  //     return () => clearInterval(timer);
-  //   }
-  // }, [resendCountdown]);
 
   const handleInputChange = (index: number, value: string) => {
     if (value.length <= 1) {
@@ -58,23 +47,29 @@ const EmailConfirm: React.FC = () => {
   const handleSubmit = () => {
     if (!email) return
     confirmTrigger({email, code: code.join('')})
-    dispatch(setRecoveryToken(code.join('')))
+    // dispatch(setRecoveryToken(code.join('')))
   }
 
   useEffect(() => {
     if (confirmResponse.isSuccess) {
-      navigate('../forgot')
+      console.log(confirmResponse)
+      dispatch(setAccessToken(confirmResponse.data?.accessToken))
+      navigate('/')
     }
     if (confirmResponse.isError) {
       setNotification({message: 'Код веедён неверно или его время действия истекло', type: 'error'})
     }
   }, [confirmResponse]);
 
+  if (!email) {
+    navigate('/auth')
+  }
+
   return (
     <div className="emailContainer">
       <div className="emailContainerForm">
         <div className="information">
-          <h1 className="emailTitle">Подтверждение эл. почты</h1>
+          <h1 className="emailTitle">Подтверждение входа</h1>
           <p className="emailLabel">
             Введите код из письма, который мы отправили на указанную электронную почту
           </p>
@@ -105,4 +100,4 @@ const EmailConfirm: React.FC = () => {
   );
 };
 
-export default EmailConfirm;
+export default AuthConfirm;

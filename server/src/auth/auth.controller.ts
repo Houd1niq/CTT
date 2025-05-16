@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import {AuthService} from "./auth.service";
-import {AuthDto, ChangePasswordDto, ResetConfirmDto, ResetDto} from "./dto";
+import {AuthConfirmDto, AuthDto, ChangePasswordDto, ResetConfirmDto, ResetDto} from "./dto";
 import {Request, Response} from "express";
 import {AuthGuard} from "@nestjs/passport";
 import {PayloadType} from "./strategies";
@@ -24,7 +24,22 @@ export class AuthController {
   @Post("signin")
   @HttpCode(HttpStatus.CREATED)
   async signIn(@Body() dto: AuthDto, @Res() res: Response) {
-    const tokens = await this.authService.signIn(dto);
+    // const tokens = await this.authService.signIn(dto);
+    // res.cookie("refresh-token", tokens.refresh_token, {
+    //   sameSite: "none",
+    //   secure: true,
+    //   httpOnly: true,
+    // });
+    // return res.send({accessToken: tokens.access_token});
+
+    return res.send(await this.authService.signIn(dto));
+  }
+
+  @Post("confirm")
+  @HttpCode(HttpStatus.CREATED)
+  async confirm(@Body() dto: AuthConfirmDto, @Res() res: Response) {
+    const tokens = await this.authService.confirm(dto);
+
     res.cookie("refresh-token", tokens.refresh_token, {
       sameSite: "none",
       secure: true,

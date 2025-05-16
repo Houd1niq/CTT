@@ -8,7 +8,6 @@ export const authApiSlice = CTTApi.injectEndpoints({
         url: "auth/logout",
         method: "POST",
       }),
-      // invalidatesTags: ["User"],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         await queryFulfilled
         dispatch(
@@ -28,6 +27,14 @@ export const authApiSlice = CTTApi.injectEndpoints({
     confirmEmail: build.mutation<any, { email: string, code: string }>({
       query: (body) => ({
         url: "auth/confirm-reset",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    confirmAuth: build.mutation<{ accessToken: string }, { email: string, code: string }>({
+      query: (body) => ({
+        url: "auth/confirm",
         method: "POST",
         body,
       }),

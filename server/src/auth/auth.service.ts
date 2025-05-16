@@ -1,22 +1,22 @@
 import {ForbiddenException, Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
-import {AuthDto} from "./dto";
+import {AuthConfirmDto, AuthDto} from "./dto";
 import * as bcrypt from "bcryptjs";
 import {TokenTypes} from "./types";
 import {JwtService} from "@nestjs/jwt";
-// import { RevokedTokensService } from "./revokedTokens.service";
 import * as process from "process";
+import {EmailService} from "../email/email.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private prisma: PrismaService,
-    private jwtService: JwtService
-  ) // private revokedTokensService: RevokedTokensService
-  {
+    private jwtService: JwtService,
+    private emailService: EmailService
+  ) {
   }
 
-  async signIn(dto: AuthDto): Promise<TokenTypes> {
+  async signIn(dto: AuthDto) {
     const candidate = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -27,14 +27,57 @@ export class AuthService {
     }
     const compare = await bcrypt.compare(dto.password, candidate.hash);
     if (!compare) throw new ForbiddenException("Неверный логин или пароль");
-    // await this.revokedTokensService.unRevoke(candidate.id);
-    const tokens = await this.getTokens(candidate.id, candidate.email);
-    await this.updateHashRtInDB(candidate.email, tokens.refresh_token);
+
+    const token = String(Math.floor(100000 + Math.random() * 900000));
+    await this.prisma.user.update({
+      where: {email: dto.email},
+      data: {
+        authConfirmToken: token,
+        authConfirmTokenExpiry: new Date(Date.now() + 600000),
+      },
+    });
+
+    await this.emailService.sendAuthConfirmationCode(dto.email, token)
+
+    return true
+  }
+
+  async confirm(dto: AuthConfirmDto) {
+    const {email, code} = dto
+    const user = await this.prisma.user.findUnique({
+      where: {email},
+    });
+
+    if (!user || user.authConfirmToken !== code) {
+      throw new ForbiddenException("Неверный код подтверждения");
+    }
+
+    if (user.authConfirmTokenExpiry < new Date()) {
+      await this.prisma.user.update({
+        where: {email},
+        data: {
+          authConfirmToken: null,
+          authConfirmTokenExpiry: null,
+        },
+      })
+      throw new ForbiddenException("Код подтверждения истек");
+    }
+
+    await this.prisma.user.update({
+      where: {email},
+      data: {
+        authConfirmToken: null,
+        authConfirmTokenExpiry: null,
+      },
+    })
+
+    const tokens = await this.getTokens(user.id, user.email);
+    await this.updateHashRtInDB(user.email, tokens.refresh_token);
     return tokens;
   }
 
+
   async logout(email: string) {
-    // await this.revokedTokensService.revoke(userId);
     await this.prisma.user.update({
       where: {email},
       data: {

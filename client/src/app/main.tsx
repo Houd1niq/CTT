@@ -12,6 +12,7 @@ import {Notification} from "@features/notifications/ui/Notification.tsx";
 import Reset from "../pages/Reset/Reset.tsx";
 import Admin from "../pages/Admin/Admin.tsx";
 import {AdminRequired} from "@app/router/AdminRequired.tsx";
+import AuthConfirm from "@pages/AuthConfirm/AuthConfirm.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
     path: '/admin',
     element: <AdminRequired><Admin/></AdminRequired>,
   },
+  {
+    path: 'confirm-auth',
+    element: <AuthConfirm/>
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(

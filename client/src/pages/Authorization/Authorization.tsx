@@ -3,7 +3,7 @@ import './Authorization.scss';
 import eyeOpenIcon from '@shared/assets/eye-svgrepo-com.svg';
 import eyeClosedIcon from '@shared/assets/eye-closed-svgrepo-com.svg';
 import {authApiSlice} from "@features/auth/model/authApiSlice.ts";
-import {setAccessToken} from "@features/auth/model/authSlice.ts";
+import {setRecoveryEmail} from "@features/auth/model/authSlice.ts";
 import {useAppDispatch} from "@shared/utils/hooks.ts";
 import {Link, useNavigate} from "react-router-dom";
 
@@ -51,8 +51,8 @@ const Authorization = () => {
 
   useEffect(() => {
     if (loginResponse.isSuccess) {
-      dispatch(setAccessToken(loginResponse.data?.accessToken))
-      navigate('/');
+      dispatch(setRecoveryEmail(email))
+      navigate('/confirm-auth');
     }
   }, [loginResponse]);
 

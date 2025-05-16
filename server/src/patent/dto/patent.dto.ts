@@ -2,13 +2,17 @@ import {
   IsNotEmpty,
   IsString,
   Matches,
+  ValidateIf,
 } from "class-validator";
+import {SanitizeHtml} from "../../decorators/sanitize.decorator";
 
 export class CreatePatentDto {
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   patentNumber: string;
@@ -21,6 +25,7 @@ export class CreatePatentDto {
   @IsNotEmpty()
   dateOfExpiration: string;
 
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   contact: string;
@@ -48,10 +53,12 @@ export class CreatePatentDto {
 
 
 export class EditPatentDto {
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   patentNumber: string;
@@ -64,6 +71,7 @@ export class EditPatentDto {
   @IsNotEmpty()
   dateOfExpiration: string;
 
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   contact: string;

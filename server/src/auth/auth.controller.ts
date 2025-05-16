@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -15,6 +15,12 @@ import {Request, Response} from "express";
 import {AuthGuard} from "@nestjs/passport";
 import {PayloadType} from "./strategies";
 import {ResetPasswordService} from "./resetPassword.service";
+import {RateLimiterMemory} from "rate-limiter-flexible";
+
+const rateLimiter = new RateLimiterMemory({
+  points: 5,
+  duration: 60
+})
 
 @Controller("auth")
 export class AuthController {
@@ -23,14 +29,12 @@ export class AuthController {
 
   @Post("signin")
   @HttpCode(HttpStatus.CREATED)
-  async signIn(@Body() dto: AuthDto, @Res() res: Response) {
-    // const tokens = await this.authService.signIn(dto);
-    // res.cookie("refresh-token", tokens.refresh_token, {
-    //   sameSite: "none",
-    //   secure: true,
-    //   httpOnly: true,
-    // });
-    // return res.send({accessToken: tokens.access_token});
+  async signIn(@Body() dto: AuthDto, @Res() res: Response, @Req() req: Request) {
+    try {
+      await rateLimiter.consume(req.ip)
+    } catch (e) {
+      throw new ForbiddenException('Слишком много попыток входа. Подождите минуту')
+    }
 
     return res.send(await this.authService.signIn(dto));
   }

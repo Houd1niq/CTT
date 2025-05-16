@@ -1,6 +1,8 @@
 import {IsEmail, IsInt, IsNotEmpty, IsString} from 'class-validator';
+import { SanitizeHtml } from "../../decorators/sanitize.decorator";
 
 export class CreateEmployeeDto {
+  @SanitizeHtml()
   @IsString()
   @IsNotEmpty()
   fullName: string;

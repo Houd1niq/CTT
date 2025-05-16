@@ -38,7 +38,7 @@ vi.mock('@entities/patentType', () => ({
 vi.mock('@entities/user/api/userApiSlice', () => ({
   userApiSlice: {
     useGetMeQuery: () => ({
-      currentData: {id: 1, name: 'Test User'}
+      data: {id: 1, name: 'Test User', role: {name: 'admin'}}
     })
   }
 }));

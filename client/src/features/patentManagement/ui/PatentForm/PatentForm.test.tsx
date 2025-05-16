@@ -23,6 +23,7 @@ describe('PatentForm', () => {
     isPrivate: false,
     technologyField: {id: 1, name: 'Информационные технологии'},
     patentType: {id: 1, name: 'Изобретение'},
+    institute: {id: 1, name: 'Test Institute'},
     createdAt: '2024-01-01T00:00:00.000Z',
     patentLink: 'https://example.com/patent/123456'
   };

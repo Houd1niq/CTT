@@ -4,6 +4,7 @@ import {PrismaService} from '../prisma/prisma.service';
 import {CreateEmployeeDto} from './dto/create-employee.dto';
 import * as bcrypt from "bcryptjs";
 import {AuthService} from "../auth/auth.service";
+import {EditEmployeeDto} from "./dto/edit-employee.dto";
 
 @Injectable()
 export class AdminService {
@@ -71,5 +72,80 @@ export class AdminService {
     });
 
     return user;
+  }
+
+  async deleteEmployee(id: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {id},
+      include: {role: true}
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (user.role.name === 'admin') {
+      throw new BadRequestException('Cannot delete admin user');
+    }
+
+    await this.prisma.user.delete({
+      where: {id}
+    });
+
+    return {message: 'User deleted successfully'};
+  }
+
+  async editEmployee(id: number, editEmployeeDto: EditEmployeeDto) {
+    const {email, fullName, roleId, instituteId} = editEmployeeDto;
+
+    // Check if user exists
+    const existingUser = await this.prisma.user.findUnique({
+      where: {id},
+      include: {role: true}
+    });
+
+    if (!existingUser) {
+      throw new BadRequestException('User not found');
+    }
+
+    // If trying to change email, check if new email is not taken
+    if (email && email !== existingUser.email) {
+      const userWithEmail = await this.prisma.user.findUnique({
+        where: {email}
+      });
+
+      if (userWithEmail) {
+        throw new BadRequestException('User with this email already exists');
+      }
+    }
+
+    // Update user
+    const updatedUser = await this.prisma.user.update({
+      where: {id},
+      data: {
+        ...(email && {email}),
+        ...(fullName && {fullName}),
+        ...(roleId && {RoleId: roleId}),
+        ...(instituteId && {InstituteId: instituteId}),
+      },
+      select: {
+        id: true,
+        email: true,
+        role: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        institute: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return updatedUser;
   }
 }

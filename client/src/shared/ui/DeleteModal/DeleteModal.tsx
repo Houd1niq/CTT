@@ -1,9 +1,10 @@
 import './delete-modal.scss'
 import {useModalOverflow} from "@shared/utils/hooks.ts";
+import {ReactNode} from "react";
 
 type DeleteModalProps<T> = {
   // patentToDelete?: Patent;
-  name?: string;
+  name?: ReactNode;
   identifier?: T;
   visible: boolean;
   onClose: () => void;

@@ -15,6 +15,7 @@ import {PatentService} from "./patent.service";
 import {AuthGuard} from "@nestjs/passport";
 import {PayloadType} from "../auth/strategies";
 import {PatentFileInterceptor} from "./helpers/decorators";
+import {EditPatentAccessGuard} from "./guards/patent-access.guard";
 
 @Controller("patent")
 export class PatentController {
@@ -38,10 +39,10 @@ export class PatentController {
     }
     dto.patentFile = file.filename;
 
-    return await this.patentService.createPatent(dto);
+    return await this.patentService.createPatent(dto, user);
   }
 
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"), EditPatentAccessGuard)
   @Put(":patentId")
   async edit(
     @Body() dto: EditPatentDto,
@@ -78,7 +79,7 @@ export class PatentController {
   }
 
   @Delete(':patentNumber')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), EditPatentAccessGuard)
   async delete(
     @Param('patentNumber') patentNumber: string
   ) {

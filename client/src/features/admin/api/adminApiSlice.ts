@@ -1,6 +1,6 @@
+import {UserResponse} from '@entities/user';
+import {Role} from '@features/admin/model/types';
 import {CTTApi} from "@shared/api/api.ts";
-import {UserResponse} from "@entities/user";
-import {Role} from "@features/admin/model/types.ts";
 
 interface CreateEmployeeRequest {
   fullName?: string;
@@ -9,9 +9,16 @@ interface CreateEmployeeRequest {
   instituteId?: number;
 }
 
-interface CreateEmployeeResponse {
-  user: UserResponse;
-  tempPassword: string;
+interface EditEmployeeRequest {
+  id: number;
+  email?: string;
+  fullName?: string;
+  roleId?: number;
+  instituteId?: number;
+}
+
+interface DeleteEmployeeResponse {
+  message: string;
 }
 
 export const adminApiSlice = CTTApi.injectEndpoints({
@@ -31,7 +38,7 @@ export const adminApiSlice = CTTApi.injectEndpoints({
       }),
     }),
 
-    createEmployee: build.mutation<CreateEmployeeResponse, CreateEmployeeRequest>({
+    createEmployee: build.mutation<UserResponse, CreateEmployeeRequest>({
       query: (body) => ({
         url: "admin/users",
         method: "POST",
@@ -39,7 +46,29 @@ export const adminApiSlice = CTTApi.injectEndpoints({
       }),
       invalidatesTags: ["AllUsers"],
     }),
+
+    deleteEmployee: build.mutation<DeleteEmployeeResponse, number>({
+      query: (id) => ({
+        url: `admin/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["AllUsers"],
+    }),
+
+    editEmployee: build.mutation<UserResponse, EditEmployeeRequest>({
+      query: (body) => ({
+        url: `admin/users/${body.id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["AllUsers", "User"],
+    })
   }),
 });
 
-export const {useGetUsersQuery, useGetRolesQuery, useCreateEmployeeMutation} = adminApiSlice;
+export const {
+  useGetUsersQuery,
+  useGetRolesQuery,
+  useCreateEmployeeMutation,
+  useDeleteEmployeeMutation,
+} = adminApiSlice;

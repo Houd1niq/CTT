@@ -1,10 +1,11 @@
-import {BadRequestException, Injectable} from "@nestjs/common";
+import {BadRequestException, ForbiddenException, Injectable} from "@nestjs/common";
 import {CreatePatentDto, EditPatentDto} from "./dto/patent.dto";
 import {PrismaService} from "../prisma/prisma.service";
 import {PatentSearchService} from "./patentSearch.service";
 import {Patent} from "@prisma/client";
 import {PdfService} from "../files/pdf.service";
 import {join} from "path";
+import {PayloadType} from "../auth/strategies";
 
 @Injectable()
 export class PatentService {
@@ -17,7 +18,7 @@ export class PatentService {
   ) {
   }
 
-  async createPatent(dto: CreatePatentDto) {
+  async createPatent(dto: CreatePatentDto, user: PayloadType) {
     //@ts-ignore
     dto.dateOfExpiration = new Date(dto.dateOfExpiration)
     //@ts-ignore
@@ -25,6 +26,24 @@ export class PatentService {
 
     let patent = undefined;
     let pdfContent = undefined;
+
+    const userWithRole = await this.prismaService.user.findUnique({
+      where: {id: user.id},
+      include: {role: true},
+    });
+    if (!userWithRole) {
+      throw new ForbiddenException('User not found');
+    }
+
+    if (userWithRole.role.name !== 'admin') {
+      if (!dto.instituteId) {
+        throw new ForbiddenException('Institute ID is required');
+      }
+
+      if (userWithRole.InstituteId !== Number(dto.instituteId)) {
+        throw new ForbiddenException('You do not have access to this institute');
+      }
+    }
 
     try {
       // Extract PDF content if file is provided

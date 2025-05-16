@@ -118,6 +118,7 @@ describe('PatentSearchService', () => {
       isPrivate: 'false',
       patentTypeId: '1',
       technologyFieldId: '1',
+      instituteId: '1',
     };
 
     it('should update patent', async () => {
@@ -141,6 +142,7 @@ describe('PatentSearchService', () => {
       isPrivate: 'false',
       patentTypeId: '1',
       technologyFieldId: '1',
+      instituteId: '1',
       patentFile: 'test.pdf',
     };
 

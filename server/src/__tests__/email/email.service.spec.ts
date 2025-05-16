@@ -40,7 +40,7 @@ describe('EmailService', () => {
 
       expect(mailerService.sendMail).toHaveBeenCalledWith({
         to: mockEmail,
-        from: 'foxesclub2@gmail.com',
+        from: process.env.SMTP_LOGIN,
         subject: 'Восстановление пароля',
         text: `Код для восстановления пароля: ${mockCode}`,
         html: `<h1>Код для восстановления пароля: ${mockCode}</h1>`,
@@ -67,7 +67,7 @@ describe('EmailService', () => {
 
       expect(mailerService.sendMail).toHaveBeenCalledWith({
         to: mockEmail,
-        from: 'foxesclub2@gmail.com',
+        from: process.env.SMTP_LOGIN,
         subject: 'Уведомление об истекающих патентах',
         text: 'Уведомление об истекающих патентах',
         html: expect.stringContaining('<h1>Завтра закончится срок действия следующих патентов</h1>'),
@@ -86,7 +86,7 @@ describe('EmailService', () => {
 
       expect(mailerService.sendMail).toHaveBeenCalledWith({
         to: mockEmail,
-        from: 'foxesclub2@gmail.com',
+        from: process.env.SMTP_LOGIN,
         subject: 'Уведомление об истекающих патентах',
         text: 'Уведомление об истекающих патентах',
         html: expect.stringContaining('<h1>Завтра закончится срок действия следующих патентов</h1>'),

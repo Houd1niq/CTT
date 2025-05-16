@@ -15,7 +15,7 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const mockPrismaService = {
-      admin: {
+      user: {
         findUnique: jest.fn(),
       },
     };
@@ -40,25 +40,37 @@ describe('UserService', () => {
 
   describe('getUserInfo', () => {
     it('should return user info when user exists', async () => {
-      (prismaService.admin.findUnique as jest.Mock).mockResolvedValue(mockUser);
+      (prismaService.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
       const result = await service.getUserInfo(mockUser.email);
 
       expect(result).toEqual(mockUser);
-      expect(prismaService.admin.findUnique).toHaveBeenCalledWith({
+      expect(prismaService.user.findUnique).toHaveBeenCalledWith({
         where: {
           email: mockUser.email,
         },
         select: {
           email: true,
           id: true,
+          role: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
+          institute: {
+            select: {
+              name: true,
+              id: true,
+            },
+          },
         },
       });
     });
 
     it('should handle database errors', async () => {
       const mockError = new Error('Database error');
-      (prismaService.admin.findUnique as jest.Mock).mockRejectedValue(mockError);
+      (prismaService.user.findUnique as jest.Mock).mockRejectedValue(mockError);
 
       await expect(service.getUserInfo(mockUser.email)).rejects.toThrow(mockError);
     });

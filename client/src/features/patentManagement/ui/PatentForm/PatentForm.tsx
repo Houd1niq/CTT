@@ -3,6 +3,7 @@ import UploadIcon from '@shared/assets/icons/icons8-upload-file-48.png'
 import {Patent} from "@entities/patent";
 import './patent-form.scss'
 import {Button} from "@shared/ui/Button/Button.tsx";
+import {Select} from "@shared/ui/Select";
 
 interface PatentFormProps {
   formType: 'add' | 'edit';
@@ -84,52 +85,83 @@ export const PatentForm = (props: PatentFormProps) => {
           }}
         />
       </div>
-      <div className="patent-form-field">
-        <label className="patent-form-label" htmlFor="technologyField">Область техники</label>
-        <select
-          id="technologyField"
-          className="patent-form-input"
-          value={technologyFieldId}
-          onChange={(e) => {
-            setTechnologyFieldId(Number(e.target.value));
-          }}
-        >
-          {technologyFields?.map(technologyField => (
-            <option key={technologyField.id} value={technologyField.id}>{technologyField.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className="patent-form-field">
-        <label className="patent-form-label" htmlFor="patentType">Вид</label>
-        <select
-          id="patentType"
-          className="patent-form-input"
-          value={patentTypeId}
-          onChange={(e) => {
-            setPatentTypeId(Number(e.target.value));
-          }}
-        >
-          {patentTypes?.map(patentType => (
-            <option key={patentType.id} value={patentType.id}>{patentType.name}</option>
-          ))}
-        </select>
-      </div>
-      <div className="patent-form-field">
-        <label className="patent-form-label" htmlFor="institute">Институт</label>
-        <select
-          id="institute"
-          className="patent-form-input"
-          value={instituteId}
-          onChange={(e) => {
-            setInstituteId(Number(e.target.value));
-          }}
-        >
-          {institutes?.map(institute => (
-            <option key={institute.id} value={institute.id}>{institute.name}</option>
-          ))}
-        </select>
+      <Select
+        title="Область техники"
+        name="technologyField"
+        id="technologyField"
+        value={technologyFieldId}
+        options={technologyFields || []}
+        onChange={(e) => {
+          setTechnologyFieldId(Number(e.target.value));
+        }}
+      />
+      <Select
+        title="Вид"
+        name="patentType"
+        id="patentType"
+        value={patentTypeId}
+        options={patentTypes || []}
+        onChange={(e) => {
+          setPatentTypeId(Number(e.target.value));
+        }}
+      />
+      <Select
+        title="Институт"
+        name="institute"
+        id="institute"
+        value={instituteId}
+        options={institutes || []}
+        onChange={(e) => {
+          setInstituteId(Number(e.target.value));
+        }}
+      />
 
-      </div>
+      {/*<div className="patent-form-field">*/}
+      {/*  <label className="patent-form-label" htmlFor="technologyField">Область техники</label>*/}
+      {/*  <select*/}
+      {/*    id="technologyField"*/}
+      {/*    className="patent-form-input"*/}
+      {/*    value={technologyFieldId}*/}
+      {/*    onChange={(e) => {*/}
+      {/*      setTechnologyFieldId(Number(e.target.value));*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    {technologyFields?.map(technologyField => (*/}
+      {/*      <option key={technologyField.id} value={technologyField.id}>{technologyField.name}</option>*/}
+      {/*    ))}*/}
+      {/*  </select>*/}
+      {/*</div>*/}
+      {/*<div className="patent-form-field">*/}
+      {/*  <label className="patent-form-label" htmlFor="patentType">Вид</label>*/}
+      {/*  <select*/}
+      {/*    id="patentType"*/}
+      {/*    className="patent-form-input"*/}
+      {/*    value={patentTypeId}*/}
+      {/*    onChange={(e) => {*/}
+      {/*      setPatentTypeId(Number(e.target.value));*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    {patentTypes?.map(patentType => (*/}
+      {/*      <option key={patentType.id} value={patentType.id}>{patentType.name}</option>*/}
+      {/*    ))}*/}
+      {/*  </select>*/}
+      {/*</div>*/}
+      {/*<div className="patent-form-field">*/}
+      {/*  <label className="patent-form-label" htmlFor="institute">Институт</label>*/}
+      {/*  <select*/}
+      {/*    id="institute"*/}
+      {/*    className="patent-form-input"*/}
+      {/*    value={instituteId}*/}
+      {/*    onChange={(e) => {*/}
+      {/*      setInstituteId(Number(e.target.value));*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    {institutes?.map(institute => (*/}
+      {/*      <option key={institute.id} value={institute.id}>{institute.name}</option>*/}
+      {/*    ))}*/}
+      {/*  </select>*/}
+
+      {/*</div>*/}
       <div className="patent-form-field">
         <label className="patent-form-label" htmlFor="dateOfRegistration">Дата регистрации</label>
         <input

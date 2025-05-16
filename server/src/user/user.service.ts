@@ -13,8 +13,22 @@ export class UserService {
       },
       select: {
         email: true,
-        id: true
-      }
+        id: true,
+        role: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        institute: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
+
+
     })
 
     if (!user) {

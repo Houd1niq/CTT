@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Button } from '@shared/ui/Button/Button';
-import { Input } from '@shared/ui/Input/Input';
+import React, {useState} from 'react';
+import {Button} from '@shared/ui/Button/Button';
+import {Input} from '@shared/ui/Input/Input';
+import {Select} from '@shared/ui/Select/Select';
 import styles from './AddEmployeeForm.module.scss';
 
 interface Employee {
@@ -12,63 +13,63 @@ interface Employee {
 }
 
 interface AddEmployeeFormProps {
-  onSubmit: (employee: Omit<Employee, 'id'>) => void;
+  onSubmit: (employee: Employee) => void;
+  initialData?: Employee;
 }
 
 const institutes = [
-  'Институт машиностроения',
-  'Институт менеджмента',
-  'Институт информационных технологий',
-  'Институт экономики и управления',
-  'Институт гуманитарных наук',
-  'Институт строительства и архитектуры',
-  'Институт химии и химической технологии',
-  'Институт энергетики и автоматизации',
+  {id: 'Институт машиностроения', name: 'Институт машиностроения'},
+  {id: 'Институт менеджмента', name: 'Институт менеджмента'},
+  {id: 'Институт информационных технологий', name: 'Институт информационных технологий'},
+  {id: 'Институт экономики и управления', name: 'Институт экономики и управления'},
+  {id: 'Институт гуманитарных наук', name: 'Институт гуманитарных наук'},
+  {id: 'Институт строительства и архитектуры', name: 'Институт строительства и архитектуры'},
+  {id: 'Институт химии и химической технологии', name: 'Институт химии и химической технологии'},
+  {id: 'Институт энергетики и автоматизации', name: 'Институт энергетики и автоматизации'},
 ];
 
-export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState({
-    email: '',
-    fullName: '',
-    role: '',
-    institute: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const roles = [
+  {id: 'admin', name: 'Администратор'},
+  {id: 'manager', name: 'Менеджер'},
+  {id: 'user', name: 'Пользователь'},
+];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({onSubmit, initialData}) => {
+  const [formData, setFormData] = useState({
+    id: initialData?.id || 0,
+    email: initialData?.email || '',
+    fullName: initialData?.fullName || '',
+    role: initialData?.role || '',
+    institute: initialData?.institute || '',
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
+  // const handleSelectChange = (name: string, value: string) => {
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]: value
+  //   }));
+  // };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert('Пароли не совпадают');
-      return;
-    }
     onSubmit(formData);
-    setFormData({
-      email: '',
-      fullName: '',
-      role: '',
-      institute: '',
-      password: '',
-      confirmPassword: '',
-    });
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+    if (!initialData) {
+      setFormData({
+        id: 0,
+        email: '',
+        fullName: '',
+        role: '',
+        institute: '',
+      });
+    }
   };
 
   return (
@@ -94,81 +95,69 @@ export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({ onSubmit }) =>
             required
           />
 
-          <div className={styles.formGroup}>
-            <label htmlFor="role">Роль:</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Выберите роль</option>
-              <option value="admin">Администратор</option>
-              <option value="manager">Менеджер</option>
-              <option value="user">Пользователь</option>
-            </select>
-          </div>
+          <Select
+            title="Роль"
+            name="role"
+            value={formData.role}
+            options={roles}
+            // onChange={(value) => handleSelectChange('role', value as string)}
+            required
+          />
 
-          <div className={styles.formGroup}>
-            <label htmlFor="institute">Институт:</label>
-            <select
-              id="institute"
-              name="institute"
-              value={formData.institute}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="">Выберите институт</option>
-              {institutes.map((institute) => (
-                <option key={institute} value={institute}>
-                  {institute}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            title="Институт"
+            name="institute"
+            value={formData.institute}
+            options={institutes}
+            // onChange={(value) => handleSelectChange('institute', value as string)}
+            required
+          />
 
-          <div className={styles.passwordGroup}>
-            <Input
-              title="Пароль"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              required
-            />
-            <button
-              type="button"
-              className={styles.passwordToggle}
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
+          {/*{!initialData && (*/}
+          {/*  <>*/}
+          {/*    <div className={styles.passwordGroup}>*/}
+          {/*      <Input*/}
+          {/*        title="Пароль"*/}
+          {/*        type={showPassword ? "text" : "password"}*/}
+          {/*        name="password"*/}
+          {/*        value={formData.password}*/}
+          {/*        onChange={handleInputChange}*/}
+          {/*        required*/}
+          {/*      />*/}
+          {/*      <button*/}
+          {/*        type="button"*/}
+          {/*        className={styles.passwordToggle}*/}
+          {/*        onClick={togglePasswordVisibility}*/}
+          {/*      >*/}
+          {/*        {showPassword ? "👁️" : "👁️‍🗨️"}*/}
+          {/*      </button>*/}
+          {/*    </div>*/}
 
-          <div className={styles.passwordGroup}>
-            <Input
-              title="Подтверждение пароля"
-              type={showConfirmPassword ? "text" : "password"}
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              required
-            />
-            <button
-              type="button"
-              className={styles.passwordToggle}
-              onClick={toggleConfirmPasswordVisibility}
-            >
-              {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
-          </div>
+          {/*    /!*<div className={styles.passwordGroup}>*!/*/}
+          {/*    /!*  <Input*!/*/}
+          {/*    /!*    title="Подтверждение пароля"*!/*/}
+          {/*    /!*    type={showConfirmPassword ? "text" : "password"}*!/*/}
+          {/*    /!*    name="confirmPassword"*!/*/}
+          {/*    /!*    value={formData.confirmPassword}*!/*/}
+          {/*    /!*    onChange={handleInputChange}*!/*/}
+          {/*    /!*    required*!/*/}
+          {/*    /!*  />*!/*/}
+          {/*    /!*  <button*!/*/}
+          {/*    /!*    type="button"*!/*/}
+          {/*    /!*    className={styles.passwordToggle}*!/*/}
+          {/*    /!*    onClick={toggleConfirmPasswordVisibility}*!/*/}
+          {/*    /!*  >*!/*/}
+          {/*    /!*    {showConfirmPassword ? "👁️" : "👁️‍🗨️"}*!/*/}
+          {/*    /!*  </button>*!/*/}
+          {/*    /!*</div>*!/*/}
+          {/*  </>*/}
+          {/*)}*/}
         </div>
 
         <Button type="submit" className={styles.submitButton}>
-          Добавить сотрудника
+          {initialData ? 'Сохранить изменения' : 'Добавить сотрудника'}
         </Button>
       </form>
     </div>
   );
-}; 
+};

@@ -69,6 +69,7 @@ const Authorization = () => {
           value={email}
           onChange={handleInputChange(setEmail, validateEmail)}
         />
+        {/*<PasswordInput placeholder="Пароль" onChange={handleInputChange(setPassword)} />*/}
         <div className="passwordContainer">
           <input
             type={showPassword ? 'text' : 'password'}

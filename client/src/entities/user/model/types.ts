@@ -1,4 +1,12 @@
 export interface UserResponse {
   id: number,
-  email: string
+  email: string,
+  role: {
+    id: number,
+    name: string
+  },
+  institute: {
+    id: number,
+    name: string
+  }
 }

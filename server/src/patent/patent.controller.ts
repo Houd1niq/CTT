@@ -4,22 +4,35 @@ import {
   Controller, Delete,
   ForbiddenException, Get, Param,
   Post, Put, Query,
-  Req,
+  Req, Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import {Request} from "express";
+import {Request, Response} from "express";
 import {CreatePatentDto, EditPatentDto} from "./dto/patent.dto";
 import {PatentService} from "./patent.service";
 import {AuthGuard} from "@nestjs/passport";
 import {PayloadType} from "../auth/strategies";
 import {PatentFileInterceptor} from "./helpers/decorators";
 import {EditPatentAccessGuard} from "./guards/patent-access.guard";
+import {AdminGuard} from "../auth/guards/admin.guard";
+import {PatentReportService} from "./patentReport.service";
 
 @Controller("patent")
 export class PatentController {
-  constructor(private patentService: PatentService) {
+  constructor(private patentService: PatentService, private patentReportService: PatentReportService) {
+  }
+
+  @UseGuards(AuthGuard("jwt"), AdminGuard)
+  @Get("report")
+  async getPatentReport(@Req() req: Request, @Res() res: Response) {
+    const buffer = await this.patentReportService.generatePatentReport();
+    const date = new Date().toLocaleDateString()
+
+    res.setHeader('Content-Disposition', 'attachment; filename=Patents_report.docx');
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.send(buffer);
   }
 
   @UseGuards(AuthGuard("jwt"))

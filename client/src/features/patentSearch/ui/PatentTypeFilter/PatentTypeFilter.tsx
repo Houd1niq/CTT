@@ -1,8 +1,7 @@
 import {Filter} from "@shared/ui/Filter/Filter.tsx";
-import {useAppDispatch} from "@shared/utils/hooks.ts";
+import {useAppDispatch, useIsAdmin} from "@shared/utils/hooks.ts";
 import {FilterModal} from "@shared/ui/FilterModal/FilterModal.tsx";
 import {useEffect, useState} from "react";
-import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
 import {DeleteModal} from "@shared/ui/DeleteModal/DeleteModal.tsx";
 import {patentTypeApiSlice} from "@entities/patentType";
 import {FilterType} from "@shared/types/common";
@@ -11,7 +10,7 @@ import {removePatentTypeFilter, setPatentTypeFilter} from "@features/patentSearc
 export const PatentTypeFilter = () => {
   const dispatch = useAppDispatch();
 
-  const {currentData: user} = userApiSlice.useGetMeQuery()
+  const isAdmin = useIsAdmin()
 
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('');
   const [addTrigger, addResponse] = patentTypeApiSlice.useAddPatentTypeMutation()
@@ -56,10 +55,10 @@ export const PatentTypeFilter = () => {
   }, [deleteResponse]);
 
   useEffect(() => {
-    if (user && user.id) {
+    if (isAdmin) {
       getDeletable()
     }
-  }, [user]);
+  }, [isAdmin]);
 
   const submitHandler = itemToEdit ? editTrigger : addTrigger
 
@@ -80,7 +79,7 @@ export const PatentTypeFilter = () => {
           setItemToDelete({name, id})
         }}
         deletable={deletableResponse.data}
-        isActionVisible={Boolean(user)}
+        isActionVisible={isAdmin}
       />
 
       <FilterModal

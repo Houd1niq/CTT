@@ -6,6 +6,31 @@ export class UserService {
   constructor(private prisma: PrismaService) {
   }
 
+  async findAll() {
+    return this.prisma.user.findMany({
+      select: {
+        email: true,
+        id: true,
+        fullName: true,
+        role: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        institute: {
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      },
+      orderBy: {
+        id: 'asc'
+      }
+    });
+  }
+
   async getUserInfo(email: string) {
     const user = this.prisma.user.findUnique({
       where: {
@@ -27,8 +52,6 @@ export class UserService {
           }
         }
       },
-
-
     })
 
     if (!user) {

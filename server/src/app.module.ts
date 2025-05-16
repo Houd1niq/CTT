@@ -16,6 +16,7 @@ import * as process from "process";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import {join} from "path";
 import {InstituteModule} from './institute/institute.module';
+import {AdminModule} from './admin/admin.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import {InstituteModule} from './institute/institute.module';
     UserModule,
     EmailModule,
     InstituteModule,
+    AdminModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
     }),

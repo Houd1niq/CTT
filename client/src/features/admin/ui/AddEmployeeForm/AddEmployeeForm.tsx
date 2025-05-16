@@ -3,45 +3,27 @@ import {Button} from '@shared/ui/Button/Button';
 import {Input} from '@shared/ui/Input/Input';
 import {Select} from '@shared/ui/Select/Select';
 import styles from './AddEmployeeForm.module.scss';
-
-interface Employee {
-  id: number;
-  email: string;
-  fullName: string;
-  role: string;
-  institute: string;
-}
+import {Employee} from "@features/admin/model/types.ts";
 
 interface AddEmployeeFormProps {
+  roles: { name: string, id: number }[];
+  institutes: { name: string, id: number }[];
   onSubmit: (employee: Employee) => void;
   initialData?: Employee;
 }
 
-const institutes = [
-  {id: 'Институт машиностроения', name: 'Институт машиностроения'},
-  {id: 'Институт менеджмента', name: 'Институт менеджмента'},
-  {id: 'Институт информационных технологий', name: 'Институт информационных технологий'},
-  {id: 'Институт экономики и управления', name: 'Институт экономики и управления'},
-  {id: 'Институт гуманитарных наук', name: 'Институт гуманитарных наук'},
-  {id: 'Институт строительства и архитектуры', name: 'Институт строительства и архитектуры'},
-  {id: 'Институт химии и химической технологии', name: 'Институт химии и химической технологии'},
-  {id: 'Институт энергетики и автоматизации', name: 'Институт энергетики и автоматизации'},
-];
+export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = (props) => {
+  const {onSubmit, initialData, roles, institutes} = props
 
-const roles = [
-  {id: 'admin', name: 'Администратор'},
-  {id: 'manager', name: 'Менеджер'},
-  {id: 'user', name: 'Пользователь'},
-];
-
-export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({onSubmit, initialData}) => {
   const [formData, setFormData] = useState({
     id: initialData?.id || 0,
     email: initialData?.email || '',
     fullName: initialData?.fullName || '',
-    role: initialData?.role || '',
-    institute: initialData?.institute || '',
+    roleId: initialData?.roleId || 1,
+    instituteId: initialData?.instituteId || 1,
   });
+
+  console.log(formData)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -51,12 +33,12 @@ export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({onSubmit, initi
     }));
   };
 
-  // const handleSelectChange = (name: string, value: string) => {
-  //   setFormData(prev => ({
-  //     ...prev,
-  //     [name]: value
-  //   }));
-  // };
+  const handleSelectChange = (name: keyof Employee, e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: Number(e.target.value)
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,8 +48,8 @@ export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({onSubmit, initi
         id: 0,
         email: '',
         fullName: '',
-        role: '',
-        institute: '',
+        roleId: 1,
+        instituteId: 1,
       });
     }
   };
@@ -98,18 +80,18 @@ export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = ({onSubmit, initi
           <Select
             title="Роль"
             name="role"
-            value={formData.role}
+            value={formData.roleId}
             options={roles}
-            // onChange={(value) => handleSelectChange('role', value as string)}
+            onChange={(e) => handleSelectChange('roleId', e)}
             required
           />
 
           <Select
             title="Институт"
             name="institute"
-            value={formData.institute}
+            value={formData.instituteId}
             options={institutes}
-            // onChange={(value) => handleSelectChange('institute', value as string)}
+            onChange={(e) => handleSelectChange('instituteId', e)}
             required
           />
 

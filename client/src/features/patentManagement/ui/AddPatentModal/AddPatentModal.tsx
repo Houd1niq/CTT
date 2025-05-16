@@ -3,8 +3,9 @@ import {patentsApiSlice} from "@entities/patent/api/patentsApiSlice.ts";
 import {useEffect} from "react";
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
-import {useModalOverflow} from "@shared/utils/hooks.ts";
+import {useIsAdmin, useModalOverflow} from "@shared/utils/hooks.ts";
 import {instituteApiSlice} from "@entities/institute";
+import {userApiSlice} from "@entities/user";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -18,6 +19,14 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
   const {data: institutes} = instituteApiSlice.useGetInstitutesQuery('')
+  const {data: user} = userApiSlice.useGetMeQuery()
+
+  const isAdmin = useIsAdmin()
+
+  const availableInstitutes = institutes?.filter((institute) => {
+    if (isAdmin) return true
+    return institute.id === user?.institute?.id
+  })
 
   useModalOverflow(visible)
 
@@ -49,7 +58,7 @@ export const AddPatentModal = (props: AddPatentModalProps) => {
         <PatentForm
           technologyFields={technologyFields}
           patentTypes={patentTypes}
-          institutes={institutes}
+          institutes={availableInstitutes}
           onSubmit={handleSubmit}
           formType="add"/>
       </div>

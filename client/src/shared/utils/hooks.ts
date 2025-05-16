@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@app/store/store.ts";
 import {useEffect} from "react";
+import {userApiSlice} from "@entities/user";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector = useSelector.withTypes<RootState>()
@@ -18,4 +19,9 @@ export const useModalOverflow = (isOpen: boolean) => {
       document.body.style.paddingRight = '0px';
     }
   }, [isOpen]);
+}
+
+export const useIsAdmin = () => {
+  const {data: user} = userApiSlice.useGetMeQuery();
+  return user?.role.name === 'admin';
 }

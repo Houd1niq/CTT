@@ -1,11 +1,10 @@
 import {Filter} from "@shared/ui/Filter/Filter.tsx";
-import {useAppDispatch} from "@shared/utils/hooks.ts";
+import {useAppDispatch, useIsAdmin} from "@shared/utils/hooks.ts";
 import {
   removeTechnologyFieldFilter,
   setTechnologyFieldFilter
 } from "@features/patentSearch/model/searchSlice.ts";
 import {useEffect, useState} from "react";
-import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
 import {FilterModal} from "@shared/ui/FilterModal/FilterModal.tsx";
 import {DeleteModal} from "@shared/ui/DeleteModal/DeleteModal.tsx";
 import {technologyFieldApiSlice} from "@entities/technologyField";
@@ -14,7 +13,7 @@ import {FilterType} from "@shared/types/common";
 export const TechnologyFieldFilter = () => {
   const dispatch = useAppDispatch();
 
-  const {data: user} = userApiSlice.useGetMeQuery()
+  const isAdmin = useIsAdmin()
 
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('');
   const [addTrigger, addResponse] = technologyFieldApiSlice.useAddTechnologyFieldMutation()
@@ -59,10 +58,10 @@ export const TechnologyFieldFilter = () => {
   }, [deleteResponse]);
 
   useEffect(() => {
-    if (user && user.id) {
+    if (isAdmin) {
       getDeletable()
     }
-  }, [user]);
+  }, [isAdmin]);
 
   const submitHandler = itemToEdit ? editTrigger : addTrigger
 
@@ -83,7 +82,7 @@ export const TechnologyFieldFilter = () => {
           setItemToDelete({name, id})
         }}
         deletable={deletableResponse.data}
-        isActionVisible={Boolean(user)}
+        isActionVisible={isAdmin}
       />
 
       <FilterModal

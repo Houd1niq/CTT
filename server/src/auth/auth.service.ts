@@ -81,7 +81,7 @@ export class AuthService {
     return {refresh_token: rt, access_token: at};
   }
 
-  private hashData(value: string): Promise<string> {
+  hashData(value: string): Promise<string> {
     return bcrypt.hash(value, 5);
   }
 }

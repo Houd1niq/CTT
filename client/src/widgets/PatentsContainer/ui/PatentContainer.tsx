@@ -2,7 +2,7 @@ import {patentsApiSlice} from "@entities/patent/api/patentsApiSlice.ts";
 import {PatentCard} from "@entities/patent/ui/PatentCard/PatentCard.tsx";
 import {userApiSlice} from "@entities/user/api/userApiSlice.ts";
 import {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "@shared/utils/hooks.ts";
+import {useAppDispatch, useAppSelector, useIsAdmin} from "@shared/utils/hooks.ts";
 import {EditPatentModal} from "@features/patentManagement/ui/EditPatentModal/EditPatentModal.tsx";
 import {DeleteModal} from "@shared/ui/DeleteModal/DeleteModal.tsx";
 import {setTotalPages} from "@features/patentSearch/model/searchSlice.ts";
@@ -47,7 +47,7 @@ export const PatentContainer = (props: PatentContainerProps) => {
   const {isLoading: technologyFieldsIsLoading} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
   const {isLoading: institutesIsLoading} = instituteApiSlice.useGetInstitutesQuery('')
 
-  const isAdmin = Boolean(user?.id)
+  const isAdmin = useIsAdmin()
 
   useEffect(() => {
     if ((!patentTypesIsLoading || !patentTypeFilters.length)
@@ -115,7 +115,7 @@ export const PatentContainer = (props: PatentContainerProps) => {
               setIsEditPopupOpen(true)
             }}
             data={patent}
-            isActionsGranted={isAdmin}
+            isActionsGranted={isAdmin || user?.institute?.id === patent.institute.id}
             key={patent.patentNumber}/>
         })}
       </div>

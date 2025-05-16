@@ -1,22 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import styles from './Admin.module.scss';
 import {EmployeeTable, AddEmployeeForm} from '@features/admin';
-
-interface Employee {
-  id: number;
-  email: string;
-  fullName: string;
-  role: string;
-  institute: string;
-}
+import {Employee} from "@features/admin/model/types.ts";
+import {adminApiSlice} from "@features/admin/api/adminApiSlice.ts";
+import {instituteApiSlice} from "@entities/institute";
 
 const Admin: React.FC = () => {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const {data: roles} = adminApiSlice.useGetRolesQuery();
+  const {data: institutes} = instituteApiSlice.useGetInstitutesQuery('');
 
-  const handleAddEmployee = (employeeData: Omit<Employee, 'id'>) => {
-    // TODO: Add API call to create employee
-    setEmployees(prev => [...prev, {...employeeData, id: Date.now()}]);
+  const [createEmployee] = adminApiSlice.useCreateEmployeeMutation();
+
+  const handleAddEmployee = (employee: Employee) => {
+    // TODO: Implement edit functionality
+    createEmployee(employee);
   };
 
   const handleEditEmployee = (employee: Employee) => {
@@ -24,9 +22,9 @@ const Admin: React.FC = () => {
     console.log('Edit employee:', employee);
   };
 
-  const handleDeleteEmployee = (employee: Employee) => {
+  const handleDeleteEmployee = (employeeId: number) => {
     // TODO: Implement delete functionality
-    console.log('Delete employee:', employee);
+    console.log('Delete employee:', employeeId);
   };
 
   return (
@@ -39,9 +37,12 @@ const Admin: React.FC = () => {
       </div>
 
       <div className={styles.adminContent}>
-        <AddEmployeeForm onSubmit={handleAddEmployee}/>
+        <AddEmployeeForm
+          onSubmit={handleAddEmployee}
+          roles={roles || []}
+          institutes={institutes || []}
+        />
         <EmployeeTable
-          employees={employees}
           onEdit={handleEditEmployee}
           onDelete={handleDeleteEmployee}
         />

@@ -71,6 +71,6 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
 export const CTTApi = createApi({
   reducerPath: "CTTApi",
   baseQuery: baseQueryWithReFetch,
-  tagTypes: ['Patents', 'TechnologyFields', 'PatentTypes', 'User', 'Institutes'],
+  tagTypes: ['Patents', 'TechnologyFields', 'PatentTypes', 'User', 'Institutes', 'AllUsers'],
   endpoints: () => ({}),
 });

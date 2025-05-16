@@ -5,8 +5,9 @@ import './edit-patent-modal.scss'
 import {technologyFieldApiSlice} from "@entities/technologyField/api/technologyFieldApiSlice.ts";
 import {patentTypeApiSlice} from "@entities/patentType/api/patentTypeApiSlice.ts";
 import {Patent} from "@entities/patent";
-import {useModalOverflow} from "@shared/utils/hooks.ts";
+import {useIsAdmin, useModalOverflow} from "@shared/utils/hooks.ts";
 import {instituteApiSlice} from "@entities/institute";
+import {userApiSlice} from "@entities/user";
 
 type AddPatentModalProps = {
   onClose: () => void;
@@ -21,6 +22,14 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
   const {data: patentTypes} = patentTypeApiSlice.useGetPatentTypesQuery('')
   const {data: technologyFields} = technologyFieldApiSlice.useGetTechnologyFieldsQuery('')
   const {data: institutes} = instituteApiSlice.useGetInstitutesQuery('')
+  const {data: user} = userApiSlice.useGetMeQuery()
+
+  const isAdmin = useIsAdmin()
+
+  const availableInstitutes = institutes?.filter((institute) => {
+    if (isAdmin) return true
+    return institute.id === user?.institute?.id
+  })
 
   useModalOverflow(visible)
 
@@ -57,7 +66,7 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
         <PatentForm
           technologyFields={technologyFields}
           patentTypes={patentTypes}
-          institutes={institutes}
+          institutes={availableInstitutes}
           onSubmit={handleSubmit}
           formType="edit"
           patent={patent}

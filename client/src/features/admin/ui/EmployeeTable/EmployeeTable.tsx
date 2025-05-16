@@ -2,64 +2,22 @@ import React, {useState} from 'react';
 import {Button} from '@shared/ui/Button/Button';
 import {EditEmployeeModal} from '../AddEmployeeModal/EditEmployeeModal.tsx';
 import styles from './EmployeeTable.module.scss';
-
-interface Employee {
-  id: number;
-  email: string;
-  fullName: string;
-  role: string;
-  institute: string;
-}
+import {adminApiSlice} from "@features/admin/api/adminApiSlice.ts";
+import {UserResponse} from "@entities/user";
+import {Employee} from "@features/admin/model/types.ts";
 
 interface EmployeeTableProps {
-  employees: Employee[];
   onEdit: (employee: Employee) => void;
-  onDelete: (employee: Employee) => void;
+  onDelete: (employeeId: number) => void;
 }
 
-const mockEmployees: Employee[] = [
-  {
-    id: 1,
-    email: 'ivanov@ystu.ru',
-    fullName: 'Иванов Иван Иванович',
-    role: 'Администратор',
-    institute: 'Институт машиностроения'
-  },
-  {
-    id: 2,
-    email: 'petrov@ystu.ru',
-    fullName: 'Петров Петр Петрович',
-    role: 'Менеджер',
-    institute: 'Институт информационных технологий'
-  },
-  {
-    id: 3,
-    email: 'sidorov@ystu.ru',
-    fullName: 'Сидоров Сидор Сидорович',
-    role: 'Пользователь',
-    institute: 'Институт экономики и управления'
-  },
-  {
-    id: 4,
-    email: 'smirnova@ystu.ru',
-    fullName: 'Смирнова Анна Петровна',
-    role: 'Менеджер',
-    institute: 'Институт гуманитарных наук'
-  },
-  {
-    id: 5,
-    email: 'kuznetsov@ystu.ru',
-    fullName: 'Кузнецов Алексей Николаевич',
-    role: 'Пользователь',
-    institute: 'Институт строительства и архитектуры'
-  }
-];
-
 export const EmployeeTable: React.FC<EmployeeTableProps> = ({onEdit, onDelete}) => {
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | undefined>();
+  const [selectedEmployee, setSelectedEmployee] = useState<UserResponse | undefined>();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleEdit = (employee: Employee) => {
+  const {data: allUsers} = adminApiSlice.useGetUsersQuery();
+
+  const handleEdit = (employee: UserResponse) => {
     setSelectedEmployee(employee);
     setIsModalOpen(true);
   };
@@ -89,26 +47,26 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({onEdit, onDelete}) 
           </tr>
           </thead>
           <tbody>
-          {mockEmployees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.id}</td>
-              <td>{employee.email}</td>
-              <td>{employee.fullName}</td>
-              <td>{employee.role}</td>
-              <td>{employee.institute}</td>
+          {allUsers?.map((user) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.email}</td>
+              <td>{user?.fullName}</td>
+              <td>{user.role.name}</td>
+              <td>{user?.institute?.name || '-'}</td>
               <td className={styles.actions}>
                 <Button
-                  onClick={() => handleEdit(employee)}
+                  onClick={() => handleEdit(user)}
                   className={styles.editButton}
                 >
                   Редактировать
                 </Button>
-                <Button
-                  onClick={() => onDelete(employee)}
+                {user.role.name !== 'admin' && <Button
+                  onClick={() => onDelete(user.id)}
                   className={styles.deleteButton}
                 >
                   Удалить
-                </Button>
+                </Button>}
               </td>
             </tr>
           ))}
@@ -119,7 +77,7 @@ export const EmployeeTable: React.FC<EmployeeTableProps> = ({onEdit, onDelete}) 
       <EditEmployeeModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
-        employee={selectedEmployee}
+        user={selectedEmployee}
         onSubmit={handleModalSubmit}
       />
     </>

@@ -2,16 +2,17 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import {UserService} from '../user/user.service';
 import {PrismaService} from '../prisma/prisma.service';
 import {CreateEmployeeDto} from './dto/create-employee.dto';
-import * as bcrypt from "bcryptjs";
 import {AuthService} from "../auth/auth.service";
 import {EditEmployeeDto} from "./dto/edit-employee.dto";
+import {EmailService} from "../email/email.service";
 
 @Injectable()
 export class AdminService {
   constructor(
     private readonly userService: UserService,
     private readonly prisma: PrismaService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly emailService: EmailService
   ) {
   }
 
@@ -28,7 +29,7 @@ export class AdminService {
     });
   }
 
-  async createEmployee(createEmployeeDto: CreateEmployeeDto) {
+  async createEmployee(createEmployeeDto: CreateEmployeeDto, origin: string) {
     const {email, fullName, roleId, instituteId} = createEmployeeDto;
 
     // Check if user with this email already exists
@@ -71,6 +72,12 @@ export class AdminService {
       },
     });
 
+    try {
+      await this.emailService.sendRegisterNotification(email, origin)
+    } catch (e) {
+      console.log(e)
+    }
+    
     return user;
   }
 

@@ -23,8 +23,6 @@ export const AddEmployeeForm: React.FC<AddEmployeeFormProps> = (props) => {
     instituteId: initialData?.instituteId || 1,
   });
 
-  console.log(formData)
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     setFormData(prev => ({

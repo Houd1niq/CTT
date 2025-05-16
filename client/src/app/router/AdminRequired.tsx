@@ -9,8 +9,6 @@ export const AdminRequired: React.FC<{ children: React.ReactNode }> = ({children
     return <div></div>
   }
 
-  console.log(user)
-
   if (!user || user.role.name !== 'admin') {
     return <Navigate to={'/'}/>
   }

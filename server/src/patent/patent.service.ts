@@ -4,7 +4,6 @@ import {PrismaService} from "../prisma/prisma.service";
 import {PatentSearchService} from "./patentSearch.service";
 import {Patent} from "@prisma/client";
 import {PdfService} from "../files/pdf.service";
-import * as fs from "node:fs";
 import {join} from "path";
 
 @Injectable()

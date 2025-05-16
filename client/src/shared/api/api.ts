@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import {RootState} from "@app/store/store.ts";
 import {logOut, setAccessToken} from "@features/auth/model/authSlice.ts";
+import {setNotificationState} from "@shared/model/notification/notificationSlice.ts";
 
 export type refreshResponse = {
   data?: {
@@ -63,6 +64,16 @@ const baseQueryWithReFetch: BaseQueryFn = async (args, api, extraOptions) => {
     }
     result = await baseQuery(args, api, extraOptions);
   }
+
+  if (result.error && result.error.status !== 401) {
+    const payload = {
+      // @ts-ignore
+      message: String(result.error?.data?.message) || `Непредвиденная ошибка: ${result.error.status}, обратитесь к администратору`,
+      type: "error" as const,
+    }
+    api.dispatch(setNotificationState(payload))
+  }
+
 
   // api.dispatch(setNotIsLoading());
   return result;

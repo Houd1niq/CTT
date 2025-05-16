@@ -2,6 +2,7 @@ import {Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards} fro
 import {CreatePatentTypeDto} from "./dto/patent-type.dto";
 import {AuthGuard} from "@nestjs/passport";
 import {PatentTypeService} from "./patent-type.service";
+import {AdminGuard} from "../auth/guards/admin.guard";
 
 @Controller('patent-type')
 export class PatentTypeController {
@@ -9,7 +10,7 @@ export class PatentTypeController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   async create(@Body() dto: CreatePatentTypeDto) {
     return await this.patentTypeService.createPatentType(dto);
   }
@@ -20,19 +21,19 @@ export class PatentTypeController {
   }
 
   @Get('/deletable')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   async getDeletable() {
     return await this.patentTypeService.getDeletablePatentTypes();
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   async delete(@Param('id') id: string) {
     return await this.patentTypeService.deletePatentType(id);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   async edit(@Param('id') id: string, @Body('name') name: string) {
     return await this.patentTypeService.editPatentType(id, name);
   }

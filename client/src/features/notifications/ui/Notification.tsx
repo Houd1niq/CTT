@@ -9,7 +9,7 @@ export const Notification: React.FC = () => {
 
   useEffect(() => {
     if (!notification) return
-    const timer = setTimeout(() => setNotification(null), 3000);
+    const timer = setTimeout(() => setNotification(null), 6000);
     return () => clearTimeout(timer);
   }, [notification]);
 

@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {BadRequestException, Injectable} from "@nestjs/common";
 import {PrismaService} from "../prisma/prisma.service";
 import * as bcrypt from "bcryptjs";
 // import { JwtService } from "@nestjs/jwt";
@@ -15,15 +15,19 @@ export class ResetPasswordService {
 
   async generateResetToken(email: string) {
     const token = String(Math.floor(100000 + Math.random() * 900000));
-    const res = await this.prisma.user.update({
-      where: {email},
-      data: {
-        resetToken: token,
-        resetTokenExpiry: new Date(Date.now() + 600000),
-      },
-    });
-    await this.emailService.sendConfirmationCode(email, token)
-    return res
+    try {
+      const res = await this.prisma.user.update({
+        where: {email},
+        data: {
+          resetToken: token,
+          resetTokenExpiry: new Date(Date.now() + 600000),
+        },
+      });
+      await this.emailService.sendConfirmationCode(email, token)
+      return res
+    } catch (e) {
+      throw new BadRequestException('Пользователь с таким email не найден')
+    }
   }
 
   async checkResetToken(email: string, token: string) {

@@ -11,6 +11,7 @@ import {http, HttpResponse} from 'msw';
 const initialState: SearchSliceState = {
   patentTypeFilters: [],
   technologyFieldFilters: [],
+  instituteFilters: [],
   page: 1,
   totalPages: 5,
   searchQuery: '',

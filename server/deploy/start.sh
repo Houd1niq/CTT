@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo 'Build client'
+cd ../../client
+npm run build
+
+echo 'copying files'
+cp -r dist/* ../server/static
+cd ../server
+
 echo "Stopping and removing existing containers..."
 docker compose down
 

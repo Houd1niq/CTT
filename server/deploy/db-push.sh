@@ -2,4 +2,4 @@
 
 # Остановка и удаление существующих контейнеров
 echo "Hard migration..."
-docker compose exec app npx prisma db push
+docker compose exec app npx prisma migrate deploy

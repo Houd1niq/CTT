@@ -63,6 +63,7 @@ export const EditPatentModal = (props: AddPatentModalProps) => {
   return (
     <div className="popupContainer" onClick={() => handleCloseEditPopup()}>
       <div className="popup" onClick={(e) => e.stopPropagation()}>
+        <button onClick={() => handleCloseEditPopup()} className="closeModal">Закрыть</button>
         <PatentForm
           technologyFields={technologyFields}
           patentTypes={patentTypes}

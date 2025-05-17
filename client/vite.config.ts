@@ -21,9 +21,8 @@ export default defineConfig({
   },
   root: '.',
   build: {
-    rollupOptions: {
-      input: path.resolve(__dirname, 'app/main.tsx'),
-    },
+    outDir: 'dist',
+    emptyOutDir: true,
   },
   plugins: [svgr({
     include: "**/*.svg?react",

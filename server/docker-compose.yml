@@ -11,6 +11,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
       DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}"
+      NODE_ENV: 'production'
     env_file:
       - .env
     ports:
@@ -20,7 +21,7 @@ services:
       - elasticsearch
     volumes:
       - /app/node_modules
-      - /app/uploads
+      - ./uploads:/app/uploads
 
   postgres:
     image: postgres:15

@@ -28,7 +28,6 @@ export class PatentController {
   @Get("report")
   async getPatentReport(@Req() req: Request, @Res() res: Response) {
     const buffer = await this.patentReportService.generatePatentReport();
-    const date = new Date().toLocaleDateString()
 
     res.setHeader('Content-Disposition', 'attachment; filename=Patents_report.docx');
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');

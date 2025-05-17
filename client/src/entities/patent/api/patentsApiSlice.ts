@@ -1,6 +1,7 @@
 import {CTTApi} from "@shared/api/api.ts";
 import {Patent, PatentsBody, PatentsSearchBody} from "@entities/patent/model/types.ts";
 import {concatUrlWithQueryParams} from '@shared/utils/strings.ts'
+import {Role} from "@features/admin/model/types.ts";
 
 export const patentsApiSlice = CTTApi.injectEndpoints({
   endpoints: (build) => ({
@@ -13,6 +14,13 @@ export const patentsApiSlice = CTTApi.injectEndpoints({
           "Accept": "application/octet-stream",
           // 'Content-Type': 'application/pdf',
         },
+      }),
+    }),
+
+    getReport: build.query<Role[], void>({
+      query: () => ({
+        url: "patent/report",
+        method: "GET",
       }),
     }),
 

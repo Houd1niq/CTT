@@ -1,7 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {ElasticsearchService} from '@nestjs/elasticsearch';
 import {CreatePatentDto, EditPatentDto} from "./dto/patent.dto";
-import {TEST_INDICES} from "../test/const";
 
 interface PatentSearchBody {
   patentNumber: string;
@@ -29,22 +28,38 @@ interface SearchOptions {
 
 @Injectable()
 export class PatentSearchService {
-  private readonly index = 'patentsv1';
-  private readonly newIndex = process.env.NODE_ENV === 'test' ? TEST_INDICES.PATENTS : 'patentsv2';
+  private readonly index = 'patentss';
   private readonly defaultPageSize = 20;
   private readonly maxPageSize = 100;
 
   constructor(private readonly elasticsearchService: ElasticsearchService) {
-    process.env.NODE_ENV !== 'test' && this.initializeIndex();
+    console.log('mount')
+    this.initializeIndex();
   }
 
   private async initializeIndex() {
     try {
-      const newIndexExists = await this.elasticsearchService.indices.exists({
-        index: this.newIndex
-      });
+      let connected = false;
+      let retries = 5;
+      while (!connected && retries > 0) {
+        try {
+          await this.elasticsearchService.indices.exists({
+            index: this.index
+          })
+          console.log('Elasticsearch is up!');
+          connected = true;
+        } catch (error) {
+          console.warn('Elasticsearch not ready, retrying in 5s...', error?.message);
+          await new Promise((res) => setTimeout(res, 5000));
+          retries--;
+        }
+      }
 
-      if (!newIndexExists) {
+      const indexExists = await this.elasticsearchService.indices.exists({
+        index: this.index
+      })
+
+      if (!indexExists) {
         const indexBody = {
           mappings: {
             properties: {
@@ -56,54 +71,13 @@ export class PatentSearchService {
         } as const;
 
         await this.elasticsearchService.indices.create({
-          index: this.newIndex,
+          index: this.index,
           body: indexBody
         });
 
-        const oldIndexExists = await this.elasticsearchService.indices.exists({
-          index: this.index
-        })
-
-        if (oldIndexExists) {
-          await this.migrateData();
-        }
       }
     } catch (error) {
-      console.log(error);
       throw new Error(`Failed to initialize Elasticsearch index: ${error.message}`);
-    }
-  }
-
-  private async migrateData() {
-    try {
-      // Получаем все документы из старого индекса
-      const response = await this.elasticsearchService.search<PatentSearchBody>({
-        index: this.index,
-        size: 10000,
-        body: {
-          query: {
-            match_all: {}
-          }
-        }
-      });
-
-      // Создаем bulk запрос для переноса только существующих полей
-      const bulkBody = response.hits.hits.flatMap(hit => [
-        {index: {_index: this.newIndex, _id: hit._id}},
-        {
-          patentNumber: hit._source.patentNumber,
-          name: hit._source.name
-        }
-      ]);
-
-      if (bulkBody.length > 0) {
-        await this.elasticsearchService.bulk({
-          refresh: true,
-          body: bulkBody
-        });
-      }
-    } catch (error) {
-      throw new Error(`Failed to migrate data: ${error.message}`);
     }
   }
 
@@ -111,7 +85,7 @@ export class PatentSearchService {
   async deletePatent(patentNumber: string): Promise<void> {
     try {
       await this.elasticsearchService.deleteByQuery({
-        index: this.newIndex,
+        index: this.index,
         body: {
           query: {
             match: {
@@ -137,7 +111,7 @@ export class PatentSearchService {
   async indexPatent(patent: CreatePatentDto | EditPatentDto, pdfContent?: string): Promise<void> {
     try {
       await this.elasticsearchService.index<PatentSearchBody>({
-        index: this.newIndex,
+        index: this.index,
         body: {
           patentNumber: patent.patentNumber,
           name: patent.name,
@@ -160,7 +134,7 @@ export class PatentSearchService {
 
     try {
       const response = await this.elasticsearchService.search<PatentSearchBody>({
-        index: this.newIndex,
+        index: this.index,
         from,
         size: limit,
         body: {

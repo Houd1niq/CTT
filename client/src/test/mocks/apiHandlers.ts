@@ -1,7 +1,7 @@
-import { http, HttpResponse } from 'msw';
-import { Patent } from '@entities/patent/model/types';
-import { PatentType } from '@entities/patentType/model/types';
-import { TechnologyField } from '@entities/technologyField/model/types';
+import {http, HttpResponse} from 'msw';
+import {Patent} from '@entities/patent/model/types';
+import {PatentType} from '@entities/patentType/model/types';
+import {TechnologyField} from '@entities/technologyField/model/types';
 
 const baseUrl = 'http://localhost:5000';
 
@@ -16,6 +16,10 @@ export const mockPatent: Patent = {
   isPrivate: false,
   createdAt: '2024-01-01',
   patentLink: 'https://example.com/patent/123456',
+  institute: {
+    id: 1,
+    name: 'Test Institute'
+  },
   patentType: {
     id: 1,
     name: 'Test Patent Type'
@@ -49,7 +53,7 @@ export const patentHandlers = [
     return HttpResponse.json([mockPatent]);
   }),
 
-  http.post(`${baseUrl}/patent`, async ({ request }) => {
+  http.post(`${baseUrl}/patent`, async ({request}) => {
     const formData = await request.formData();
     return HttpResponse.json({
       ...mockPatent,
@@ -58,8 +62,8 @@ export const patentHandlers = [
     });
   }),
 
-  http.put(`${baseUrl}/patent/:id`, async ({ params, request }) => {
-    const { id } = params;
+  http.put(`${baseUrl}/patent/:id`, async ({params, request}) => {
+    const {id} = params;
     const data = await request.json() as Record<string, string>;
     return HttpResponse.json({
       ...mockPatent,
@@ -69,11 +73,11 @@ export const patentHandlers = [
   }),
 
   http.delete(`${baseUrl}/patent/:patentNumber`, () => {
-    return HttpResponse.json({ success: true });
+    return HttpResponse.json({success: true});
   }),
 
   http.get(`${baseUrl}/files/:patentLink`, () => {
-    return new HttpResponse(new Blob(['test content'], { type: 'application/pdf' }));
+    return new HttpResponse(new Blob(['test content'], {type: 'application/pdf'}));
   })
 ];
 
@@ -87,17 +91,17 @@ export const patentTypeHandlers = [
     return HttpResponse.json([mockPatentType]);
   }),
 
-  http.post(`${baseUrl}/patent-type`, async ({ request }) => {
-    const { name } = await request.json() as { name: string };
+  http.post(`${baseUrl}/patent-type`, async ({request}) => {
+    const {name} = await request.json() as { name: string };
     return HttpResponse.json({
       ...mockPatentType,
       name
     });
   }),
 
-  http.patch(`${baseUrl}/patent-type/:id`, async ({ params, request }) => {
-    const { id } = params;
-    const { name } = await request.json() as { name: string };
+  http.patch(`${baseUrl}/patent-type/:id`, async ({params, request}) => {
+    const {id} = params;
+    const {name} = await request.json() as { name: string };
     return HttpResponse.json({
       ...mockPatentType,
       id: Number(id),
@@ -106,7 +110,7 @@ export const patentTypeHandlers = [
   }),
 
   http.delete(`${baseUrl}/patent-type/:id`, () => {
-    return HttpResponse.json({ success: true });
+    return HttpResponse.json({success: true});
   })
 ];
 
@@ -120,17 +124,17 @@ export const technologyFieldHandlers = [
     return HttpResponse.json([mockTechnologyField]);
   }),
 
-  http.post(`${baseUrl}/technology-field`, async ({ request }) => {
-    const { name } = await request.json() as { name: string };
+  http.post(`${baseUrl}/technology-field`, async ({request}) => {
+    const {name} = await request.json() as { name: string };
     return HttpResponse.json({
       ...mockTechnologyField,
       name
     });
   }),
 
-  http.patch(`${baseUrl}/technology-field/:id`, async ({ params, request }) => {
-    const { id } = params;
-    const { name } = await request.json() as { name: string };
+  http.patch(`${baseUrl}/technology-field/:id`, async ({params, request}) => {
+    const {id} = params;
+    const {name} = await request.json() as { name: string };
     return HttpResponse.json({
       ...mockTechnologyField,
       id: Number(id),
@@ -139,6 +143,6 @@ export const technologyFieldHandlers = [
   }),
 
   http.delete(`${baseUrl}/technology-field/:id`, () => {
-    return HttpResponse.json({ success: true });
+    return HttpResponse.json({success: true});
   })
-]; 
+];

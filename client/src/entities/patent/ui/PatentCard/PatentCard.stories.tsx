@@ -12,6 +12,10 @@ const mockPatent: Patent = {
   contact: 'example@mail.ru',
   isPrivate: false,
   patentLink: 'patent.pdf',
+  institute: {
+    id: 1,
+    name: 'Институт'
+  },
   patentType: {
     id: 1,
     name: 'Изобретение'
